@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_select_subscription_template_wizard_form" model="ir.ui.view">
+        <field name="name">select.subscription.template.wizard.form</field>
+        <field name="model">select.subscription.template.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="branch_id" invisible="1"/>
+                    <field name="template_id"/>
+                </group>
+                <footer>
+                    <button string="Confirm" class="oe_highlight" type="object" name="button_confirm"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_res_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_type']" position="before">
+                <div style="margin-bottom: 10px;">
+                    <button string="Select Fee Template" type="object" name="button_open_fee_template_wizard" class="oe_highlight"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- <record id="action_open_template_selection_wizard" model="ir.actions.server">
+        <field name="name">Choose Fee Template Wizard</field>
+        <field name="model_id" ref="res_partner"/>
+        <field name="state">code</field>
+        <field name="code">model._open_template_selection_wizard()</field>
+        <field name="type">object</field>
+    </record> -->
+
+</odoo>
+

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- 
+        Menu Item mein ja kr us menu ka parent likhna hay phr uska sub menu dekhna k bad
+        meta data sa us parent ki external id nikalni hay or phr wo apna menu item ko dy dynee
+        hay.
+     -->
+
+    <menuitem
+        id="billing_reports_menu"
+        name="Billing Reports"
+        parent="account_accountant.menu_accounting"
+        sequence="5"/>
+
+    <record id="ol_custom_invoice_report.menu_action_generate_invoice_report" model="ir.ui.menu">
+        <field name="parent_id" ref="billing_reports_menu"/>
+        <field name="sequence">0</field>
+    </record>
+
+    <record id="ol_schoolanova_receivable_report.menu_special_receivable_student" model="ir.ui.menu">
+        <field name="parent_id" ref="son_accounting_menu.billing_reports_menu"/>
+        <field name="sequence">1</field>
+    </record>
+
+</odoo>
