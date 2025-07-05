@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Adding billing month field in form view of Subscriptions -->
+    <record id="inherit_sale_subscription_view_search" model="ir.ui.view">
+        <field name="name">inherit.sale.subscription.view.search</field>
+        <field name="model">sale.subscription</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='template']" position="replace"/>
+            <xpath expr="//filter[@name='industry']" position="replace"/>
+            <xpath expr="//filter[@name='sales_team']" position="replace"/>
+            <xpath expr="//filter[@name='sales_person']" position="replace"/>
+            <xpath expr="//search[1]/field[@name='name']" position="before">
+                <field name="x_studio_facts_id"/>
+                <field name="grade_section_display"/>
+            </xpath>
+            <xpath expr="//filter[@name='customer']" position="attributes">
+                <attribute name="string">Student</attribute>
+            </xpath>
+            <xpath expr="//filter[@name='customer']" position="after">
+                <filter name="studio_group_by_ejFz8" string="Grade" context="{'group_by': 'x_studio_grade'}"/>
+            </xpath>
+            <group expand="0" string="Group By">
+                <filter string="Grade and Section" name="group_by_grade_section_display" context="{'group_by':'grade_section_display'}"/>
+            </group>
+        </field>
+    </record>
+</odoo>

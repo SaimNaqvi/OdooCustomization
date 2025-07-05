@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="inherit_res_partner_filter" model="ir.ui.view">
+        <field name="name">inherit.res.partner.filter</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter string="Undefined Fee Template" name="undefined_fee_template"
+                        domain="[('subscription_count', '=', 0), ('is_student', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

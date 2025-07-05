@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_partner_form_view_inherit" model="ir.ui.view">
+        <field name="name">res.partner.form.view.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='subscription_count']" position="attributes">
+                <attribute name="string">Tuition Plans</attribute>
+            </xpath>
+<!--            <xpath expr="//field[@name='subscription_count']" position="attributes">-->
+<!--                <field name="subscription_count_inherit"/>-->
+<!--            </xpath>-->
+        </field>
+    </record>
+</odoo>

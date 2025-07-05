@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <record id="account.menu_finance_receivables" model="ir.ui.menu" context="{'studio': True}">
+        <field name="action" eval="False"/>
+        <field name="active" eval="True"/>
+        <field name="groups_id" eval="[(6, 0, [])]"/>
+        <field name="name">Bills</field>
+        <field name="parent_id" ref="account_accountant.menu_accounting"/>
+        <field name="sequence">2</field>
+        <field name="web_icon" eval="False"/>
+    </record>
+    <record id="account.menu_action_move_out_invoice_type" model="ir.ui.menu" context="{'studio': True}">
+        <field name="action" ref="account.action_move_out_invoice_type"/>
+        <field name="active" eval="True"/>
+        <field name="groups_id" eval="[(6, 0, [])]"/>
+        <field name="name">Student Bills</field>
+        <field name="parent_id" ref="account.menu_finance_receivables"/>
+        <field name="sequence">1</field>
+        <field name="web_icon" eval="False"/>
+    </record>
+
+    <record id="sale_subscription.menu_sale_subscription_root" model="ir.ui.menu" context="{'studio': True}">
+        <field name="action" eval="False"/>
+        <field name="active" eval="True"/>
+        <field name="groups_id" eval="[(6, 0, [ref('sale_subscription.group_sale_subscription_view')])]"/>
+        <field name="name">Fee Manager</field>
+        <field name="parent_id" eval="False"/>
+        <field name="sequence">40</field>
+        <field name="web_icon">sale_subscription,static/description/icon.png</field>
+    </record>
+    <menuitem id="inherit_menu_mrp_product_form"
+              name="Products"
+              action="sale.product_template_action"
+              parent="sale_subscription.menu_sale_subscription_root" sequence="2"/>
+
+    <record id="sale_subscription.menu_sale_subscription" model="ir.ui.menu" context="{'studio': True}">
+        <field name="action" eval="False"/>
+        <field name="active" eval="True"/>
+        <field name="groups_id" eval="[(6, 0, [])]"/>
+        <field name="name">Fee Plans</field>
+        <field name="parent_id" ref="sale_subscription.menu_sale_subscription_root"/>
+        <field name="sequence">5</field>
+        <field name="web_icon" eval="False"/>
+    </record>
+    <record id="sale_subscription.menu_sale_subscription_action" model="ir.ui.menu" context="{'studio': True}">
+        <field name="action" ref="sale_subscription.sale_subscription_action"/>
+        <field name="active" eval="True"/>
+        <field name="groups_id" eval="[(6, 0, [])]"/>
+        <field name="name">Student Fee Management</field>
+        <field name="parent_id" ref="sale_subscription.menu_sale_subscription"/>
+        <field name="view_mode">tree,form,kanban,pivot,graph,cohort,activity</field>
+        <field name="sequence">1</field>
+        <field name="web_icon" eval="False"/>
+    </record>
+    <record id="sale_subscription.menu_template_of_subscription" model="ir.ui.menu" context="{'studio': True}">
+        <field name="action" ref="sale_subscription.sale_subscription_template_action"/>
+        <field name="active" eval="True"/>
+        <field name="groups_id" eval="[(6, 0, [ref('sale_subscription.group_sale_subscription_manager')])]"/>
+        <field name="name">Fee Templates</field>
+        <field name="parent_id" ref="sale_subscription.menu_sale_subscription_config"/>
+        <field name="sequence">4</field>
+        <field name="web_icon" eval="False"/>
+    </record>
+</odoo>

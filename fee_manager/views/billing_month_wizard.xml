@@ -1,0 +1,57 @@
+<odoo>
+    <!-- Billing Months Wizard Form View -->
+    <record id="view_billing_months_wizard_form" model="ir.ui.view">
+        <field name="name">billing.months.wizard.form</field>
+        <field name="model">billing.months.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Select Billing Months">
+                <group>
+                    <!-- Visible field for selecting the due date -->
+                    <field name="recurring_next_date"/>
+
+                    <!-- Invisible field for passing selected records (for internal use only) -->
+                    <field name="line_months_subscription_line" invisible="1"/>
+                </group>
+                <footer>
+                    <!-- Button to call the 'create_bills' method -->
+                    <button name="create_bills" type="object" string="Create Bills" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- Action to open the wizard -->
+    <record id="action_open_billing_months_wizard" model="ir.actions.act_window">
+        <field name="name">Billing Months Wizard</field>
+        <field name="res_model">billing.months.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">
+            {
+                'active_ids': active_ids,  <!-- Pass selected records' IDs -->
+                'recurring_next_date': selected_records.invoice_date_due, <!-- Pass the due date -->
+            }
+        </field>
+    </record>
+
+    <!-- Server action to trigger the wizard -->
+    <record id="server_action_create_bills" model="ir.actions.server">
+        <field name="name">Create Bills</field>
+        <field name="model_id" ref="model_account_move"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = {
+                'type': 'ir.actions.act_window',
+                'res_model': 'billing.months.wizard',
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {
+                    'active_ids': env.context.get('active_ids'),
+                    'recurring_next_date': env.context.get('recurring_next_date'),
+                },
+            }
+        </field>
+    </record>
+</odoo>

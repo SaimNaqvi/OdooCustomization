@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="sale_subscription_action_inherit" model="ir.actions.act_window">
+        <field name="name">Subscriptions</field>
+        <field name="res_model">sale.subscription</field>
+        <field name="view_mode">tree,kanban,form,pivot,graph,cohort,activity</field>
+        <field name="view_id" ref="sale_subscription.sale_subscription_view_list" />
+    </record>
+
+</odoo>

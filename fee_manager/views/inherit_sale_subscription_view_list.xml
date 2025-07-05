@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Adding billing month field in form view of Subscriptions -->
+    <record id="inherit_sale_subscription_list_view" model="ir.ui.view">
+        <field name="name">inherit.sale.subscription.list.view</field>
+        <field name="model">sale.subscription</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="editable">bottom</attribute>
+            </xpath>
+            <xpath expr="//field[@name='code']" position="after">
+                <field name="student_code"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="string">Student</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="x_studio_grade" string="Class"/>
+            </xpath>
+            <!--            <xpath expr="//field[@name='x_studio_grade']" position="after">-->
+            <!--                <field name="partner_id.new_homeroom" string="Section"/>-->
+            <!--            </xpath>-->
+            <xpath expr="//field[@name='activity_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="template_id" optional="show"/>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="string">Responsible</attribute>
+            </xpath>
+            <xpath expr="//field[@name='recurring_total']" position="before">
+                <field name="tuition_fee"/>
+                <field name="utility_fee"/>
+                <field name="development_fee"/>
+                <field name="computer_fee"/>
+            </xpath>
+            <xpath expr="//tree" position="inside">
+                <button name="action_open_form" type="object" string="Open Form" class="oe_highlight"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

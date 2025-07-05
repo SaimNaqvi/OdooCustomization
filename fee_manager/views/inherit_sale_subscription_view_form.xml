@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Adding billing month field in form view of Subscriptions -->
+    <record id="inherit_sale_subscription_form" model="ir.ui.view">
+        <field name="name">inherit.sale.subscription.form</field>
+        <field name="model">sale.subscription</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_subscription_invoice']" position="replace"/>
+            <xpath expr="//field[@name='partner_id']" position="before">
+                <field name="student_code" string="Student Code"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="string">Student</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="x_studio_grade" string="Grade"/>
+            </xpath>
+            <xpath expr="//field[@name='date_start']" position="after">
+                <field name="x_studio_date_field_BupKl"/>
+            </xpath>
+            <xpath expr="//field[@name='template_id']" position="attributes">
+                <attribute name="string">Fee Template</attribute>
+            </xpath>
+            <xpath expr="//field[@name='template_id']" position="after">
+                <field name="x_studio_billing_method" string="Billing Method"/>
+                <field name="x_studio_journal" string="Journal" attrs="{}" force_save="True"/>
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]/div[not(@name)][3]/notebook[1]/page[1]/div[1]/field[@name='recurring_invoice_line_ids']/tree[1]/field[@name='product_id']"
+                   position="before">
+                <field name="analytic_account_id" optional="show" attrs="{}" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="sale_subscription_form_view_inherit">
+        <field name="name">Sale.Subscription.Form.View.Inherit</field>
+        <field name="model">sale.subscription</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_form"/>
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//button[@name='open_website_url']" position="before">
+                    <button class="oe_stat_button" icon="fa-file-o" type="object" name="action_account_move">
+                        <field widget="statinfo" name="x_invoice_ref_account_move_count" string="Invoice"/>
+                    </button>
+                </xpath>
+            </data>
+        </field>
+    </record>
+</odoo>

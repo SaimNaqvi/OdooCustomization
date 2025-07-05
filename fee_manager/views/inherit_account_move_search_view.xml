@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_invoice_groupby_inherit" model="ir.ui.view">
+        <field name="name">account.move.groupby</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='sales_channel']" position="replace">
+                <filter name="studio_group_by_WZB21" string="Class" context="{'group_by': 'x_studio_grade'}"/>
+                <filter name="studio_group_by_xAzlm" string="Enrollment state"
+                        context="{'group_by': 'x_studio_enrollment_state'}"/>
+            </xpath>
+            <xpath expr="//filter[@name='salesperson']" position="replace"/>
+            <xpath expr="//search[1]/field[@name='date']" position="replace"/>
+            <xpath expr="//field[@name='team_id']" position="replace"/>
+            <xpath expr="//field[@name='invoice_user_id']" position="replace"/>
+            <xpath expr="//search[1]/field[@name='name']" position="attributes">
+                <attribute name="string">Bill Number</attribute>
+            </xpath>
+            <xpath expr="//search[1]/field[@name='name']" position="after">
+                <field name="x_studio_facts_id" widget="integer" options="{'format': 0}"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="string">Student</attribute>
+            </xpath>
+            <xpath expr="//filter[@name='late']" position="after">
+                <separator name="studio_separator_VEY3V"/>
+                <filter name="studio_filter_VAW5r" string="Enrolled"
+                        domain="[[&quot;x_studio_enrollment_state&quot;,&quot;=&quot;,&quot;Enrolled&quot;]]"/>
+                <filter name="studio_filter_Mw9l1" string="Admissions"
+                        domain="[[&quot;x_studio_enrollment_state&quot;,&quot;=&quot;,&quot;Admissions&quot;]]"/>
+                <filter name="studio_filter_jXgqA" string="Withdrawn"
+                        domain="[[&quot;x_studio_enrollment_state&quot;,&quot;=&quot;,&quot;Withdrawn&quot;]]"/>
+            </xpath>
+            <xpath expr="//filter[@name='invoicedate']" position="attributes">
+                <attribute name="string">Bill Date</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

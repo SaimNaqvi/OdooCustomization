@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="sale_subscription.menu_sale_subscription_pending" model="ir.ui.menu">
+        <field name="name">Subscriptions to Renew</field>
+        <field name="active">False</field>
+    </record>
+
+    <record id="sale_subscription.menu_sale_subscription_product" model="ir.ui.menu">
+        <field name="name">Subscription Products</field>
+        <field name="active">False</field>
+    </record>
+
+    <!-- <record id="sale_subscription.menu_sale_subscription" model="ir.ui.menu">
+        <field name="name">Fee Changes</field>
+    </record> -->
+
+    <!-- <record id="students_filter" model="sale.subscription">
+        <filter name="my_subscriptions" string="Students" domain="[('user_id','=',uid)]"/>
+    </record> -->
+
+    <record id="modify_students_filter" model="ir.ui.view">
+        <field name="name">sale.subscription.search</field>
+        <field name="model">sale.subscription</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_subscriptions']" position="attributes">
+                <attribute name="string">Students</attribute>
+                <!-- You can modify other attributes here as well -->
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_subscription.menu_sale_subscription_report_pivot" model="ir.ui.menu">
+        <field name="name">Fee Plans</field>
+    </record>
+    
+    <record id="sale_subscription.menu_sale_subscription_stage" model="ir.ui.menu">
+        <field name="name">Plan Stages</field>
+    </record>
+
+    <!-- <data>
+        <function model="ir.ui.menu" name="change_susbscription_menu_name"/>
+    </data> -->
+
+    <data>
+        <function model="ir.ui.menu" name="hide_customer_statements_menu"/>
+
+        <function model="ir.ui.menu" name="hide_product_product_menu_sellable"/>
+
+        <function model="ir.ui.menu" name="hide_menu_account_customer"/>
+    </data>
+
+    <menuitem id="account.menu_finance_payables" name="Vendors" sequence="3" active="False"></menuitem>
+
+    <record id="subscription_lines_change" model="ir.ui.view">
+		<field name="name">sale.subscription.form.view</field>
+        <field name="model">sale.subscription</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_form" />
+        <field name="arch" type="xml">
+
+            <xpath expr="//notebook/page[@id='lines']" position="attributes">
+                <attribute name="string">Fee Charges</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="account_move_inherited" model="ir.ui.view">
+		<field name="name">account.move.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
+        <field name="arch" type="xml">
+
+            <xpath expr="//label[@for='invoice_date']" position="replace">
+                <label for="invoice_date" string="Bill Date" style="font-weight:bold;" attrs="{'invisible': [('move_type', 'not in', ('in_invoice', 'in_refund', 'in_receipt','out_invoice', 'out_refund', 'out_receipt'))]}"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    
+</odoo>
+

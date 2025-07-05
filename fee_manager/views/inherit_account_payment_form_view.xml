@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="inherit_view_account_payment_form" model="ir.ui.view">
+        <field name="name">inherit_view_account_payment_form</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_type']" position="after">
+                <field name="student_bill" widget="student_bill_char"
+                   placeholder="Enter bill number and press Tab"/>
+                <field name="invoice_id"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="student_code"/>
+                <field name="registration_number"/>
+                <field name="amount_billed"/>
+            </xpath>
+            <xpath expr="//field[@name='date']" position="after">
+                <field name="due_date"/>
+                <field name="month"/>
+                <field name="payment_status"  readonly="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='is_internal_transfer']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='payment_type']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//label[@for='amount']" position="attributes">
+                <attribute name="string">Amount Received</attribute>
+            </xpath>
+            <xpath expr="." position="attributes">
+                <attribute name="js_class">payment_form_enter_handler</attribute>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
