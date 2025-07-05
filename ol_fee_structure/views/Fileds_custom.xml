@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- <record model="ir.ui.view" id="view_subscription_form_inherit">
+     <field name="name">subscription.form.inherit</field>
+            <field name="model">sale.subscription</field>
+            <field name="inherit_id" ref="sale_subscription.sale_subscription_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_count']" position="after">
+                    <field name="invoice_count_cus" widget="statinfo"/>
+                </xpath>
+            </field>
+        </record> -->
+
+    <!-- <record id="product_months_inherit" model="ir.ui.view">
+                <field name="name">product.month.inherit</field>
+                <field name="model">product.product</field>
+                <field name="inherit_id" ref="product.product_normal_form_view"/>
+                
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='detailed_type']" position="after">
+
+                    <group>
+                        <field name="month_product" widget="many2many_tags" />
+                    </group>
+                    
+                        
+                    </xpath>
+                </field>
+            </record> -->
+
+        <record id="view_subscription_form_inherit_bt" model="ir.ui.view">
+            <field name="name">custom.subscription.form.bt</field>
+            <field name="model">sale.subscription</field>
+            <field name="inherit_id" ref="sale_subscription.sale_subscription_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header/button[@name='%(sale_subscription.wizard_action)d']" position="before">
+                    <button name="generate_invoice_cus" string="Create Invoice" type="object" class="oe_highlight"/>
+                    <button name="assign_months_to_all_fee_plans" type="object" string="Assign Months"/>
+                </xpath>
+            </field>
+        </record>
+<!-- 
+        <record id="button_inherit_subscription" model="ir.ui.view">
+        <field name="name">button.inherit.subscription</field>
+        <field name="model">sale.subscription</field>
+        <field name="arch" type="xml">
+            <form>
+               
+
+                <header>
+                    <button name="generate_invoice_cus" string="Create Invoice" type="object" class="oe_highlight" />
+                </header>
+            </form>
+        </field>
+    </record> -->
+
+
+
+
+
+</odoo>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- <record id="subs_template_lines_addition" model="ir.ui.view" >
+        <field name="name">subs_template_lines_addition.inherit</field>
+        <field name="model">sale.subscription.template</field>
+        <field name="inherit_id" ref="sale.subscription.form.view"/>
+        <field name="arch" type="xml">
+          <xpath expr="//page[@name='invoicing']" position="after">
+            <page string="fee lines" name="fee_lines">
+                
+            <group>
+                        
+                <field name="subs_lines">
+                    <tree>
+                        <field name="product_id"/>
+                        <field name="name"/>
+                        <field name="price_unit"/>
+                        <field name="product_uom_qty"/>
+                    </tree>
+                </field>
+            </group>
+                    
+               
+            </page>
+        </xpath>
+        </field>
+        
+    </record> -->
+
+    <record id="subs_template_lines_addition" model="ir.ui.view">
+        <field name="name">subs_template_lines_addition.inherit</field>
+        <field name="model">sale.subscription.template</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_template_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//sheet" position="inside">
+                <button name="update_fee_plans" type="object" string="Update Fee Plans" class="btn-primary"
+                        icon="fa-refresh"/>
+            </xpath>
+
+            <xpath expr="//page[@name='invoicing']" position="after">
+                <page name="report fields" string="Fee Components">
+                    <field name="subs_lines">
+                        <tree editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="product_id"/>
+                            <field name="name"/>
+                            <field name="line_months" widget="many2many_tags"/>
+                            <field name="price_unit"/>
+                            <field name="product_uom_qty"/>
+
+                        </tree>
+                        <!-- <field name="view_mode">tree</field> -->
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_subscription_line_form_view_inherit" model="ir.ui.view">
+        <field name="name">sale.subscription.line.form.view.inherit</field>
+        <field name="model">sale.subscription</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="line_months_subscription_line" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
