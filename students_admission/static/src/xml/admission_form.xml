@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="students_admission.AdmissionForm">
+        <div>
+            <form id="admission_form" class="oe_website_sale">
+                <div class="form-group">
+                    <label for="branch_id">Branch</label>
+                    <select name="branch_id" id="branch_id" class="form-control" t-on-change="onBranchChange" t-model="state.branch_id" required>
+                        <option value="">Select a branch</option>
+                        <t t-foreach="props.branches" t-as="branch">
+                            <option t-att-value="branch.id">
+                                <t t-esc="branch.name"/>
+                            </option>
+                        </t>
+                    </select>
+                </div>
+                <div id="student_search" t-if="state.showStudentSearch">
+                    <div class="form-group">
+                        <label for="registration_number">Registration Number</label>
+                        <input type="text" id="registration_number" class="form-control" t-model="state.registration_number" required/>
+                        <button type="button" class="btn btn-primary" t-on-click="searchStudent">Search Student</button>
+                    </div>
+                </div>
+                <div id="student_info" t-if="state.showStudentInfo">
+                    <div class="form-group">
+                        <label for="student_name">Student Name</label>
+                        <input type="text" name="student_name" id="student_name" class="form-control" t-att-value="state.student.student_name" required/>
+                    </div>
+                    <!-- Add other form fields as necessary -->
+                    <div class="form-group">
+                        <label for="student_class">Student Class</label>
+                        <input type="text" name="student_class" id="student_class" class="form-control" t-att-value="state.student.student_class"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="parent_name">Parent Name</label>
+                        <input type="text" name="parent_name" id="parent_name" class="form-control" t-att-value="state.student.parent_name"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="relation_type">Relation Type</label>
+                        <input type="text" name="relation_type" id="relation_type" class="form-control" t-att-value="state.student.relation_type"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="parent_email">Parent Email</label>
+                        <input type="email" name="parent_email" id="parent_email" class="form-control" t-att-value="state.student.parent_email"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="parent_cnic">Parent CNIC</label>
+                        <input type="text" name="parent_cnic" id="parent_cnic" class="form-control" t-att-value="state.student.parent_cnic"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="parent_phone">Parent Phone</label>
+                        <input type="text" name="parent_phone" id="parent_phone" class="form-control" t-att-value="state.student.parent_phone"/>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </t>
+</templates>

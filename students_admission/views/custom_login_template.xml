@@ -1,0 +1,11 @@
+<odoo>
+    <template id="custom_login_form" inherit_id="web.login">
+        <xpath expr="//div[@id='wrapwrap']" position="inside">
+            <t t-if="request.params.get('message')">
+                <div class="alert alert-warning">
+                    <t t-esc="request.params.get('message')"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>

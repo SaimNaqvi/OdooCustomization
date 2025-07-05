@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_student_relations" model="ir.actions.act_window">
+        <field name="name">Students Relations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">relationship.info</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <!--        <field name="search_view_id" ref="base.view_res_partner_filter"/>-->
+        <field name="context"></field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Student Realtion in your address book
+            </p>
+        </field>
+    </record>
+    <record id="view_school_student_relationship_tree" model="ir.ui.view">
+        <field name="name">relationship.info.tree</field>
+        <field name="model">relationship.info</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="student_id" string="Student"/>
+                <field name="parent_id" string="Parent"/>
+                <field name="parent_name" string="Parent"/>
+                <field name="relationship_type" string="Relationship Type"/>
+                <field name="custody" string="Custody"/>
+                <field name="correspondence" string="Correspondence"/>
+                <field name="grade_related" string="Grade Related"/>
+                <field name="family_portal" string="Family Portal"/>
+                <field name="grandparent" string="Grand Parent"/>
+                <field name="reportCard" string="Report card"/>
+                <field name="parentsWeb" string="Parent Web"/>
+                <!-- Add other fields here -->
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="view_school_student_relationship_form" model="ir.ui.view">
+        <field name="name">relationship.info.form</field>
+        <field name="model">relationship.info</field>
+        <field name="arch" type="xml">
+            <form string="Student">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="student_id" string="Student"/>
+                            <field name="parent_id" string="Parent"/>
+                            <field name="relationship_type" string="Relationship Type"/>
+                            <field name="custody" string="Custody"/>
+                        </group>
+                        <group>
+                            <field name="correspondence" string="Correspondence"/>
+                            <field name="reportCard" string="Report card"/>
+                            <field name="parentsWeb" string="Parent Web"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+            <!-- Add other fields here -->
+        </field>
+    </record>
+<!--        <menuitem id="menu_relations"-->
+<!--                      name="Relations"-->
+<!--                      parent="contacts.menu_contacts"-->
+<!--                      action="action_student_relations"-->
+<!--                      sequence="1"/>-->
+
+    <record id="action_student_relation_view_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_school_student_relationship_tree"/>
+        <field name="act_window_id" ref="action_student_relations"/>
+    </record>
+</odoo>

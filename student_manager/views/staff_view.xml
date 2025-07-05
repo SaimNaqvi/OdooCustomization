@@ -1,0 +1,54 @@
+<odoo>
+    <data>
+        <!-- Inherit the student action window -->
+        <record id="action_staff" model="ir.actions.act_window">
+            <field name="name">Staff</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form,kanban,activity</field>
+
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="context">{'default_is_staff': True, 'is_staff_view': True}</field>
+            <field name="domain">[('is_staff', '=', True)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Odoo helps you track all activities.
+                </p>
+            </field>
+        </record>
+
+        <!-- View Customization for res.partner form -->
+        <record id="view_res_partner_staff" model="ir.ui.view">
+            <field name="name">res.partner.staff</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+                <!-- Create Staff Info page -->
+                <xpath expr="//page[@name='internal_notes']" position="before">
+                    <page string="Staff Info" name="staff_info">
+                        <group>
+                            <!-- Display Staff Title -->
+                            <field name="staff_title" string="Staff Title"/>
+                            <!-- Display Department field below staff_title -->
+                            <field name="department" string="Department"/>
+                        </group>
+                    </page>
+                </xpath>
+
+                <!-- Apply condition to show the "Staff Info" page only when staff_title is "Staff" -->
+                <xpath expr="//page[@name='staff_info']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('is_staff', '!=', True)]}</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- Add Menu Item for Staff -->
+        <menuitem id="menu_staff"
+                  name="Staff"
+                  parent="contacts.menu_contacts"
+                  action="action_staff"
+                  sequence="1"/>
+    </data>
+</odoo>

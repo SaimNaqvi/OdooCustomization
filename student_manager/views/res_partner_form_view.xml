@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="inherit_res_partner_view_form" model="ir.ui.view">
+        <field name="name">inherit.res.partner.view.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Link to external CSS file -->
+            <xpath expr="//form" position="inside">
+                <link rel="stylesheet" href="/student_manager/static/src/css/style.css"/>
+            </xpath>
+
+            <!-- Adding custom fields after 'company_type' -->
+            <xpath expr="//field[@name='company_type']" position="after">
+                <group>
+                    <field name="facts_id" readonly="True" widget="integer" options="{'format': 0}" string="Facts ID" invisible="1"/>
+                    <field name="facts_udid" string="Facts UDID" invisible="1"/>
+                    <field name="reg_number" string="Registration Number" attrs="{'invisible': [('is_company', '=', True), ('is_parent', '=', True)]}"/>
+                    <field name="student_code" string="Student Code" attrs="{'invisible': [('is_company', '=', True), ('is_parent', '=', True)]}"/>
+                    <field name="first_name" attrs="{'invisible': [('is_company', '=', True)]}"/>
+                    <field name="last_name" attrs="{'invisible': [('is_company', '=', True)]}"/>
+                </group>
+            </xpath>
+
+            <!-- Hiding the 'parent_id' field -->
+            <xpath expr="//field[@name='parent_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Filtering titles -->
+            <field name="title" position="attributes">
+                <attribute name="domain">[('name', 'in', ['Student', 'Parent', 'Emergency Contact'])]</attribute>
+            </field>
+
+            <!-- Adding custom buttons after the 'title' field -->
+            <xpath expr="//field[@name='title']" position="after">
+                <field name="religion"/>
+                <button name="update_student_record" string="Sync" type="object" class="oe_highlight" data-hotkey="s" title="Sync Record" attrs="{'invisible': ['|', ('is_parent', '=', True), ('is_company', '=', True)]}"/>
+                <button name="update_parent_record" string="Sync" type="object" class="oe_highlight" data-hotkey="s" title="Sync Record" attrs="{'invisible': ['|', ('is_student', '=', True), ('is_company', '=', True)]}"/>
+            </xpath>
+
+            <!-- Replacing 'h1' with company name and full name -->
+            <xpath expr="//h1" position="replace" mode="inner">
+                <field id="company" class="text-break" name="name" default_focus="1" placeholder="e.g. Lumber Inc" attrs="{'required' : [('type', '=', 'contact'), ('is_company', '=', True)], 'invisible': [('is_company', '=', False)]}"/>
+                <field name="full_name" style="margin-left: 5px;" readonly="1"/>
+                <br/>
+            </xpath>
+
+            <!-- Custom fields after VAT -->
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="gender" attrs="{'invisible': [('is_company', '=', True)]}"/>
+                <field name="dob" attrs="{'invisible': [('is_company', '=', True)]}"/>
+                <field name="cnic" attrs="{'invisible': [('is_company', '=', True)]}"/>
+                <field name="parent_name" attrs="{'invisible': ['|', ('is_company', '=', True), ('is_parent', '=', True)]}"/>
+                <field name="full_name" attrs="{'invisible': [('is_company', '=', True)]}"/>
+            </xpath>
+
+            <!-- Family info fields -->
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="facts_id" string="Family ID" widget="integer" options="{'format': 0}" attrs="{'invisible': [('is_company', '=', False)]}"/>
+                <field name="name" string="Family Name" attrs="{'invisible': [('is_company', '=', False)]}"/>
+            </xpath>
+
+            <!-- Hiding unnecessary fields -->
+            <xpath expr="//field[@name='company_name']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('o_address_format')]" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_company', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='create_company']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='function']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='website']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='category_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='vat']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='company_type']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='email']" position="attributes">
+                <attribute name="attrs">{'invisible': [('company_type', '=', 'company')]}</attribute>
+            </xpath>
+
+            <!-- Hiding contact pages -->
+            <xpath expr="//page[@name='contact_addresses']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='sales_purchases']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Admission info page -->
+            <xpath expr="//page[@name='contact_addresses']" position="before">
+                <field name="is_parent" invisible="1"/>
+                <field name="is_student" invisible="1"/>
+                <page string="Admission Info" name="admission_info" attrs="{'invisible': [('is_parent', '=', True), ('is_company', '=', True)]}">
+                    <group>
+                        <group>
+                            <field name="current_grade_selection"/>
+                            <field name="current_enroll_status" string="Current Status"/>
+                            <field name="new_homeroom" string="Section"/>
+                            <field name="current_school"/>
+                            <field name="previous_school"/>
+                            <field name="next_grade_selection"/>
+                            <field name="next_enroll_status" string="Next Status"/>
+                        </group>
+                        <group>
+                            <field name="admission_date"/>
+                            <field name="test_date"/>
+                            <field name="test_status"/>
+                        </group>
+                    </group>
+                </page>
+
+                <!-- Academic info page -->
+                <page string="Academic Info" name="academic_info" autofocus="autofocus" attrs="{'invisible': [('is_parent', '=', True), ('is_company', '=', True)]}">
+                    <group>
+                        <group>
+                            <field name="current_grade" invisible="1"/>
+                            <field name="current_grade_selection"/>
+                            <field name="current_enroll_status" string="Current Status"/>
+                            <field name="homeroom" string="Section" invisible="1"/>
+                            <field name="new_homeroom" string="Section"/>
+                            <field name="current_school"/>
+                            <field name="next_school"/>
+                            <field name="left_date"/>
+                        </group>
+                        <group>
+                            <field name="next_grade" invisible="1"/>
+                            <field name="next_grade_selection"/>
+                            <field name="next_enroll_status" string="Next Status"/>
+                            <field name="old_RegistrationNo"/>
+                            <field name="board_roll_no"/>
+                            <field name="donor_id"/>
+                            <field name="admission_date"/>
+                            <field name="test_date"/>
+                            <field name="test_status"/>
+                        </group>
+                    </group>
+                </page>
+
+                <!-- Relationship info page -->
+                <page string="Relationship" autofocus="autofocus" name="relationship" attrs="{'invisible': [('is_company', '=', True)]}">
+                    <group>
+                        <field name="student_relationship_ids" context="{'is_parent': True}">
+                            <tree editable="bottom">
+                                <field name="parent_id" string="Contact"/>
+                                <field name="relationship_type" string="Type"/>
+                                <field name="custody" string="Custody"/>
+                                <field name="correspondence" string="Correspondence"/>
+                                <field name="is_emergency_contact" string="Emergency Contact"/>
+                                <field name="grade_related" optional="hide"/>
+                                <field name="grandparent" optional="hide"/>
+                                <field name="reportCard" string="ReportCard" optional="hide"/>
+                                <field name="parentsWeb" string="ParentWeb" optional="hide"/>
+                            </tree>
+                            <form>
+                                <field name="parent_id" string="Contact"/>
+                                <field name="relationship_type" string="Type"/>
+                                <field name="custody" string="Custody"/>
+                                <field name="correspondence" string="Correspondence"/>
+                                <field name="grade_related" optional="hide"/>
+                                <field name="grandparent" optional="hide"/>
+                                <field name="reportCard" string="ReportCard"/>
+                                <field name="parentsWeb" string="ParentWeb"/>
+                            </form>
+                        </field>
+                    </group>
+                </page>
+                <page string="Enrollment History" name="enrollment_history"
+                      attrs="{'invisible': ['|', ('is_parent', '=', True), ('is_company', '=', True)]}">
+                    <group>
+                        <field name="enrollment_histories_ids">
+                            <tree editable="bottom">
+                                <field name="date" string="Date"/>
+                                <field name="status" string="Status"/>
+                                <field name="grade_level" string="Grade Level"/>
+                                <field name="school_name" string="School Name"/>
+                                <field name="notes" string="Notes"/>
+                            </tree>
+                            <form>
+                                <field name="date" string="Date"/>
+                                <field name="status" string="Status"/>
+                                <field name="grade_level" string="Grade Level"/>
+                                <field name="school_name" string="School Name"/>
+                                <field name="notes" string="Notes"/>
+                            </form>
+                        </field>
+                    </group>
+                </page>
+                <page string="Student Concessions" name="student_concession"
+                      attrs="{'invisible': ['|', ('is_parent', '=', True), ('is_company', '=', True)]}">
+                    <group>
+                        <field name="student_concessions">
+                            <tree editable="bottom">
+                                <field name="concession_type"/>
+                                <field name="concession_reason"/>
+                                <field name="product_id"/>
+                                <field name="discount_type"/>
+                                <field name="discount_value"/>
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+                <field name="is_student" invisible="1"/>
+                <page string="Students" autofocus="autofocus" name="childrens"
+                      attrs="{'invisible': ['|', ('is_student', '=', True), ('is_company', '=', True)]}">
+                    <group>
+                        <field name="student_ids">
+                            <kanban>
+                                <field name="student_id" widget="many2one_avatar"/>
+                                <field name="student_facts_id" widget="integer" options="{'format': 0}"/>
+
+                                <templates>
+                                    <t t-name="kanban-box">
+                                        <div class="o_kanban_card oe_kanban_global_click p-4 o_edoob_individual_image d-flex">
+                                            <div class="oe_kanban_content pl-3 pr-3">
+                                                <strong>
+                                                    <!-- Access related fields using 'widget' attribute -->
+                                                    <field name="student_id"/>
+                                                    <br/>
+                                                    <span>
+                                                        <strong>ID:</strong>
+                                                        <field name="student_code"/>
+                                                    </span>
+                                                </strong>
+                                            </div>
+                                            <button style="pointer-events:auto; top:1rem; right:1rem; position:absolute;"
+                                                    class="btn btn-primary"
+                                                    title="open" type="object" name="open_student">
+                                                <i class="fa fa-share-square-o"/>
+                                            </button>
+                                        </div>
+                                    </t>
+                                </templates>
+                            </kanban>
+                        </field>
+                    </group>
+                </page>
+
+                <page string="Parents" name="parents"
+                      attrs="{'invisible': ['|', ('is_parent', '=', True), ('is_student', '=', True)]}">
+                    <group>
+                        <field name="family_parent_ids">
+                            <kanban>
+                                <field name="related_parent_id"/>
+                                <templates>
+                                    <t t-name="kanban-box">
+                                        <div class="o_kanban_card oe_kanban_global_click p-4 o_edoob_individual_image d-flex">
+                                            <div class="oe_kanban_content pl-3 pr-3">
+                                                <strong>
+                                                    <field name="related_parent_id"/>
+                                                    <span>
+                                                        <field name="first_name"/>
+                                                        <field name="last_name"/>
+                                                    </span>
+                                                    <br/>
+                                                    <span>
+                                                        <strong>ID:</strong>
+                                                        <field name="facts_id" widget="integer"
+                                                               options="{'format': 0}"/>
+                                                    </span>
+                                                </strong>
+                                            </div>
+                                            <button style="pointer-events:auto; top:0rem; right:0rem; position:absolute;"
+                                                    class="btn btn-primary"
+                                                    title="open" type="object" name="open_student">
+                                                <i class="fa fa-share-square-o"/>
+                                            </button>
+                                        </div>
+                                    </t>
+                                </templates>
+                            </kanban>
+                        </field>
+                    </group>
+                </page>
+                <page string="Students" autofocus="autofocus" name="students"
+                      attrs="{'invisible': ['|', ('is_parent', '=', True), ('is_student', '=', True)]}">
+                    <group>
+                        <field name="family_student_ids">
+                            <kanban>
+                                <field name="related_student_id"/>
+                                <templates>
+                                    <t t-name="kanban-box">
+                                        <div class="o_kanban_card oe_kanban_global_click p-4 o_edoob_individual_image d-flex">
+                                            <div class="oe_kanban_content pl-3 pr-3">
+                                                <strong>
+                                                    <field name="related_student_id"/>
+                                                    <span>
+                                                        <field name="first_name"/>
+                                                        <field name="last_name"/>
+                                                    </span>
+                                                    <br/>
+                                                    <span>
+                                                        <strong>ID:</strong>
+                                                        <field name="student_code"/>
+                                                    </span>
+                                                    <div class="udid_modify"
+                                                         style="position: relative; left: 240px; bottom: 19px;">
+                                                        <span>
+
+                                                        </span>
+                                                    </div>
+                                                </strong>
+                                            </div>
+                                            <button style="pointer-events:auto; top:1rem; right:1rem; position:absolute;"
+                                                    class="btn btn-primary"
+                                                    title="open" type="object" name="open_student">
+                                                <i class="fa fa-share-square-o"/>
+                                            </button>
+                                        </div>
+                                    </t>
+                                </templates>
+                            </kanban>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="student_manager_page_reload"  name="Student Manager Form View">
+        <!-- Add your existing view content here -->
+
+        <!-- Add JavaScript code for page reload -->
+        <script type="text/javascript">
+            $(document).ready(function(){
+                setTimeout(function(){
+                location.reload();
+                }, 2000);
+            });
+        </script>
+    </template>
+</odoo>

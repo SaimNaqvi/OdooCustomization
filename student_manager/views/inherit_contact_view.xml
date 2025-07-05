@@ -1,0 +1,466 @@
+<odoo>
+    <data>
+        <!-- Inherit and rename the existing menu item to 'Student Manager' -->
+        <record id="contacts.menu_contacts" model="ir.ui.menu">
+            <field name="name">Student Manager</field>
+        </record>
+        <!-- Inherit contacts action window -->
+        <record id="contacts.action_contacts" model="ir.actions.act_window">
+            <field name="name">Contacts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form,kanban,activity</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="context">{'default_is_parent': True, 'is_parent_view': True, 'act_window_id':
+                'contacts.action_contacts'}
+            </field>
+            <field name="domain">[('is_parent', '=', True)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a Contact in your address book
+                </p>
+                <p>
+                    Odoo helps you track all activities related to your contacts.
+                </p>
+            </field>
+        </record>
+
+
+        <record id="view_res_partner_student_filter" model="ir.ui.view">
+            <field name="name">res.partner.student.filter</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <field name="full_name" string="Full Name"/>
+                    <!-- Add filters conditionally based on the context -->
+                    <filter string="Enrolled" name="Enrolled" domain="[('current_enroll_status', '=', 'Enrolled')]"/>
+                    <filter string="Graduate" name="Graduate" domain="[('current_enroll_status', '=', 'Graduate')]"/>
+                    <filter string="Admission" name="admission"
+                            domain="[('current_enroll_status', '=', 'Admissions')]"/>
+                    <filter string="Active" name="active" domain="[('current_enroll_status', '=', 'Active')]"/>
+                    <filter string="In Active" name="in_active" domain="[('current_enroll_status', '=', 'In Active')]"/>
+                    <filter string="Withdrawn" name="withdrawn" domain="[('current_enroll_status', '=', 'Withdrawn')]"/>
+                    <filter string="Grade and Section" name="grade_and_section"
+                            domain="[('current_enroll_status', '=', 'Withdrawn')]"/>
+                    <!-- Add group by options conditionally based on the context -->
+                    <group expand="0" string="Group By">
+                        <filter string="Grade and Section" name="group_by_grade_section_display"
+                                context="{'group_by':'grade_section_display'}"/>
+                        <filter string="Group By Status" name="group_by_status"
+                                context="{'group_by': 'current_enroll_status'}"/>
+                        <filter string="Group By Grade" name="group_by_grade"
+                                context="{'group_by': 'current_grade_selection'}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Stundets action window -->
+        <record id="action_students" model="ir.actions.act_window">
+            <field name="name">Students</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,kanban,form,activity</field>
+            <field name="search_view_id" ref="student_manager.view_res_partner_student_filter"/>
+            <field name="context">{'default_is_student': True, 'is_student_view': True,
+                'search_default_group_by_grade_section_display': 1, 'search_default_group_by_status': 1}
+            </field>
+            <field name="domain">[('is_student', '=', True)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a Student in your address book
+                </p>
+                <p>
+                    Odoo helps you track all activities related to your students.
+                </p>
+            </field>
+        </record>
+
+        <!-- Inherit res.partner searchfilter -->
+        <record id="inherit_res_partner_search" model="ir.ui.view">
+            <field name="name">inherit.res.partner.search</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search[1]/field[@name='name']" position="after">
+                    <field name="facts_id" string="Facts ID"/>
+                    <field name="x_studio_parent_id"/>
+                    <field name="current_grade"/>
+                    <field name="grade_section_display"/>
+                </xpath>
+                <xpath expr="//field[@name='parent_id']" position="attributes">
+                    <attribute name="string">Parent name</attribute>
+                </xpath>
+                <xpath expr="//filter[@name='type_company']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//filter[@name='type_person']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//filter[@name='group_company']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//filter[@name='group_country']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//filter[@name='salesperson']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+        <!-- Add a new menu item 'Families' and 'Student' under 'Student Manager' -->
+        <menuitem id="menu_students"
+                  name="Students"
+                  parent="contacts.menu_contacts"
+                  action="action_students"
+                  sequence="1"/>
+        <menuitem id="menu_contacts_company"
+                  name="Families"
+                  parent="contacts.menu_contacts"
+                  action="student_manager.action_company_contacts"
+                  sequence="1"/>
+
+
+        <!-- This is get stundets from api, server action window -->
+        <!--
+        <record id="action_school_student_records" model="ir.actions.server">
+            <field name="name">Get Students Details</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.get_students()
+            </field>
+        </record>
+        -->
+        <!-- Main Sync Menu -->
+
+        <menuitem id="menu_main_sync"
+                  name="Sync"
+                  sequence="10"
+                  parent="contacts.menu_contacts"/>
+        <!-- This is sync homeroom from api, server action window -->
+        <record id="action_school_student_homeroom" model="ir.actions.server">
+            <field name="name">Sync Homeroom</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.update_homeroom_for_existing_records()
+            </field>
+        </record>
+        <menuitem id="action_get_student_homeroom"
+                  name="Sync Homeroom"
+                  sequence="1"
+                  parent="student_manager.menu_main_sync"
+                  action="action_school_student_homeroom"/>
+
+        <!--  Sync Families      -->
+        <!--
+        <record id="action_update_families" model="ir.actions.server">
+            <field name="name">Sync Families</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.button_update_relationships()
+            </field>
+        </record>
+        <menuitem id="menu_update_families"
+                  name="Sync Families"
+                  sequence="1"
+                  parent="student_manager.menu_main_sync"
+                  action="action_update_families"/>
+        -->
+        <!-- action sync dob and gender -->
+        <!--
+        <record id="action_update_dob_gender" model="ir.actions.server">
+            <field name="name">Sync DOB and Gender</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.update_dob_gender()
+            </field>
+        </record>
+        <menuitem id="menu_update_dob_gender"
+                  name="Sync DOB and Gender"
+                  sequence="1"
+                  parent="student_manager.menu_main_sync"
+                  action="action_update_dob_gender"/>
+        -->
+
+        <!-- action update Cnic -->
+
+        <record id="action_update_names" model="ir.actions.server">
+            <field name="name">Sync Names</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.clean_up_names()
+            </field>
+        </record>
+        <menuitem id="menu_update_names"
+                  name="CleanUp names"
+                  sequence="1"
+                  parent="student_manager.menu_main_sync"
+                  action="action_update_names"/>
+
+        <record id="action_update_full_name" model="ir.actions.server">
+            <field name="name">Sync Full Names</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model._compute_full_name()
+            </field>
+        </record>
+        <menuitem id="menu_update_full_name"
+                  name="Assign Full Names"
+                  sequence="1"
+                  parent="student_manager.menu_main_sync"
+                  action="action_update_full_name"/>
+
+
+        <record id="action_update_data" model="ir.actions.server">
+            <field name="name">Sync Data</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.sync_data()
+            </field>
+        </record>
+        <menuitem id="menu_update_data"
+                  name="Sync Data"
+                  sequence="1"
+                  parent="student_manager.menu_main_sync"
+                  action="action_update_data"/>
+        <record id="action_sync_update_data" model="ir.actions.server">
+            <field name="name">Update Data</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.update_all_data()
+            </field>
+        </record>
+        <record id="action_sync_update_branches" model="ir.actions.server">
+            <field name="name">Update Branches</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.update_branches()
+            </field>
+        </record>
+        <menuitem id="menu_sync_update_branch"
+                  name="Update Branch"
+                  sequence="1"
+                  parent="student_manager.menu_main_sync"
+                  action="action_sync_update_branches"/>
+        <menuitem id="menu_sync_update_data"
+                  name="Update Data"
+                  sequence="1"
+                  parent="student_manager.menu_main_sync"
+                  action="action_sync_update_data"/>
+
+        <!-- this is get families details from api, action window -->
+        <!--
+        <record id="action_parent_student_populate_realtion" model="ir.actions.server">
+            <field name="name">Populate Relations</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.populate_student_ids_in_relationships()
+            </field>
+        </record>
+
+        <menuitem id="menu_get_parent_student_relation"
+                  name="Populate Relations"
+                  sequence="2"
+                  parent="contacts.menu_contacts"
+                  action="action_parent_student_populate_realtion"/>
+        -->
+        <!--  Remove Duplicates Records    -->
+        <!--
+        <record id="remove_duplicates" model="ir.actions.server">
+            <field name="name">Remove Duplicates</field>
+            <field name="model_id" ref="model_relationship_info"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.remove_duplicates()
+            </field>
+        </record>
+
+        <menuitem id="menu_remove_duplicates"
+                  name="Remove Duplicates"
+                  sequence="2"
+                  parent="contacts.menu_contacts"
+                  action="remove_duplicates"/>
+        -->
+
+        <!--  Get Relations action window    -->
+        <!--
+        <record id="action_relationship_info" model="ir.actions.server">
+            <field name="name">Get Relations</field>
+            <field name="model_id" ref="model_relationship_info"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.get_relations()
+            </field>
+        </record>
+        <menuitem id="action_action_relationship_info"
+                  name="get Relations"
+                  sequence="2"
+                  parent="contacts.menu_contacts"
+                  action="action_relationship_info"/>
+        -->
+
+        <!--   Action get enrollment history     -->
+        <!--
+        <record id="action_get_enrollment_histories" model="ir.actions.server">
+            <field name="name">Get Enrollment Histories</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.get_enrollment_history()
+            </field>
+        </record>
+        <menuitem id="menu_get_enrollment_histories"
+                  name="Get Enrollment Histories"
+                  sequence="2"
+                  parent="contacts.menu_contacts"
+                  action="action_get_enrollment_histories"/>
+        -->
+        <!-- Action update Enrollment histories -->
+        <!--
+        <record id="action_update_enrollment_histories" model="ir.actions.server">
+            <field name="name">Update Enrollment Histories</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.update_enrollment_histories()
+            </field>
+        </record>
+        <menuitem id="menu_update_enrollment_histories"
+                  name="Update Enrollment Histories"
+                  sequence="2"
+                  parent="contacts.menu_contacts"
+                  action="action_update_enrollment_histories"/>
+        -->
+        <!--  Get students action    -->
+        <!--
+        <record id="action_get_students" model="ir.actions.server">
+            <field name="name">Get Students</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.get_students()
+            </field>
+        </record>
+        <menuitem id="menu_get_students"
+                  name="Get Students"
+                  sequence="2"
+                  parent="contacts.menu_contacts"
+                  action="action_get_students"/>
+        -->
+        <!--  Get parents action    -->
+        <!--
+        <record id="action_get_individuals" model="ir.actions.server">
+            <field name="name">Get Parents</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.get_individuals()
+            </field>
+        </record>
+        <menuitem id="menu_get_individuals"
+                  name="Get Parents"
+                  sequence="2"
+                  parent="contacts.menu_contacts"
+                  action="action_get_individuals"/>
+        -->
+
+        <!-- Get families -->
+        <!--
+        <record id="action_get_families_details" model="ir.actions.server">
+            <field name="name">Get Families</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.get_families_details()
+            </field>
+        </record>
+        <menuitem id="menu_get_families_details"
+                  name="Get Families"
+                  sequence="2"
+                  parent="contacts.menu_contacts"
+                  action="action_get_families_details"/>
+        -->
+
+        <!--  Get Person Family Server Action    -->
+        <!--
+        <record id="action_get_person_family_info" model="ir.actions.server">
+            <field name="name">Get Person Family</field>
+            <field name="model_id" ref="model_person_family"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.get_person_family()
+            </field>
+        </record>
+        <menuitem id="menu_action_get_person_family"
+                  name="Get Person Family"
+                  sequence="2"
+                  parent="contacts.menu_contacts"
+                  action="action_get_person_family_info"/>
+        -->
+
+        <record model="ir.actions.server" id="action_assign_parent_name">
+            <field name="name">Inserting Parent Name</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="binding_model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                action = records._compute_parent_name()
+            </field>
+        </record>
+        <record model="ir.actions.server" id="action_compute_display_name">
+            <field name="name">Compute Display Name</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="binding_model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                action = records._compute_display_name()
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="action_sync_records">
+            <field name="name">Update Records</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="binding_model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                # Extract the list of external student IDs from the selected records
+                student_ids = records.mapped('facts_id')
+
+                # Call the method to update multiple records
+                records.update_student_record(student_ids)
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="action_sync_parent_records">
+            <field name="name">Sync Records</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="binding_model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                # Extract the list of external student IDs from the selected records
+                parent_ids = records.mapped('facts_id')
+
+                # Call the method to update multiple records
+                records.update_parent_record(parent_ids)
+            </field>
+        </record>
+
+    </data>
+</odoo>

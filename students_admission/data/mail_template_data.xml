@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="email_template_new_student_registration" model="mail.template">
+        <field name="name">New Student Registration</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="subject">New Student Registration: {{object.name}}</field>
+        <field name="email_from">{{ (user.email_formatted or user.email) if user else '' }}</field>
+        <field name="email_to">syedsaim.1658@gmail.com</field>
+        <field name="body_html" type="html">
+            <p>Dear Principal,</p>
+            <p>A new student has been registered in the system with the following details:</p>
+            <ul>
+                <li>
+                    <strong>Name:</strong>
+                    <t t-out="object.name or ''"/>
+                </li>
+                <li>
+                    <strong>Class:</strong>
+                    <t t-out="object.current_grade_selection"/>
+                </li>
+                <li>
+                    <strong>Parent Name:</strong>
+                    <t t-out="object.student_relationship_ids.parent_id.name"/>
+                </li>
+                <li>
+                    <strong>Parent Email:</strong>
+                    <t t-out="object.student_relationship_ids.parent_id.email"/>
+                </li>
+                <li>
+                    <strong>Parent Phone:</strong>
+                    <t t-out="object.student_relationship_ids.parent_id.phone"/>
+                </li>
+            </ul>
+            <p>Please acknowledge this new registration.</p>
+            <p>Thank you,</p>
+            <p>Presbyterian Education Board in Pakistan.</p>
+        </field>
+    </record>
+</odoo>

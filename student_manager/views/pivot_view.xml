@@ -1,0 +1,26 @@
+<odoo>
+    <record id="view_partner_pivot" model="ir.ui.view">
+        <field name="name">res.partner.pivot</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <pivot string="Student Enrollment Status by Branch">
+                <field name="branch_id" type="row"/>
+                <field name="current_enroll_status" type="col"/>
+                <field name="title"/>
+<!--                <field name="id" type="measure" string="Count" operator="count"/>-->
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_partner_pivot" model="ir.actions.act_window">
+        <field name="name">Enrollment Summary</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">pivot</field>
+        <field name="domain">[('is_student', '=', True)]</field>
+        <field name="view_id" ref="view_partner_pivot"/>
+        <field name="context">{'search_default_group_by_branch_id': 1}</field>
+    </record>
+
+    <menuitem id="menu_student_enrollment_summary" name="Enrollment Summary"
+              parent="contacts.menu_contacts" action="action_partner_pivot"/>
+</odoo>

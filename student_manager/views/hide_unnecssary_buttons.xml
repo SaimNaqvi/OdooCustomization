@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_partner_view_form_inherited" model="ir.ui.view">
+        <field name="name">res.partner.view.form.inherited</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_sale_order']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="res_partner_form_view_purchase_buttons_hide" model="ir.ui.view">
+        <field name="name">res.partner.view.purchase.buttons.hide</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="purchase.res_partner_view_purchase_buttons"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='%(purchase.act_res_partner_2_purchase_order)d']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="res_partner_vendor_bills_inherit" model="ir.ui.view">
+        <field name="name">res.partner.vendor.bills.inherit</field>
+        <field name="model">account.analytic.account</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_vendor_bill']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="hide_res_partner_vendor_bills_button" model="ir.ui.view">
+        <field name="name">hide.res.partner.vendor.bills.button</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="purchase.res_partner_view_purchase_account_buttons"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='%(purchase.act_res_partner_2_supplier_invoices)d']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="hide_on_time_rate_delivery_button" model="ir.ui.view">
+        <field name="name">hide.on.time.rate.delivery.button</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="purchase_stock.res_partner_view_purchase_buttons_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='%(purchase_stock.action_purchase_vendor_delay_report)d']"
+                   position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="rename_partner_ledger_button">
+        <field name="name">partner.view.buttons</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account_reports.partner_view_buttons"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='open_partner_ledger']" position="replace">
+                <button type="object"
+                        class="oe_stat_button"
+                        id="partner_ledger_button"
+                        icon="fa-pencil-square-o"
+                        name="open_partner_ledger"
+                        string="Ledger"
+                        context="{'default_partner_id': active_id}">
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="rename_partner_invoiced_button" model="ir.ui.view">
+        <field name="name">rename.partner.invoiced.button</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_partner_invoices']/div/span[@class='o_stat_text']"
+                   position="replace">
+                <span class="o_stat_text">Fee Bills</span>
+            </xpath>
+        </field>
+    </record>
+</odoo>

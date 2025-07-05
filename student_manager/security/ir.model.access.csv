@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_relationship_info,relationship.info,model_relationship_info,,1,1,1,1
+access_person_family,person.family,model_person_family,,1,1,1,1
+access_enrollment_histories,enrollment.histories,model_enrollment_histories,,1,1,1,1
+access_student_concession,student.concession,model_student_concession,,1,1,1,1
+access_user_define_data,user.define.data,model_user_define_data,,1,1,1,1
+access_enrollment_status,enrollment.status,model_enrollment_status,,1,1,1,1

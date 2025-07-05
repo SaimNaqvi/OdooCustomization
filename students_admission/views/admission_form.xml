@@ -1,0 +1,1131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="student_admission_form" name="Student Admission Form">
+        <t t-call="website.layout">
+            <xpath expr="//head" position="inside">
+                <!-- TailwindCSS CDN -->
+                <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+                <!-- Flatpickr for date picker -->
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
+                <script src="https://cdn.jsdelivr.net/npm/flatpickr"/>
+                <!-- jQuery -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"/>
+                <!-- Inputmask Plugin -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.9/jquery.inputmask.min.js"/>
+                <style>
+                    .tab-content {
+                    display: none;
+                    }
+                    .tab-content.active {
+                    display: block;
+                    }
+                    .tab-button.active {
+                    background-color: #3b82f6;
+                    color: white;
+                    }
+                    button:disabled {
+                    background-color: #d1d5db;
+                    color: black;
+                    cursor: not-allowed;
+                    }
+                </style>
+            </xpath>
+            <section class="s_title parallax s_parallax_is_fixed bg-black-50 pt24 pb24" data-vcss="001"
+                     data-snippet="s_title" data-scroll-background-ratio="1" data-name="Title">
+                <span class="s_parallax_bg oe_img_bg"
+                      style="background-image: url('/web/image/website.s_banner_default_image'); background-position: 50% 0;"/>
+                <div class="o_we_bg_filter bg-black-50"/>
+                <div class="container">
+                    <h1>Student Admission</h1>
+                </div>
+            </section>
+            <div class="w-full bg-gray-100 p-4 sm:p-8">
+                <div class="w-full sm:w-4/5 mx-auto flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-8">
+
+                    <div class="hidden sm:block sm:w-1/4 bg-white rounded-lg shadow-lg p-4">
+                        <!-- Start Tabs -->
+                        <div class="flex justify-center flex-col space-y-1">
+                            <button class="tab-button bg-gray-50 text-gray-600 sm:text-left font-medium py-2 px-4 border border-gray-300 sm:rounded-md focus:outline-none cursor-not-allowed"
+                                    data-target="stu-info">Student Information
+                            </button>
+                            <button class="tab-button bg-gray-50 text-gray-600 sm:text-left font-medium py-2 px-4 border border-gray-300 sm:rounded-md focus:outline-none cursor-not-allowed"
+                                    data-target="pre-sch-info">Previous School Information
+                            </button>
+                            <button class="tab-button bg-gray-50 text-gray-600 sm:text-left font-medium py-2 px-4 border border-gray-300 sm:rounded-md focus:outline-none cursor-not-allowed"
+                                    data-target="par-info">Parent Information
+                            </button>
+                            <button class="tab-button bg-gray-50 text-gray-600 sm:text-left font-medium py-2 px-4 border border-gray-300 sm:rounded-md focus:outline-none cursor-not-allowed"
+                                    data-target="sib-info">Sibling Information
+                            </button>
+                            <button class="tab-button bg-gray-50 text-gray-600 sm:text-left font-medium py-2 px-4 border border-gray-300 sm:rounded-md focus:outline-none cursor-not-allowed"
+                                    data-target="ec-info">Emergency Contact
+                            </button>
+                            <button class="tab-button bg-gray-50 text-gray-600 sm:text-left font-medium py-2 px-4 border border-gray-300 sm:rounded-md focus:outline-none cursor-not-allowed"
+                                    data-target="par-que">Parent Questionnaire
+                            </button>
+                            <button class="tab-button bg-gray-50 text-gray-600 sm:text-left font-medium py-2 px-4 border border-gray-300 sm:rounded-md focus:outline-none cursor-not-allowed"
+                                    data-target="doc-up">Document Upload
+                            </button>
+                            <button class="tab-button bg-gray-50 text-gray-600 sm:text-left font-medium py-2 px-4 border border-gray-300 sm:rounded-md focus:outline-none cursor-not-allowed"
+                                    data-target="par-ack">Parent Acknowledgement
+                            </button>
+                            <button class="tab-button bg-gray-50 text-gray-600 sm:text-left font-medium py-2 px-4 border border-gray-300 sm:rounded-md focus:outline-none cursor-not-allowed"
+                                    data-target="stu-con">Student Concession
+                            </button>
+                            <button class="tab-button bg-gray-50 text-gray-600 sm:text-left font-medium py-2 px-4 border border-gray-300 sm:rounded-md focus:outline-none cursor-not-allowed"
+                                    data-target="stu-con">Pickup Information
+                            </button>
+                        </div>
+                        <!-- End Tabs -->
+                    </div>
+
+                    <div class="w-full sm:w-3/4 bg-white rounded-lg shadow-lg p-4 sm:p-8">
+                        <!-- START Tab Contents -->
+                        <form id="stu_adm_form" method="post" action="/student/admission/submit"
+                              class="oe_website_sale" enctype="multipart/form-data">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <!-- START student Information -->
+                            <div id="stu-info" class="tab-content active">
+                                <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Student Information</h2>
+                                <div class="grid grid-cols-1 sm:grid-cols-8 gap-4 mb-4">
+                                    <div class="sm:col-span-5">
+                                        <label for="branch_name" class="block text-gray-600 font-medium">Branch Name
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" id="branch_name" name="branch_name"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               t-att-value="branch_name" required="required" disabled="disabled"/>
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label for="stu_reg_no_search" class="block text-gray-600 font-medium">
+                                            Registration No.
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" id="stu_reg_no_search" name="stu_reg_no_search"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Registration No." required="required"/>
+                                    </div>
+                                    <div class="flex items-end">
+                                        <button type="button" id="stu_reg_no_search_btn" name="stu_reg_no_search_btn"
+                                                class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+                                            Search
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                                    <div>
+                                        <label for="stu_reg_no" class="block text-gray-600 font-medium">Registration No.
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" id="stu_reg_no" name="stu_reg_no"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Registration No." required="required"
+                                               disabled="disabled"/>
+                                    </div>
+                                    <div>
+                                        <label for="stu_class" class="block text-gray-600 font-medium">Class
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <select id="stu_class" name="stu_class"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                required="required">
+                                            <option value="" selected="selected" disabled="disabled">Select Class
+                                            </option>
+                                            <option value="nur">Nur</option>
+                                            <option value="prep">Prep</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="first_year">First Year</option>
+                                            <option value="second_year">Second Year</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="stu_section" class="block text-gray-600 font-medium">Section</label>
+                                        <select id="stu_section" name="stu_section"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            <option value="" selected="selected" disabled="disabled">Select Section
+                                            </option>
+                                            <option value="earth">Earth</option>
+                                            <option value="mars">Mars</option>
+                                            <option value="jupiter">Jupiter</option>
+                                            <option value="Red">Red</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label for="stu_firstname" class="block text-gray-600 font-medium">First Name
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" id="stu_firstname" name="stu_firstname"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter First Name" required="required"/>
+                                    </div>
+                                    <div>
+                                        <label for="stu_lastname" class="block text-gray-600 font-medium">Last Name
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" id="stu_lastname" name="stu_lastname"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Last Name" required="required"/>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                                    <div>
+                                        <label for="stu_gender" class="block text-gray-600 font-medium">Gender
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <select id="stu_gender" name="stu_gender"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                required="required">
+                                            <option value="" selected="selected" disabled="disabled">Select Gender
+                                            </option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="stu_religion" class="block text-gray-600 font-medium">Religion
+                                        </label>
+                                        <select id="stu_religion" name="stu_religion"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            <option value="" selected="selected" disabled="disabled">Select Religion
+                                            </option>
+                                            <option value="Islam">Islam</option>
+                                            <option value="Christian">Christianity</option>
+                                            <option value="hindu">Hinduism</option>
+                                            <option value="sikh">Sikhism</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="stu_dob" class="block text-gray-600 font-medium">Date of Birth
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="date" id="stu_dob" name="stu_dob"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               required="required"/>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 gap-4 mb-4">
+                                    <div>
+                                        <label for="stu_address" class="block text-gray-600 font-medium">Address
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" id="stu_address" name="stu_address"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Address" required="required"/>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                                    <div>
+                                        <label for="stu_city" class="block text-gray-600 font-medium">City
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <select id="stu_city" name="stu_city"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                required="required">
+                                            <option value="" selected="selected" disabled="disabled">Select City
+                                            </option>
+                                            <option value="Gujranwala">Gujranwala</option>
+                                            <option value="Kasur">Kasur</option>
+                                            <option value="Khushab">Khushab</option>
+                                            <option value="Lahore">Lahore</option>
+                                            <option value="Martinpur">Martinpur</option>
+                                            <option value="Nankana sahib">Nankana Sahib</option>
+                                            <option value="Pasrur">Pasrur</option>
+                                            <option value="Rawalpindi">Rawalpindi</option>
+                                            <option value="Sangla hill">Sangla Hill</option>
+                                            <option value="Sargodha">Sargodha</option>
+                                            <option value="Sheikupura">Sheikupura</option>
+                                            <option value="Sialkot">Sialkot</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="stu_state" class="block text-gray-600 font-medium">State
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <select id="stu_state" name="stu_state"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                required="required">
+                                            <option value="">Select State
+                                            </option>
+                                            <option value="Punjab" selected="selected">Punjab</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="stu_country" class="block text-gray-600 font-medium">Country
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <select id="stu_country" name="stu_country"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                required="required">
+                                            <option value="" disabled="disabled">Select Country
+                                            </option>
+                                            <option value="pakistan" selected="selected">Pakistan</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <div>
+                                        <label for="stu_cnic" class="block text-gray-600 font-medium">Bay Form No.
+                                        </label>
+                                        <input type="text" id="stu_cnic" name="stu_cnic"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Bay Form No." required="required"/>
+                                    </div>
+                                    <div>
+                                        <label for="stu_phone" class="block text-gray-600 font-medium">Phone</label>
+                                        <input type="tel" id="stu_phone" name="stu_phone"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Phone"/>
+                                    </div>
+                                    <div>
+                                        <label for="stu_email" class="block text-gray-600 font-medium">Email</label>
+                                        <input type="email" id="stu_email" name="stu_email"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Email"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END Student Information -->
+
+                            <!-- START Previous School Information -->
+                            <div id="pre-sch-info" class="tab-content">
+                                <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Previous School
+                                    Information
+                                </h2>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                                    <div class="col-span-2">
+                                        <label for="stu_pre_school_name" class="block text-gray-600 font-medium">Name of
+                                            School/Nursery
+                                        </label>
+                                        <input type="text" id="stu_pre_school_name" name="stu_pre_school_name"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Name of School/Nursery"/>
+                                    </div>
+                                    <div>
+                                        <label for="stu_pre_school_class" class="form-label">Class</label>
+                                        <input type="text" id="stu_pre_school_class" name="stu_pre_school_class"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Class"/>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 gap-4 mb-4">
+                                    <div>
+                                        <label for="stu_pre_school_address" class="block text-gray-600 font-medium">
+                                            Address
+                                        </label>
+                                        <input type="text" id="stu_pre_school_address" name="stu_pre_school_address"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Address"/>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                                    <div>
+                                        <label for="stu_pre_school_city" class="form-label">City</label>
+                                        <input type="text" id="stu_pre_school_city" name="stu_pre_school_city"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter City"/>
+                                    </div>
+                                    <div>
+                                        <label for="stu_pre_school_state" class="block text-gray-600 font-medium">
+                                            State
+                                        </label>
+                                        <select id="stu_pre_school_state" name="stu_pre_school_state"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            <option value="" disabled="disabled">Select State
+                                            </option>
+                                            <option value="Punjab" selected="selected">Punjab</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="stu_pre_school_country" class="block text-gray-600 font-medium">
+                                            Country
+                                        </label>
+                                        <select id="stu_pre_school_country" name="stu_pre_school_country"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            <option value="" selected="selected">Select Country
+                                            </option>
+                                            <option value="pakistan" selected="selected">Pakistan</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END Previous School Information -->
+
+                            <!-- START Parent Information -->
+                            <div id="par-info" class="tab-content">
+                                <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Parent Information</h2>
+                                <!-- Start Parent/Guardian Information -->
+                                <h3 class="text-xl font-semibold text-gray-700 mb-4">Parent/Guardian 1</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                                    <div>
+                                        <label for="par1_relation_type" class="block text-gray-600 font-medium">Relation
+                                            Type
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <select id="par1_relation_type" name="par1_relation_type"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                required="required">
+                                            <option value="" selected="selected" disabled="disabled">Select Relation
+                                                Type
+                                            </option>
+                                            <option value="father">Father</option>
+                                            <option value="mother">Mother</option>
+                                            <option value="aunt">Aunt</option>
+                                            <option value="brother">Brother</option>
+                                            <option value="donor">Donor</option>
+                                            <option value="guardian">Guardian</option>
+                                            <option value="friend">Friend</option>
+                                            <option value="sister">Sister</option>
+                                            <option value="spouse">Spouse</option>
+                                            <option value="step father">Step Father</option>
+                                            <option value="step mother">Step Mother</option>
+                                            <option value="uncle">Uncle</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="par1_firstname" class="block text-gray-600 font-medium">First Name
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" id="par1_firstname" name="par1_firstname"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter First Name" required="required"/>
+                                    </div>
+                                    <div>
+                                        <label for="par1_lastname" class="block text-gray-600 font-medium">Last Name
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" id="par1_lastname" name="par1_lastname"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Last Name" required="required"/>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                                    <div>
+                                        <label for="par1_gender" class="block text-gray-600 font-medium">Gender
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <select id="par1_gender" name="par1_gender"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                required="required">
+                                            <option value="" selected="selected" disabled="disabled">Select Gender
+                                            </option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="par1_religion" class="block text-gray-600 font-medium">Religion
+                                        </label>
+                                        <select id="par1_religion" name="par1_religion"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            <option value="" selected="selected" disabled="disabled">Select Religion
+                                            </option>
+                                            <option value="Islam">Islam</option>
+                                            <option value="Christian">Christianity</option>
+                                            <option value="hindu">Hinduism</option>
+                                            <option value="sikh">Sikhism</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="par1_dob" class="block text-gray-600 font-medium">Date of Birth
+                                        </label>
+                                        <input type="date" id="par1_dob" name="par1_dob"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                                    <div>
+                                        <label for="par1_cnic" class="block text-gray-600 font-medium">CNIC
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" id="par1_cnic" name="par1_cnic"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               required="required"/>
+                                    </div>
+                                    <div>
+                                        <label for="par1_phone" class="block text-gray-600 font-medium">Phone
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="tel" id="par1_phone" name="par1_phone"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               required="required"/>
+                                    </div>
+                                    <div>
+                                        <label for="par1_email" class="block text-gray-600 font-medium">Email</label>
+                                        <input type="email" id="par1_email" name="par1_email"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                                    <div>
+                                        <label for="par1_edu_level" class="block text-gray-600 font-medium">Education
+                                            Level
+                                        </label>
+                                        <input type="text" id="par1_edu_level" name="par1_edu_level"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                                    </div>
+                                    <div>
+                                        <label for="par1_occupation" class="block text-gray-600 font-medium">
+                                            Occupation
+                                        </label>
+                                        <input type="text" id="par1_occupation" name="par1_occupation"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                                    </div>
+
+                                    <div>
+                                        <label for="father_salary" class="block text-gray-600 font-medium">
+                                            Father Salary
+                                        </label>
+                                        <input type="text" id="father_salary" name="father_salary"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-semibold text-gray-700 mb-4">Parent/Guardian 2</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                                    <div>
+                                        <label for="par2_relation_type" class="block text-gray-600 font-medium">Relation
+                                            Type
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <select id="par2_relation_type" name="par2_relation_type"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            <option value="" selected="selected" disabled="disabled">Select Relation
+                                                Type
+                                            </option>
+                                            <option value="father">Father</option>
+                                            <option value="mother">Mother</option>
+                                            <option value="aunt">Aunt</option>
+                                            <option value="brother">Brother</option>
+                                            <option value="donor">Donor</option>
+                                            <option value="guardian">Guardian</option>
+                                            <option value="friend">Friend</option>
+                                            <option value="sister">Sister</option>
+                                            <option value="spouse">Spouse</option>
+                                            <option value="step father">Step Father</option>
+                                            <option value="step mother">Step Mother</option>
+                                            <option value="uncle">Uncle</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="par2_firstname" class="block text-gray-600 font-medium">First Name
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" id="par2_firstname" name="par2_firstname"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter First Name"/>
+                                    </div>
+                                    <div>
+                                        <label for="par2_lastname" class="block text-gray-600 font-medium">Last Name
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" id="par2_lastname" name="par2_lastname"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Last Name"/>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                                    <div>
+                                        <label for="par2_gender" class="block text-gray-600 font-medium">Gender
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <select id="par2_gender" name="par2_gender"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            <option value="" selected="selected" disabled="disabled">Select Gender
+                                            </option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="par2_religion" class="block text-gray-600 font-medium">Religion
+                                        </label>
+                                        <select id="par2_religion" name="par2_religion"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            <option value="" selected="selected" disabled="disabled">Select Religion
+                                            </option>
+                                            <option value="Islam">Islam</option>
+                                            <option value="Christian">Christianity</option>
+                                            <option value="hindu">Hinduism</option>
+                                            <option value="sikh">Sikhism</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="par2_dob" class="block text-gray-600 font-medium">Date of Birth
+                                        </label>
+                                        <input type="date" id="par2_dob" name="par2_dob"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                                    <div>
+                                        <label for="par2_cnic" class="block text-gray-600 font-medium">CNIC
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" id="par2_cnic" name="par2_cnic"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                                    </div>
+                                    <div>
+                                        <label for="par2_phone" class="block text-gray-600 font-medium">Phone
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="tel" id="par2_phone" name="par2_phone"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                                    </div>
+                                    <div>
+                                        <label for="par2_email" class="block text-gray-600 font-medium">Email</label>
+                                        <input type="email" id="par2_email" name="par2_email"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <div>
+                                        <label for="par2_edu_level" class="block text-gray-600 font-medium">Education
+                                            Level
+                                        </label>
+                                        <input type="text" id="par2_edu_level" name="par2_edu_level"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                                    </div>
+                                    <div>
+                                        <label for="par2_occupation" class="block text-gray-600 font-medium">
+                                            Occupation
+                                        </label>
+                                        <input type="text" id="par2_occupation" name="par2_occupation"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                                    </div>
+                                    <div>
+                                        <label for="mother_salary" class="block text-gray-600 font-medium">
+                                            Mother Salary
+                                        </label>
+                                        <input type="text" id="mother_salary" name="mother_salary"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- END Parent Information -->
+
+                            <!-- START Sibling Information -->
+                            <div id="sib-info" class="tab-content">
+                                <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Sibling Information</h2>
+                                <!-- START Sibling 1 -->
+                                <h3 class="text-xl font-semibold text-gray-700 mb-4">Sibling 1</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                                    <div>
+                                        <label for="sib1_roll_no" class="block text-gray-600 font-medium">Roll No.
+                                        </label>
+                                        <input type="text" id="sib1_roll_no" name="sib1_roll_no"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Roll No." disabled="disabled"/>
+                                    </div>
+                                    <div>
+                                        <label for="sib1_firstname" class="block text-gray-600 font-medium">First Name
+                                        </label>
+                                        <input type="text" id="sib1_firstname" name="sib1_firstname"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter First Name" disabled="disabled"/>
+                                    </div>
+                                    <div>
+                                        <label for="sib1_lastname" class="block text-gray-600 font-medium">Last Name
+                                        </label>
+                                        <input type="text" id="sib1_lastname" name="sib1_lastname"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Last Name" disabled="disabled"/>
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label for="sib1_branch_name" class="block text-gray-600 font-medium">Branch
+                                            Name
+                                        </label>
+                                        <input type="text" id="sib1_branch_name" name="sib1_branch_name"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Branch Name" disabled="disabled"/>
+                                    </div>
+                                    <div>
+                                        <label for="sib1_class" class="block text-gray-600 font-medium">Class</label>
+                                        <input type="text" id="sib1_class" name="sib1_class"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Class" disabled="disabled"/>
+                                    </div>
+                                </div>
+                                <!-- END Sibling 1 -->
+                                <!-- START Sibling 2 -->
+                                <h3 class="text-xl font-semibold text-gray-700 mb-4">Sibling 2</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                                    <div>
+                                        <label for="sib2_roll_no" class="block text-gray-600 font-medium">Roll No.
+                                        </label>
+                                        <input type="text" id="sib2_roll_no" name="sib2_roll_no"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Roll No." disabled="disabled"/>
+                                    </div>
+                                    <div>
+                                        <label for="sib2_firstname" class="block text-gray-600 font-medium">First Name
+                                        </label>
+                                        <input type="text" id="sib2_firstname" name="sib2_firstname"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter First Name" disabled="disabled"/>
+                                    </div>
+                                    <div>
+                                        <label for="sib2_lastname" class="block text-gray-600 font-medium">Last Name
+                                        </label>
+                                        <input type="text" id="sib2_lastname" name="sib2_lastname"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Last Name" disabled="disabled"/>
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label for="sib2_branch_name" class="block text-gray-600 font-medium">Branch
+                                            Name
+                                        </label>
+                                        <input type="text" id="sib2_branch_name" name="sib2_branch_name"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Branch Name" disabled="disabled"/>
+                                    </div>
+                                    <div>
+                                        <label for="sib2_class" class="block text-gray-600 font-medium">Class</label>
+                                        <input type="text" id="sib2_class" name="sib2_class"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Class" disabled="disabled"/>
+                                    </div>
+                                </div>
+                                <!-- END Sibling 2 -->
+                                <!-- START Sibling 3 -->
+                                <h3 class="text-xl font-semibold text-gray-700 mb-4">Sibling 3</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <div>
+                                        <label for="sib3_roll_no" class="block text-gray-600 font-medium">Roll No.
+                                        </label>
+                                        <input type="text" id="sib3_roll_no" name="sib3_roll_no"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Roll No." disabled="disabled"/>
+                                    </div>
+                                    <div>
+                                        <label for="sib3_firstname" class="block text-gray-600 font-medium">First Name
+                                        </label>
+                                        <input type="text" id="sib3_firstname" name="sib3_firstname"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter First Name" disabled="disabled"/>
+                                    </div>
+                                    <div>
+                                        <label for="sib3_lastname" class="block text-gray-600 font-medium">Last Name
+                                        </label>
+                                        <input type="text" id="sib3_lastname" name="sib3_lastname"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Last Name" disabled="disabled"/>
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label for="sib3_branch_name" class="block text-gray-600 font-medium">Branch
+                                            Name
+                                        </label>
+                                        <input type="text" id="sib3_branch_name" name="sib3_branch_name"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Branch Name" disabled="disabled"/>
+                                    </div>
+                                    <div>
+                                        <label for="sib3_class" class="block text-gray-600 font-medium">Class</label>
+                                        <input type="text" id="sib3_class" name="sib3_class"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Class" disabled="disabled"/>
+                                    </div>
+                                </div>
+                                <!-- END Sibling 3 -->
+                            </div>
+                            <!-- END Sibling Information -->
+
+                            <!-- START Emergency Contact -->
+                            <div id="ec-info" class="tab-content">
+                                <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Emergency Contact</h2>
+                                <!-- START EC 1 -->
+                                <h3 class="text-xl font-semibold text-gray-700 mb-4">EC 1</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
+                                    <div>
+                                        <label for="ec1_firstname" class="block text-gray-600 font-medium">First Name
+                                        </label>
+                                        <input type="text" id="ec1_firstname" name="ec1_firstname"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter First Name"/>
+                                    </div>
+                                    <div>
+                                        <label for="ec1_lastname" class="block text-gray-600 font-medium">Last Name
+                                        </label>
+                                        <input type="text" id="ec1_lastname" name="ec1_lastname"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Last Name"/>
+                                    </div>
+                                    <div>
+                                        <label for="ec1_relation_type" class="block text-gray-600 font-medium">Relation
+                                            Type
+                                        </label>
+                                        <select id="ec1_relation_type" name="ec1_relation_type"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            <option value="" selected="selected" disabled="disabled">Select Relation
+                                                Type
+                                            </option>
+                                            <option value="father">Father</option>
+                                            <option value="mother">Mother</option>
+                                            <option value="aunt">Aunt</option>
+                                            <option value="brother">Brother</option>
+                                            <option value="donor">Donor</option>
+                                            <option value="guardian">Guardian</option>
+                                            <option value="friend">Friend</option>
+                                            <option value="sister">Sister</option>
+                                            <option value="spouse">Spouse</option>
+                                            <option value="step father">Step Father</option>
+                                            <option value="step mother">Step Mother</option>
+                                            <option value="uncle">Uncle</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="ec1_phone" class="block text-gray-600 font-medium">Phone</label>
+                                        <input type="tel" id="ec1_phone" name="ec1_phone"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                                    </div>
+                                </div>
+                                <!-- END EC 1 -->
+                                <!-- START EC 2 -->
+                                <h3 class="text-xl font-semibold text-gray-700 mb-4">EC 2</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                                    <div>
+                                        <label for="ec2_firstname" class="block text-gray-600 font-medium">First Name
+                                        </label>
+                                        <input type="text" id="ec2_firstname" name="ec2_firstname"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter First Name"/>
+                                    </div>
+                                    <div>
+                                        <label for="ec2_lastname" class="block text-gray-600 font-medium">Last Name
+                                        </label>
+                                        <input type="text" id="ec2_lastname" name="ec2_lastname"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Last Name"/>
+                                    </div>
+                                    <div>
+                                        <label for="ec2_relation_type" class="block text-gray-600 font-medium">Relation
+                                            Type
+                                        </label>
+                                        <select id="ec2_relation_type" name="ec2_relation_type"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            <option value="" selected="selected" disabled="disabled">Select Relation
+                                                Type
+                                            </option>
+                                            <option value="father">Father</option>
+                                            <option value="mother">Mother</option>
+                                            <option value="aunt">Aunt</option>
+                                            <option value="brother">Brother</option>
+                                            <option value="donor">Donor</option>
+                                            <option value="guardian">Guardian</option>
+                                            <option value="friend">Friend</option>
+                                            <option value="sister">Sister</option>
+                                            <option value="spouse">Spouse</option>
+                                            <option value="step father">Step Father</option>
+                                            <option value="step mother">Step Mother</option>
+                                            <option value="uncle">Uncle</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="ec2_phone" class="block text-gray-600 font-medium">Phone</label>
+                                        <input type="tel" id="ec2_phone" name="ec2_phone"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                                    </div>
+                                </div>
+                                <!-- END EC 2 -->
+                            </div>
+                            <!-- END Emergency Contact -->
+
+                            <!-- START Parent Questionnaire -->
+                            <div id="par-que" class="tab-content">
+                                <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Parent Questionnaire</h2>
+                                <div class="grid grid-cols-1 gap-4">
+                                    <div>
+                                        <label for="par1_qtn1" class="block text-gray-600 font-medium">Does your child
+                                            have any particular medical needs that the school needs to be aware of?
+                                            Please indicate if your
+                                            child is on any long term medication.
+                                        </label>
+                                        <textarea id="par1_qtn1" name="par1_qtn1"
+                                                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                  rows="4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END Parent Questionnaire -->
+
+                            <!-- START Document Upload -->
+                            <div id="doc-up" class="tab-content">
+                                <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Document Upload</h2>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="flex items-center sm:mt-0">
+                                        <label for="stu_birth_cert_doc" class="block text-gray-600 font-medium">Birth
+                                            Certificate
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <input type="file" id="stu_birth_cert_doc" name="stu_birth_cert_doc"
+                                               class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-600 font-medium cursor-pointer"/>
+                                    </div>
+                                    <div class="flex items-center mt-3 sm:mt-0">
+                                        <label for="stu_b_form_doc" class="block text-gray-600 font-medium">Bay Form
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <input type="file" id="stu_b_form_doc" name="stu_b_form_doc"
+                                               class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-600 font-medium cursor-pointer"/>
+                                    </div>
+                                    <div class="flex items-center mt-3 sm:mt-0">
+                                        <label for="par1_cnic_doc" class="block text-gray-600 font-medium">
+                                            Father/Guardian CNIC
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <input type="file" id="par1_cnic_doc" name="par1_cnic_doc"
+                                               class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-600 font-medium cursor-pointer"/>
+                                    </div>
+                                    <div class="flex items-center mt-3 sm:mt-0">
+                                        <label for="par2_cnic_doc" class="block text-gray-600 font-medium">
+                                            Mother/Guardian CNIC
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <input type="file" id="par2_cnic_doc" name="par2_cnic_doc"
+                                               class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-600 font-medium cursor-pointer"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END Document Upload -->
+
+                            <!-- START Parent Acknowledgement -->
+                            <div id="par-ack" class="tab-content">
+                                <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Parent Acknowledgement
+                                </h2>
+                                <div class="grid grid-cols-1 gap-4 mb-8">
+                                    <div>
+                                        <h3 class="text-xl font-semibold text-gray-700 mb-2">CERTIFICATE</h3>
+                                        <p class="mb-8">I hereby certify that the particulars furnished above are
+                                            correct to the best of my knowledge.
+                                        </p>
+                                        <p class="mb-8">
+                                            <span class="font-bold underline">I agree to pay the school fees as the
+                                                School Authorities may direct
+                                            </span>
+                                            and to abide by the School Rules and
+                                            Regulations. I clearly understand that if my child's progress, conduct,
+                                            attendance and punctuality prove
+                                            unsatisfactory in the Principal's opinion, he/she may be to
+                                            leave. I understand that my child may not
+                                            stay away from the school without a written application to the principal.
+                                        </p>
+                                        <p>I understand that the School Authorities take no responsibility for children
+                                            after school hours, nor for those who
+                                            leave the school premises without permission
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <div>
+                                        <label for="par_ack_date" class="block text-gray-600 font-medium">Admission Date
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="date" id="par_ack_date" name="par_ack_date"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               required="required"/>
+                                    </div>
+                                    <div>
+                                        <label for="par_ack_relation_type" class="block text-gray-600 font-medium">
+                                            Relation Type
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <select id="par_ack_relation_type" name="par_ack_relation_type"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                required="required">
+                                            <option value="" selected="selected" disabled="disabled">Select Relation
+                                                Type
+                                            </option>
+                                            <option value="father">Father</option>
+                                            <option value="mother">Mother</option>
+                                            <option value="aunt">Aunt</option>
+                                            <option value="brother">Brother</option>
+                                            <option value="donor">Donor</option>
+                                            <option value="guardian">Guardian</option>
+                                            <option value="friend">Friend</option>
+                                            <option value="sister">Sister</option>
+                                            <option value="spouse">Spouse</option>
+                                            <option value="step father">Step Father</option>
+                                            <option value="step mother">Step Mother</option>
+                                            <option value="uncle">Uncle</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END Parent Acknowledgement -->
+
+                            <!-- START Student Concession -->
+                            <div id="stu-con" class="tab-content">
+                                <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Student Concession</h2>
+                                <div class="grid grid-cols-1 gap-4 mb-8">
+                                    <div>
+                                        <label for="stu_con" class="block text-gray-600 font-medium">Principal's
+                                            Message
+                                        </label>
+                                        <textarea id="stu_con" name="stu_con"
+                                                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                  rows="4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END Student Concession -->
+
+                            <!-- START Pickup Contact -->
+                            <div id="pickup-info" class="tab-content">
+                                <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Pickup Contact</h2>
+                                <!-- START EC 1 -->
+<!--                                <h3 class="text-xl font-semibold text-gray-700 mb-4"></h3>-->
+                                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
+                                    <div>
+                                        <label for="pickup_firstname" class="block text-gray-600 font-medium">First Name
+                                        </label>
+                                        <input type="text" id="pickup_firstname" name="pickup_firstname"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter First Name"/>
+                                    </div>
+                                    <div>
+                                        <label for="pickup_lastname" class="block text-gray-600 font-medium">Last Name
+                                        </label>
+                                        <input type="text" id="pickup_lastname" name="pickup_lastname"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                               placeholder="Enter Last Name"/>
+                                    </div>
+                                    <div>
+                                        <label for="pickup_relation_type" class="block text-gray-600 font-medium">Relation
+                                            Type
+                                        </label>
+                                        <select id="pickup_relation_type" name="pickup_relation_type"
+                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            <option value="" selected="selected" disabled="disabled">Select Relation
+                                                Type
+                                            </option>
+                                            <option value="father">Father</option>
+                                            <option value="mother">Mother</option>
+                                            <option value="aunt">Aunt</option>
+                                            <option value="brother">Brother</option>
+                                            <option value="donor">Donor</option>
+                                            <option value="guardian">Guardian</option>
+                                            <option value="friend">Friend</option>
+                                            <option value="sister">Sister</option>
+                                            <option value="spouse">Spouse</option>
+                                            <option value="step father">Step Father</option>
+                                            <option value="step mother">Step Mother</option>
+                                            <option value="uncle">Uncle</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="pickup_phone" class="block text-gray-600 font-medium">Phone</label>
+                                        <input type="tel" id="pickup_phone" name="pickup_phone"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                                    </div>
+                                    <div>
+                                        <label for="pickup_cnic" class="block text-gray-600 font-medium">CNIC</label>
+                                        <input type="tel" id="pickup_cnic" name="pickup_cnic"
+                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                                    </div>
+                                </div>
+                                <!-- END EC 1 -->
+                            </div>
+                            <!-- END Emergency Contact -->
+                            <!--START Navigation buttons -->
+                            <div id="nav-buttons" class="flex justify-end gap-3 mt-6">
+                                <button type="button" id="prevBtn"
+                                        class="bg-gray-300 text-black font-bold py-2 px-4 rounded"
+                                        onclick="changeTab(-1)" disabled="1">Back
+                                </button>
+                                <button type="button" id="nextBtn"
+                                        class="bg-gray-300 text-white font-bold py-2 px-4 rounded"
+                                        onclick="changeTab(1)" disabled="1">Next
+                                </button>
+                            </div>
+                            <!--END Navigation buttons -->
+                        </form>
+                        <!-- END Tab Contents -->
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                let currentTab = 0;
+                const tabs = document.querySelectorAll('.tab-content');
+                const tabButtons = document.querySelectorAll('.tab-button');
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.getElementById('nextBtn');
+
+                function showTab(n) {
+                tabs.forEach((tab, index) => {
+                tab.classList.toggle('active', index === n);
+                });
+                tabButtons.forEach((button, index) => {
+                button.classList.toggle('active', index === n);
+                });
+                prevBtn.disabled = n === 0;
+                nextBtn.textContent = n === tabs.length - 1 ? 'Submit' : 'Next';
+                validateTab();
+                }
+
+                function changeTab(step) {
+                if (step === 1 &amp; !validateTab()) return;
+                currentTab += step;
+                if (currentTab >= tabs.length) {
+                document.getElementById('stu_adm_form').submit();
+                return;
+                }
+                showTab(currentTab);
+                }
+
+                function validateTab() {
+                const currentInputs = tabs[currentTab].querySelectorAll('input[required], select[required]');
+                const allValid = Array.from(currentInputs).every(input => input.checkValidity());
+                nextBtn.disabled = !allValid;
+                nextBtn.classList.toggle('bg-blue-500', allValid);
+                nextBtn.classList.toggle('bg-gray-300', !allValid);
+                return allValid;
+                }
+
+                document.querySelectorAll('input, select').forEach(input => {
+                input.addEventListener('input', validateTab);
+                input.addEventListener('change', validateTab);
+                });
+
+                document.addEventListener('DOMContentLoaded', () => {
+                showTab(currentTab);
+                });
+
+                // <!-- CNIC and Phone Input Mask -->
+                $(document).ready(function(){
+                // CNIC number format: 99999-9999999-9
+                $("#stu_cnic, #par1_cnic, #par2_cnic").inputmask("99999-9999999-9");
+
+                // Phone number format: 9999-9999999
+                $("#stu_phone, #par1_phone, #par2_phone, #ec1_phone, #ec2_phone").inputmask("9999-9999999");
+                });
+
+                // <!-- Flatpickr for Date of Birth -->
+                flatpickr(["#stu_dob", "#par1_dob", "#par2_dob"], {
+                dateFormat: "d/m/Y",
+                allowInput: true
+                });
+            </script>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_partner_tree_inherit" model="ir.ui.view">
+        <field name="name">res.partner.tree.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_name']" position="replace">
+                    <field name="name"/>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='activity_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='email']" position="after">
+                <field name="facts_id" widget="integer" options="{'format': 0}"/>
+                <field name="reg_number"/>
+                <field name="student_code"/>
+                <field name="x_studio_parent_id" optional="hide"/>
+                <field name="cnic"/>
+                <field name="mobile" string="Contact"/>
+                <field name="current_school" string="Branch" optional="hide"/>
+                <field name="current_grade" optional="hide"/>
+                <field name="homeroom" string="Section"/>
+                <field name="current_enroll_status" optional="hide"/>
+                <field name="next_enroll_status" optional="hide"/>
+                <field name="street" string="Address Line"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_company_contact_form" model="ir.ui.view">
+        <field name="name">res.partner.company.form</field>
+        <field name="model">res.partner</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Families">
+                <field name="facts_id"/>
+                <field name="display_name" string="Parent Name"/>
+                <field name="contact_address" string="Address"/>
+                <field name="phone" string="Parent Mobile"/>
+                <field name="cnic" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="action_company_contacts" model="ir.actions.act_window">
+        <field name="name">Families</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_id" ref="view_company_contact_form"/>
+        <field name="context">{'company_type': "company", 'is_company_view': True, 'default_company_type': "company", "default_is_company":
+            True}
+        </field>
+        <field name="domain">[('company_type', '=', "company"), ("is_company" ,'=', True)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Family in your address book
+            </p>
+            <p>
+                Odoo helps you track all activities related to your families.
+            </p>
+        </field>
+
+    </record>
+
+</odoo>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="email_template_fee_challan" model="mail.template">
+        <field name="name">Fee Challan Email Template</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="subject">Fee Challan for {{object.name}}</field>
+        <field name="report_template" ref="ol_custom_challans.report_fee_challan_copy_declare"/>
+        <field name="report_name">Fee Challan - {{object.name}}</field>
+        <field name="email_from">{{ (object.user_id.email_formatted or user.email_formatted) }}</field>
+        <field name="email_to">{{object.partner_id.email}}</field>
+        <field name="body_html" type="html">
+            <p>Dear User,</p>
+            <p>Please find attached the Fee Challan for your registration.</p>
+            <ul>
+                <li>
+                    <strong>Name:</strong>
+                    <t t-out="object.partner_id.name or ''"/>
+                </li>
+            </ul>
+            <p>Thank you,</p>
+            <p>Presbyterian Education Board in Pakistan.</p>
+        </field>
+    </record>
+</odoo>
