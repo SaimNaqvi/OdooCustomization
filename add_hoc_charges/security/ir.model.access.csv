@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_add_hoc_charges_wiz,sale.add_hoc_charges_wiz,model_sale_add_hoc_charges_wiz,,1,1,1,1
+access_adhoc_charge_wizard,adhoc.charge.wizard,model_adhoc_charge_wizard,,1,1,1,1
+access_installment_name,installment.name,model_installment_name,,1,1,1,1
+
