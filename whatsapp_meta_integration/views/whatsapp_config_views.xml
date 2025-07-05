@@ -1,0 +1,42 @@
+<odoo>
+  <record id="view_whatsapp_config_form" model="ir.ui.view">
+    <field name="name">whatsapp.config.form</field>
+    <field name="model">whatsapp.config</field>
+    <field name="arch" type="xml">
+      <form string="Meta WhatsApp Configuration">
+        <sheet>
+          <group string="API Credentials">
+            <field name="access_token"/>
+            <field name="phone_number_id"/>
+            <field name="whatsapp_business_id"/>
+            <field name="default_sender_name"/>
+            <field name="is_active"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_whatsapp_config_tree" model="ir.ui.view">
+    <field name="name">whatsapp.config.tree</field>
+    <field name="model">whatsapp.config</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="phone_number_id"/>
+        <field name="whatsapp_business_id"/>
+        <field name="default_sender_name"/>
+        <field name="is_active"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="action_whatsapp_config" model="ir.actions.act_window">
+    <field name="name">WhatsApp Configuration</field>
+    <field name="res_model">whatsapp.config</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem id="menu_whatsapp_integration_root" name="WhatsApp Integration" sequence="10"/>
+  <menuitem id="menu_whatsapp_config" name="Configuration"
+            parent="menu_whatsapp_integration_root" action="action_whatsapp_config"/>
+</odoo>

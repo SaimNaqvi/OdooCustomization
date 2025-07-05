@@ -1,0 +1,15 @@
+<odoo>
+    <record id="view_partner_form_whatsapp" model="ir.ui.view">
+        <field name="name">res.partner.form.whatsapp</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='mobile']" position="after">
+                <button icon="fa-whatsapp" style="color:#25D366;border:none" help="Send WhatsApp Message"
+                        name="action_send_whatsapp" type="object"
+                        string="Send WhatsApp" class="oe_highlight"
+                        attrs="{'invisible': [('mobile', '=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

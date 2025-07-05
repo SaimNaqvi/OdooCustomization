@@ -1,0 +1,25 @@
+<odoo>
+    <record id="view_whatsapp_config_form" model="ir.ui.view">
+        <field name="name">whatsapp.config.form</field>
+        <field name="model">whatsapp.config</field>
+        <field name="arch" type="xml">
+            <form string="WhatsApp Config">
+                <group>
+                    <field name="instance_id"/>
+                    <field name="token"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_whatsapp_config" model="ir.actions.act_window">
+        <field name="name">WhatsApp Config</field>
+        <field name="res_model">whatsapp.config</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_whatsapp_root" name="WhatsApp"/>
+    <menuitem id="menu_whatsapp_config" name="Configuration" parent="menu_whatsapp_root"
+              action="action_whatsapp_config"/>
+</odoo>
