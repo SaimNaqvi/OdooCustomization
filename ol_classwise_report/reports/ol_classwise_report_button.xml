@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+            id="ol_billing_report_classwise_id"
+            model="account.move"
+            report_type="qweb-pdf"
+            string="Students Classwise Report"
+            name="ol_classwise_report.ol_classwise_report_view"
+            file="ol_classwise_report.ol_classwise_report_view"
+            menu="False"
+    />
+</odoo>

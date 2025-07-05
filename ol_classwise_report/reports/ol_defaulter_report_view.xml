@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <template id ="ol_classwise_defaulter_report_view">
+      <t t-call="web.html_container">
+        <t t-call="web.basic_layout">
+          <!--<t t-foreach="docs" t-as="o">-->
+            <t t-set="company_id" t-value="env['res.company'].search([])"/>
+            <div class="header">
+            <table>
+              <tr>
+                <td class="col-3" style="text-align: center; width:20%">
+                  <br/>
+                  <img t-if="company_id.logo" t-att-src="image_data_uri(company_id.logo)" alt="Logo" style="width:130px; height:50px; float:center;"/>
+                </td>
+                <td class="col-3" style="text-align:center; width:70%;">
+                  <h1 style="background-color: black; color: white; font-size:24px; "><strong>Schola Nova</strong></h1>
+                  <h3 style="font-size:12px; ">Street 8, House#5, F-8/3, Islamabad. 051-2855003</h3>
+                  <h3 style="font-size:16px; font-weight: bold;"><strong>Admitted Students Defaulter List of Session: 2022-23</strong></h3>
+                  <div style="border-top: 1px solid black; padding-left:50%; "/>
+                </td>
+                <td class="col-3" style="text-align: center;">
+                  <br/>
+                  <h5 style="font-size:10px;"><span>Page </span><span class="page"/> of <span class="topage"/></h5>
+                  <!-- You can add the page number logic here if needed -->
+                </td>
+              </tr>
+            </table>
+            <br/>
+            </div>
+
+            <t t-set="students" t-value="env['res.partner'].search([('title','=','student')]).sorted(key=lambda r: r.grade_no)"/>
+            <t t-set="classes" t-value="[]"/>
+            <t t-set="total_amount_school" t-value="0"/>
+            <t t-foreach="students" t-as="user">
+              <t t-set="invoices" t-value="env['account.move'].search([('x_studio_class','=', user.current_grade),('state','=', 'posted'), ('invoice_date_due','&lt;',datetime.datetime.today()),'|',('payment_state','=', 'not_paid'),('payment_state','=', 'partial')])"/>
+              <t t-if="invoices">
+                <t t-set="current_class" t-value="user.current_grade"/>
+                <t t-if="current_class not in classes and user.current_grade != False and user.current_grade != ''">
+                  <t t-esc="classes.append(current_class)"/>
+                  <label class="mr-2" style="width:30%;">
+                    <strong>Class:  Grade <t t-esc="current_class"/></strong>
+                  </label>
+                  <label class="mr-2" style="padding-left:150px;">
+                    <strong>Section: S</strong>
+                  </label>
+                  <table class="table table-condensed" style="border:1px solid black; border-collapse: collapse;">
+                    <thread>
+                      <tr style="font-size:15px;">
+                        <th style="border:1px solid black; width:10%; text-align:center;">RegNo</th>
+                        <th style="border:1px solid black; width:20%; text-align:center;">Name</th>
+                        <th style="border:1px solid black; width:15%; text-align:center;">Phone No</th>
+                        <th style="border:1px solid black; width:15%; text-align:center">Fee Month</th>
+                        <th style="border:1px solid black; width:15%; text-align:center">Slip No</th>
+                        <th style="border:1px solid black; width:15%; text-align:center">Due Date</th>
+                        <th style="border:1px solid black; width:15%; text-align:center">Slip Amt</th>
+                      </tr>
+                    </thread>
+                    <t t-set="sections" t-value="[]"/> <!-- Clear the cities list for the next country -->
+                    <t t-set="total_amount_class" t-value="0"/>
+                    <t t-foreach="invoices" t-as="unpaid">
+                          <tr style="border:1px solid black; font-size:11px;">
+                            <td style="border:1px solid black;">
+                              <span style="width:10%;">
+                                <t t-esc="unpaid.x_studio_facts_id"/>
+                              </span>
+                            </td>
+                            <td style="border:1px solid black; text-align:center;">
+                              <span style="width:20%;">
+                                  <t t-esc="unpaid.partner_id.name"/>
+                              </span>
+                            </td>
+                            <td style="border:1px solid black; text-align:center;">
+                              <span style="width:15%;">
+                                  <t t-esc="unpaid.partner_id.phone"/>
+                              </span>
+                            </td>
+                            <td style="border:1px solid black; text-align:center;">
+                              <span style="width:15%;">
+                                  <t t-esc="unpaid.invoice_date"/>
+                              </span>
+                            </td>
+                            <td style="border:1px solid black; text-align:center;">
+                              <span style="width:15%;">
+                                  <t t-esc="unpaid.name"/>
+                              </span>
+                            </td>
+                            <td style="border:1px solid black; text-align:center;">
+                              <span style="width:15%;">
+                                  <t t-esc="unpaid.invoice_date_due"/>
+                              </span>
+                            </td>
+                            <td style="border:1px solid black; text-align:center;">
+                              <span style="width:15%;">
+                                  <!--<t t-set="total_amount_class" t-value="total_amount_class + unpaid.amount_total"/>-->
+                                  <!--<t t-esc="unpaid.amount_total"/>-->
+                                  <t t-set="total_amount_class" t-value="total_amount_class + unpaid.amount_residual"/>
+                                  <t t-esc="unpaid.amount_residual"/>
+                              </span>
+                            </td>
+                          </tr>
+                    </t>
+                  </table>
+                   <label class="mr-2" style="width:100%; text-align:right; padding-left:300px;">
+                    <strong>Section Total Unpaid Fee: <t t-esc="total_amount_class"/></strong>
+                    <t t-set="total_amount_school" t-value="total_amount_school + total_amount_class"/>
+                  </label>
+                  <br/>
+                </t>
+              </t>
+            </t>
+            <t t-set="last_class" t-value="classes[-1]"/>
+            <t t-if="last_class">
+               <label class="mr-2" style="width:100%; text-align:right; padding-left:300px;">
+                  <strong>Total Unpaid Fee Amount: <t t-esc="total_amount_school"/></strong>
+                </label>
+            </t>
+          <!-- </t> -->
+        </t>
+      </t>
+        
+      <!-- </t> -->
+    </template>
+  </data>
+</odoo>
+  

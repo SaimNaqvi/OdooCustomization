@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <template id ="ol_classwise_report_view">
+      <t t-call="web.html_container">
+        <t t-call="web.basic_layout">
+          <!--<t t-foreach="docs" t-as="o">-->
+            <t t-set="company_id" t-value="env['res.company'].search([])"/>
+            <div class="header">
+            <table>
+              <tr>
+                <td class="col-3" style="text-align: center; width:20%">
+                  <br/>
+                  <img t-if="company_id.logo" t-att-src="image_data_uri(company_id.logo)" alt="Logo" style="width:130px; height:60px; float:center;"/>
+                </td>
+                <td class="col-3" style="text-align:center; width:70%;">
+                  <h1 style="background-color: gray; color: white; font-size:24px; "><strong>Schola Nova</strong></h1>
+                  <h3 style="font-size:12px; ">Street 8, House#5, F-8/3, Islamabad. 051-2855003</h3>
+                  <h3 style="font-size:16px; font-weight: bold;"><strong>Summary of Admitted Students</strong></h3>
+                  <div style="border-top: 1px solid black; padding-left:50%; "/>
+                </td>
+                <td class="col-3" style="text-align: center;">
+                  <br/>
+                  <h5 style="font-size:10px;"><span>Page </span><span class="page"/> of <span class="topage"/></h5>
+                  <!-- You can add the page number logic here if needed -->
+                </td>
+              </tr>
+            </table>
+            <br/>
+            </div>
+
+            <!--<t t-set="students" t-value="env['res.partner'].search([('contact_type','=','student'),('current_enrollment_status','=','Enrolled')])"/>-->
+            <t t-set="students" t-value="env['res.partner'].search([('title','=','student'),('current_enroll_status','=','Enrolled')]).sorted(key=lambda r: r.grade_no)"/>
+            <t t-set="classes" t-value="[]"/>
+            <t t-set="total_males" t-value="0"/>
+            <t t-set="total_females" t-value="0"/>
+            <t t-set="total_students" t-value="0"/>
+            
+            <t t-set="total_males_class" t-value="0"/>
+            <t t-set="total_females_class" t-value="0"/>
+            <t t-set="total_students_class" t-value="0"/>
+            
+            <t t-set="total_males_school" t-value="0"/>
+            <t t-set="total_females_school" t-value="0"/>
+            <t t-set="total_students_school" t-value="0"/>
+            
+
+            <t t-foreach="students" t-as="user">
+              <t t-if="user.title == 'student'">
+                <t t-set="current_class" t-value="user.current_grade"/>
+                <t t-if="current_class not in classes and user.current_grade != False">
+                  <t t-esc="classes.append(current_class)"/>
+                  <label class="mr-2" style="width:30%;">
+                    <strong>Class:  Grade <t t-esc="current_class"/></strong>
+                  </label>
+                  <label class="mr-2" style="padding-left:150px;">
+                    <strong>Session: 2022-23</strong>
+                  </label>
+                  <table class="table table-condensed" style="border:1px solid black; border-collapse: collapse;">
+                    <thread>
+                      <tr style="font-size:15px;">
+                        <th style="border:1px solid black; width:30%; text-align:center;">Section</th>
+                        <th style="border:1px solid black; width:20%; text-align:center;">Total Male</th>
+                        <th style="border:1px solid black; width:20%; text-align:center;">Total Female</th>
+                        <th style="border:1px solid black; width:20%; text-align:center">Total Students</th>
+                      </tr>
+                    </thread>
+                    <t t-set="sections" t-value="[]"/> <!-- Clear the cities list for the next country -->
+                    <t t-set="total_males_class" t-value="0"/>
+                    <t t-set="total_females_class" t-value="0"/>
+                    <t t-set="total_students_class" t-value="0"/>
+                    <t t-set="total_male" t-value="0"/> <!-- Reset total_company for the next country -->
+                    <t t-foreach="students" t-as="city_user">
+                      <!--<t t-if="city_user.current_grade == current_class and city_user.city != False">-->
+                      <!--<t t-if="city_user.current_grade == current_class and city_user.homeroom != False">-->
+                      <t t-if="city_user.current_grade == current_class">
+                        <t t-set="student_gender" t-value="city_user.gender"/>
+                        <t t-if="city_user.homeroom not in sections">
+                          <tr style="border:1px solid black; font-size:11px;">
+                            <td style="border:1px solid black;">
+                              <span style="width:30%;">
+                                <!--<t t-if="city_user.homeroom">-->
+                                  <!--<t t-esc="city_user.homeroom"/>-->
+                                <!--</t>-->
+                                <!--<t t-else="">-->
+                                  <span>S</span>
+                                <!--</t>-->
+                                <t t-set="total_males" t-value="env['res.partner'].search([('current_grade', '=', current_class),('homeroom', '=', city_user.homeroom), ('gender','=','male')])"/>
+                                <t t-set="total_females" t-value="env['res.partner'].search([('current_grade', '=', current_class),('homeroom', '=', city_user.homeroom), ('gender','=','female')])"/>
+                                <t t-set="total_students" t-value="len(total_males) + len(total_females)"/>
+                              </span>
+                            </td>
+                            <td style="border:1px solid black; text-align:center;">
+                              <span style="width:20%;">
+                                <!--<t t-if="city_user_is_company == True">-->
+                                  <t t-set="total_males_class" t-value="total_males_class + len(total_males)"/>
+                                  <t t-set="total_males_school" t-value="total_males_school + total_males_class"/>
+                                  <t t-esc="len(total_males)"/>
+                                  
+                                <!--</t>-->
+                              </span>
+                            </td>
+                            <td style="border:1px solid black; text-align:center;">
+                              <span style="width:20%;">
+                                <!--<t t-if="city_user_is_company == False">-->
+                                  <t t-set="total_females_class" t-value="total_females_class + len(total_females)"/>
+                                  <t t-set="total_females_school" t-value="total_females_school + total_females_class"/>
+                                  <t t-esc="len(total_females)"/>
+                                <!--</t>-->
+                              </span>
+                            </td>
+                            <td style="border:1px solid black; text-align:center;">
+                              <span style="width:20%;">
+                                <t t-set="total_students_class" t-value="total_males_class + total_females_class"/>
+                                <t t-set="total_students_school" t-value="total_males_school + total_females_school"/>
+                                  <t t-esc="total_students"/>
+                              </span>
+                            </td>
+                          </tr>
+                          <t t-set="sections" t-value="sections + [city_user.homeroom]"/> <!-- Add the city to the list -->
+                        </t>
+                      </t>
+                      
+                    </t>
+                    <tr style="border:1px solid black; font-size:13px; font-weight: bold;">
+                          <td style="border:1px solid black;"><strong>Total Students for class</strong></td>
+                          <td style="border:1px solid black; text-align:center;"><t t-esc="total_males_class"/></td>
+                          <td style="border:1px solid black; text-align:center;"><t t-esc="total_females_class"/></td>
+                          <td style="border:1px solid black; text-align:center;"><t t-esc="total_students_class"/></td>
+                        </tr>
+                  </table>
+                  <br/>
+                </t>
+              </t>
+            </t>
+<!--            <t t-set="last_class" t-value="classes[-1]"/>-->
+<!--            <t t-if="last_class">-->
+<!--              <table class="table table-condensed" style="border:1px solid black; border-collapse: collapse;">-->
+<!--                <tr style="border:1px solid black; font-size:13px; font-weight: bold;">-->
+<!--                  <td style="border:1px solid black; width:30%;"><strong>Total Students in School</strong></td>-->
+<!--                  <td style="border:1px solid black; width:20%; text-align:center;"><t t-esc="total_males_school"/></td>-->
+<!--                  <td style="border:1px solid black; width:20%; text-align:center; "><t t-esc="total_females_school"/></td>-->
+<!--                  <td style="border:1px solid black; width:20%; text-align:center;"><t t-esc="total_students_school"/></td>-->
+<!--                </tr>-->
+<!--              </table>-->
+<!--            </t>-->
+            
+          <!--</t>-->
+        </t>
+      </t>
+    </template>
+  </data>
+</odoo>
+  

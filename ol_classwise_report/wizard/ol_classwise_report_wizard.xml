@@ -1,0 +1,57 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="ol_students_classwise_report_view">
+            <field name="name">student.classwise.report.form</field>
+            <field name="model">invoice.report</field>
+            <field name="arch" type="xml">
+                <form string="My Wizard">
+                    <footer>
+                        <button string="Generate Report" type="object" name="print_classwise_report"
+                            class="btn-primary" />
+                        <button string="Cancel" special="cancel" class="btn-secondary" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="classwise_wizard_action">
+            <field name="name">Student Classwise Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">invoice.report</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="ol_students_classwise_report_view" />
+            <field name="target">new</field>
+        </record>
+        <menuitem id="menu_action_print_classwise_report" name="Student Classwise Report"
+            action="classwise_wizard_action" parent="son_accounting_menu.billing_reports_menu" sequence='5' />
+
+
+        <record model="ir.ui.view" id="ol_students_defaulter_report_view">
+            <field name="name">student.defaulter.report.form</field>
+            <field name="model">invoice.report</field>
+            <field name="arch" type="xml">
+                <form string="Defaulter Report Wizard">
+                    <footer>
+                        <button string="Print Report" type="object" name="print_defaulter_report"
+                            class="btn-primary" />
+                        <button string="Print Excel Report" type="object" name="print_defaulter_report_excel"
+                            class="btn-primary" />
+                        <button string="Cancel" special="cancel" class="btn-secondary" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="defaulter_wizard_action">
+            <field name="name">Student Defaulter Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">invoice.report</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="ol_students_defaulter_report_view" />
+            <field name="target">new</field>
+        </record>
+        <menuitem id="menu_action_print_defaulter_report" name="Defaulter Report"
+            action="defaulter_wizard_action" parent="son_accounting_menu.billing_reports_menu" sequence='6' />
+    </data>
+</odoo>

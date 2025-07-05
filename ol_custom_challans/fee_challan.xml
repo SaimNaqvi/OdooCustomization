@@ -1,0 +1,1746 @@
+<odoo>
+    <data>
+        <template id="ol_custom_challans.fee_challan">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <div class="row" style="">
+                        <!--1st box-->
+                        <div class="column"
+                             style="float: left; border: 1px solid black; width: 32%;  height: 95%; margin-right: 1%;">
+                            <t t-if="o.state=='draft'">
+                                <div class="watermark"
+                                     style="text-align:center; position:absolute;opacity:0.15;font-size:8em;">
+                                    <p t-field="o.state"
+                                       t-att-style="'transform:rotate(-45deg); -webkit-transform:rotate(-45deg); margin-left:50px; margin-top:300px; '"/>
+                                </div>
+                            </t>
+                            <table class="table table-dark" style="width:100%;">
+                                <tbody>
+                                    <tr style="height: 60.5px;">
+                                        <td style="align-items: center; padding-left:8%;">
+                                            <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)"
+                                                 height="50" width="80" alt="Logo"/>
+                                        </td>
+                                        <td style="align-items: center; float:left; ">
+                                            <img src="https://www.mcbislamicbank.com/wp-content/themes/mcbislamic/assets/images/Logo-White.png"
+                                                 height="40" width="200"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-dark" style="border-collapse:collapse; width:100%;">
+                                <thead>
+                                    <tr style=" width: 100px;">
+                                        <th style="text-align: center; width: 98px; font-size:14px;">
+                                            <spam>Bank Copy</spam>
+                                        </th>
+                                    </tr>
+                                    <tr style=" width: 100px;">
+                                        <th style="text-align: center; width: 98px; font-size:14px; border:1px solid">
+                                            <strong>Presbyterian Education Board In Pakistan
+                                            </strong>
+                                        </th>
+                                    </tr>
+
+                                    <tr style="width: 100px; text-align:center;">
+                                        <td style="font-size: 11px;">
+                                            <strong>
+                                                <span t-field="o.partner_id.branch_id.name"/>
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <table style="width:100%; border-bottom: 1px solid black;">
+                                <tr>
+                                    <td style="font-size: 11px;">
+                                        <input type="checkbox" id="mcb_bank" name="mcb_bank"
+                                               value="mcb_bank"/>
+                                        <label for="mcb_bank" style="font-size:11px;">MCB Islamic. Bank Coll. A/C
+                                        </label>
+                                    </td>
+                                    <td style="font-size: 11px; float: right; text-decoration: underline;">
+                                        <strong>2091004026530035</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 11px; float:left; ">
+                                        <p>Account Title:</p>
+                                    </td>
+                                    <td style="font-size: 11px; float:right; ">
+                                        <p>Presbyterian Education Board in Pakistan Collection AC</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 11px;">
+                                        <input type="checkbox" id="mcb_bank" name="mcb_bank"
+                                               value="mcb_bank"/>
+                                        <label for="mcb_bank" style="font-size:11px;">MCB Islamic. Bank Coll. A/C
+                                        </label>
+                                    </td>
+                                    <td style="font-size: 11px; float: right; text-decoration: underline;">
+                                        <strong>1508604931041560</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 11px; float:left;">
+                                        <p>Account Title:</p>
+                                    </td>
+                                    <td style="font-size: 11px; float:right;">
+                                        <p>Presbyterian Education Board in Pakistan Collection AC</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 11px; float:left;">
+                                        <strong>TBD Customer Code (PEBCP) -</strong>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table>
+                                <tr style="border:1px solid;">
+                                    <td style="font-size: 17px; align-items: center;">
+                                        <strong>Challan No:</strong>
+                                    </td>
+                                    <td style="font-size: 17px; align-items: center;">
+                                        <span t-field="o.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 13px;">
+                                        <strong>Name:</strong>
+                                    </td>
+                                    <td style="font-size: 13px;">
+                                        <strong>
+                                            <span t-field="o.partner_id.name"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 13px;">
+                                        <strong>Parent Name:</strong>
+                                    </td>
+                                    <td style="font-size: 15px;">
+                                        <t t-if="o.partner_id.student_relationship_ids">
+                                            <t t-foreach="o.partner_id.student_relationship_ids.sudo()"
+                                               t-as="family_names">
+                                                <t t-if="family_names.relationship_type">
+                                                    <t t-if="family_names.relationship_type == 'father'">
+                                                        <span t-field="family_names.parent_id.name"/>
+                                                    </t>
+                                                    <t t-elif="family_names.relationship_type == 'mother'">
+                                                        <span t-field="family_names.parent_id.name"/>
+                                                    </t>
+                                                    <t t-elif="family_names.relationship_type == 'uncle'">
+                                                        <span t-field="family_names.parent_id.name"/>
+                                                    </t>
+                                                    <t t-elif="family_names.relationship_type == 'aunt'">
+                                                        <span t-field="family_names.parent_id.name"/>
+                                                    </t>
+                                                    <t t-elif="family_names.relationship_type == 'brother'">
+                                                        <span t-field="family_names.parent_id.name"/>
+                                                    </t>
+                                                </t>
+                                            </t>
+                                        </t>
+                                    </td>
+
+                                    <td style="font-size: 13px;">
+                                        <strong>Class:</strong>
+                                    </td>
+                                    <td>
+                                        <t t-foreach="o.partner_id" t-as="family_names">
+                                            <span style="font-size: 15px;" t-field="family_names.current_grade_selection"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 13px;">
+                                        <strong>Reg NO:</strong>
+                                    </td>
+                                    <td style="font-size: 15px;">
+                                        <span t-field="o.partner_id.reg_number"/>
+                                    </td>
+
+                                    <td style="font-size: 13px; font-weight:bold;">
+                                        <strong>Student ID:</strong>
+                                    </td>
+                                    <td style="font-size: 13px; font-weight:bold;">
+                                        <strong>
+                                            <span class="o_stat_value" t-field="o.partner_id.student_code"
+                                                  t-options="{'widget': 'text'}"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 13px;">
+                                        <strong>DueDate:</strong>
+                                    </td>
+                                    <td style="font-size: 13px;">
+                                        <t t-esc="o.invoice_date_due.strftime('%d-%m-%Y')"/>
+                                    </td>
+
+                                    <td style="font-size: 13px;">
+                                        <strong>Fee For:</strong>
+                                    </td>
+                                    <td style="font-size: 13px;">
+                                        <strong>
+                                            <t t-esc="o.invoice_date.strftime('%B-%y')"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div>
+                                <div>
+                                    <table class="table table-dark" style="border-collapse:collapse; width:100%;">
+                                        <thead>
+                                            <tr style="background-color:#DFD7D7; width: 100px;">
+                                                <th style="text-align: left; width: 98px; font-size:11px; border:1px solid black;">
+                                                    <strong>Particulars</strong>
+                                                </th>
+                                                <th style="text-align: right; width: 132.138px; font-size:11px; border:1px solid black;">
+                                                    <strong>AMOUNT (RS.)</strong>
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Loop through the invoice_line_ids to display each product's name and price -->
+                                            <t t-foreach="o.invoice_line_ids.sudo()" t-as="line">
+                                                <!-- Exclude late fee lines -->
+                                                <t t-if="line.product_id.name != 'Late Fee'">
+                                                    <tr>
+                                                        <td style="text-align: left; font-size:11px; border:1px solid black;">
+                                                            <t t-esc="line.name"/>
+                                                        </td>
+                                                        <td style="text-align: right; font-size:11px; border:1px solid black;">
+                                                            <t t-esc="line.price_total"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </t>
+                                            <!--unpaid
+                                            amount arrears -->
+                                            <t t-set="amount_due_sum" t-value="0"/>
+
+                                            <tr style="">
+
+                                                <td style="text-align: right; font-size:10px; font-weight:bold">Total
+                                                </td>
+                                                <td style="text-align: right; border: 1px solid black; font-size:11px; font-weight:bold;">
+                                                    <t t-esc="o.amount_total+amount_due_sum"/>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td style="text-align: right; font-size:10px; font-weight:bold">Actual
+                                                    Fee
+                                                </td>
+                                                <td style="text-align: right; border: 1px solid black; font-size:11px; font-weight:bold;">
+                                                    <t t-esc="o.amount_total+amount_due_sum"/>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td>
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td>
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td>
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td>
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td style="text-align: right; font-size:10px; font-weight:bold">
+                                                    Financial Aid by PEB:
+                                                </td>
+                                                <td style="text-align: right; border: 1px solid black; font-size:11px;">
+                                                    <p>0</p>
+                                                    <!--                                                    <t t-esc="o.amount_total+amount_due_sum"/>-->
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td style="text-align: right; font-size:10px; font-weight:bold">Parents
+                                                    Contribution:
+                                                </td>
+                                                <td style="text-align: right; border: 1px solid black; font-size:11px; font-weight:bold;">
+                                                    <t t-esc="o.amount_total+amount_due_sum"/>
+                                                    <!--                                                    <t t-esc="o.amount_total+amount_due_sum"/>-->
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+
+                                <table class="table table-dark" style="width:100%;">
+                                    <tr style="">
+                                        <td style="text-align: right; font-size:10px; font-weight:bold">Payment
+                                            Before Due Date:
+                                        </td>
+                                        <td style="text-align: right; border: 1px solid black; font-size:11px; font-weight:bold;">
+                                            <t t-esc="o.amount_total+amount_due_sum"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right; font-size:10px; font-weight:bold;">
+                                            <h3>After
+                                                Due Date
+                                            </h3>
+                                        </td>
+                                        <td style="text-align: right; width: 132.138px; font-size:11px; margin-right: 5%;border: 1px solid black;font-weight:bold;">
+                                            <t t-esc="o.amount_total+300"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left; float:left; font-size:10px; font-weight:bold;">
+                                            ______________________
+                                            <br/>
+                                            <br/>
+                                            Bank (Signature Stamp)
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div>
+                                    <p style="font-size:12px; margin-bottom:0%;">
+                                        <strong>
+                                            <u>Payment History</u>
+                                        </strong>
+                                    </p>
+                                    <!-- Payment History Table -->
+                                    <table class="table table-dark" style="border-collapse:collapse; width:100%;">
+                                        <thead>
+                                            <tr style="background-color: #DFD7D7;">
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Month</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Jan</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Feb</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Mar</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Apr</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>May</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Jun</strong>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <strong>Amnt:</strong>
+                                                </td>
+                                                <td style="text-align: center; font-size:13px; border:1px solid black; border-bottom:none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'January'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'February'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'March'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'April'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'May'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'June'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <strong>Paid On:</strong>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'January'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'February'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'March'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'April'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'May'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'June'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table table-dark" style="border-collapse:collapse; width:100%;">
+                                        <thead>
+                                            <tr style="background-color: #DFD7D7;">
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Month</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>July</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Aug</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Sep</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Oct</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Nov</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Dec</strong>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <strong>Amnt:</strong>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'July'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'August'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'September'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'October'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'November'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'December'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <strong>Paid On:</strong>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'July'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'August'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'September'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'October'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'November'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'December'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <!-- Total Pending Fee Calculation -->
+                                    <t t-set="total_pending_fee" t-value="o.total_pending_fee"/>
+                                    <t t-set="unpaid_months" t-value="o.unpaid_months"/>
+
+                                    <strong style="float:right;">For
+                                        <t t-esc="unpaid_months"/>
+                                        Month(s) Total Pending Fee:
+                                        <t t-esc="total_pending_fee"/>
+                                    </strong>
+                                </div>
+                                <br/>
+
+                            </div>
+                        </div>
+
+                        <!--2nd
+                        box-->
+                        <div class="column"
+                             style="float: left; border: 1px solid black; width: 32%;  height: 95%; margin-right: 1%;">
+                            <t t-if="o.state=='draft'">
+                                <div class="watermark"
+                                     style="text-align:center; position:absolute;opacity:0.15;font-size:8em;">
+                                    <p t-field="o.state"
+                                       t-att-style="'transform:rotate(-45deg); -webkit-transform:rotate(-45deg); margin-left:50px; margin-top:300px; '"/>
+                                </div>
+                            </t>
+                            <table class="table table-dark" style="width:100%;">
+                                <tbody>
+                                    <tr style="height: 60.5px;">
+                                        <td style="align-items: center; padding-left:8%;">
+                                            <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)"
+                                                 height="50" width="80" alt="Logo"/>
+                                        </td>
+                                        <td style="align-items: center; float:left; ">
+                                            <img src="https://www.mcbislamicbank.com/wp-content/themes/mcbislamic/assets/images/Logo-White.png"
+                                                 height="40" width="200"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-dark" style="border-collapse:collapse; width:100%;">
+                                <thead>
+                                    <tr style=" width: 100px;">
+                                        <th style="text-align: center; width: 98px; font-size:17px;">
+                                            <spam>PEB Office Copy</spam>
+                                        </th>
+                                    </tr>
+                                    <tr style=" width: 100px;">
+                                        <th style="text-align: center; width: 98px; font-size:14px; border:1px solid">
+                                            <strong>Presbyterian Education Board In Pakistan
+                                            </strong>
+                                        </th>
+                                    </tr>
+
+                                    <tr style="width: 100px; text-align:center;">
+                                        <td style="font-size: 11px;">
+                                            <strong>
+                                                <span t-field="o.partner_id.branch_id.name"/>
+                                            </strong>
+                                        </td>
+                                        <td style="font-size: 11px;"/>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <table style="width:100%; border-bottom: 1px solid black;">
+                                <tr>
+                                    <td style="font-size: 11px;">
+                                        <input type="checkbox" id="mcb_bank" name="mcb_bank"
+                                               value="mcb_bank"/>
+                                        <label for="mcb_bank" style="font-size:11px;">MCB Islamic. Bank Coll. A/C
+                                        </label>
+                                    </td>
+                                    <td style="font-size: 11px; float: right; text-decoration: underline;">
+                                        <strong>2091004026530035</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 11px; float:left; ">
+                                        <p>Account Title:</p>
+                                    </td>
+                                    <td style="font-size: 11px; float:right; ">
+                                        <p>Presbyterian Education Board in Pakistan Collection AC</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 11px;">
+                                        <input type="checkbox" id="mcb_bank" name="mcb_bank"
+                                               value="mcb_bank"/>
+                                        <label for="mcb_bank" style="font-size:11px;">MCB Islamic. Bank Coll. A/C
+                                        </label>
+                                    </td>
+                                    <td style="font-size: 11px; float: right; text-decoration: underline;">
+                                        <strong>1508604931041560</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 11px; float:left;">
+                                        <p>Account Title:</p>
+                                    </td>
+                                    <td style="font-size: 11px; float:right;">
+                                        <p>Presbyterian Education Board in Pakistan Collection AC</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 11px; float:left;">
+                                        <strong>TBD Customer Code (PEBCP) -</strong>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table>
+                                <tr style="border:1px solid;">
+                                    <td style="font-size: 17px; align-items: center;">
+                                        <strong>Challan No:</strong>
+                                    </td>
+                                    <td style="font-size: 17px; align-items: center;">
+                                        <span t-field="o.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 13px;">
+                                        <strong>Name:</strong>
+                                    </td>
+                                    <td style="font-size: 13px;">
+                                        <strong>
+                                            <span t-field="o.partner_id.name"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 13px;">
+                                        <strong>Parent Name:</strong>
+                                    </td>
+                                    <td style="font-size: 13px;">
+                                        <t t-foreach="o.partner_id.student_relationship_ids" t-as="family_names">
+                                            <t t-if="family_names.relationship_type == 'father'">
+                                                <span t-field="family_names.parent_id.name"/>
+                                            </t>
+                                            <t t-elif="family_names.relationship_type == 'mother'">
+                                                <span t-field="family_names.parent_id.name"/>
+                                            </t>
+                                            <t t-elif="family_names.relationship_type == 'uncle'">
+                                                <span t-field="family_names.parent_id.name"/>
+                                            </t>
+                                            <t t-elif="family_names.relationship_type == 'aunt'">
+                                                <span t-field="family_names.parent_id.name"/>
+                                            </t>
+                                            <t t-elif="family_names.relationship_type == 'brother'">
+                                                <span t-field="family_names.parent_id.name"/>
+                                            </t>
+                                        </t>
+                                    </td>
+
+                                    <td style="font-size: 13px;">
+                                        <strong>Class:</strong>
+                                    </td>
+                                    <td>
+                                        <t t-foreach="o.partner_id" t-as="family_names">
+                                            <span style="font-size: 15px;" t-field="family_names.current_grade_selection"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 13px;">
+                                        <strong>Reg NO:</strong>
+                                    </td>
+                                    <td style="font-size: 15px;">
+                                        <span t-field="o.partner_id.reg_number"/>
+                                    </td>
+
+                                    <td style="font-size: 13px; font-weight:bold;">
+                                        <strong>Student ID:</strong>
+                                    </td>
+                                    <td style="font-size: 13px; font-weight:bold;">
+                                        <strong>
+                                            <span class="o_stat_value" t-field="o.partner_id.student_code"
+                                                  t-options="{'widget': 'text'}"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 13px;">
+                                        <strong>DueDate:</strong>
+                                    </td>
+                                    <td style="font-size: 13px;">
+                                        <t t-esc="o.invoice_date_due.strftime('%d-%m-%Y')"/>
+                                    </td>
+
+                                    <td style="font-size: 13px;">
+                                        <strong>Fee For:</strong>
+                                    </td>
+                                    <td style="font-size: 13px;">
+                                        <strong>
+                                            <t t-esc="o.invoice_date.strftime('%B-%y')"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div>
+                                <div>
+                                    <table class="table table-dark" style="border-collapse:collapse; width:100%;">
+                                        <thead>
+                                            <tr style="background-color:#DFD7D7; width: 100px;">
+                                                <th style="text-align: left; width: 98px; font-size:11px; border:1px solid black;">
+                                                    <strong>Particulars</strong>
+                                                </th>
+                                                <th style="text-align: right; width: 132.138px; font-size:11px; border:1px solid black;">
+                                                    <strong>AMOUNT (RS.)</strong>
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-set="tution_fee" t-value="0"/>
+                                            <!-- Loop through the invoice_line_ids to display each product's name and price -->
+                                            <t t-foreach="o.invoice_line_ids.sudo()" t-as="line">
+                                                <!-- Exclude late fee lines -->
+                                                <t t-if="line.product_id.name != 'Late Fee'">
+                                                    <tr>
+                                                        <td style="text-align: left; font-size:11px; border:1px solid black;">
+                                                            <t t-esc="line.name"/>
+                                                        </td>
+                                                        <td style="text-align: right; font-size:11px; border:1px solid black;">
+                                                            <t t-esc="line.price_total"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </t>
+                                            <t t-set="amount_due_sum" t-value="0"/>
+                                            <tr style="">
+
+                                                <td style="text-align: right; font-size:10px; font-weight:bold">Total
+                                                </td>
+                                                <td style="text-align: right; border: 1px solid black; font-size:11px; font-weight:bold;">
+                                                    <t t-esc="o.amount_total+amount_due_sum"/>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td style="text-align: right; font-size:10px; font-weight:bold">Actual
+                                                    Fee
+                                                </td>
+                                                <td style="text-align: right; border: 1px solid black; font-size:11px; font-weight:bold;">
+                                                    <t t-esc="o.amount_total+amount_due_sum"/>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td>
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td>
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td>
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td>
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td style="text-align: right; font-size:10px; font-weight:bold">
+                                                    Financial Aid by PEB:
+                                                </td>
+                                                <td style="text-align: right; border: 1px solid black; font-size:11px;">
+                                                    <p>0</p>
+                                                    <!--                                                    <t t-esc="o.amount_total+amount_due_sum"/>-->
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td style="text-align: right; font-size:10px; font-weight:bold">Parents
+                                                    Contribution:
+                                                </td>
+                                                <td style="text-align: right; border: 1px solid black; font-size:11px; font-weight:bold;">
+                                                    <t t-esc="o.amount_total+amount_due_sum"/>
+                                                    <!--                                                    <t t-esc="o.amount_total+amount_due_sum"/>-->
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                                <!--I
+                                am Starting from here  -->
+                                <table class="table table-dark" style="width:100%;">
+                                    <tr style="">
+                                        <td style="text-align: right; font-size:10px; font-weight:bold">Payment
+                                            Before Due Date:
+                                        </td>
+                                        <td style="text-align: right; border: 1px solid black; font-size:11px; font-weight:bold;">
+                                            <t t-esc="o.amount_total"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right; font-size:10px; font-weight:bold;">
+                                            <h3>After
+                                                Due Date
+                                            </h3>
+                                        </td>
+                                        <td style="text-align: right; width: 132.138px; font-size:11px; margin-right: 5%;border: 1px solid black;font-weight:bold;">
+                                            <t t-esc="o.amount_total+300"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left; float:left; font-size:10px; font-weight:bold;">
+                                            ______________________
+                                            <br/>
+                                            <br/>
+                                            Bank (Signature Stamp)
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div>
+                                    <p style="font-size:12px; margin-bottom:0%;">
+                                        <strong>
+                                            <u>Payment History</u>
+                                        </strong>
+                                    </p>
+                                    <!-- Payment History Table -->
+                                    <table class="table table-dark" style="border-collapse:collapse; width:100%;">
+                                        <thead>
+                                            <tr style="background-color: #DFD7D7;">
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Month</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Jan</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Feb</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Mar</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Apr</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>May</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Jun</strong>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <strong>Amnt:</strong>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'January'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'February'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'March'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'April'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'May'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'June'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <strong>Paid On:</strong>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'January'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'February'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'March'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:13px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'April'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'May'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'June'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table table-dark" style="border-collapse:collapse; width:100%;">
+                                        <thead>
+                                            <tr style="background-color: #DFD7D7;">
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Month</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>July</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Aug</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Sep</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Oct</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Nov</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Dec</strong>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <strong>Amnt:</strong>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'July'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'August'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'September'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'October'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'November'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'December'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <strong>Paid On:</strong>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'July'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'August'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'September'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'October'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'November'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'December'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+
+                                    <!-- Total Pending Fee Calculation -->
+                                    <t t-set="total_pending_fee" t-value="o.total_pending_fee"/>
+                                    <t t-set="unpaid_months" t-value="o.unpaid_months"/>
+
+                                    <strong style="float:right;">For
+                                        <t t-esc="unpaid_months"/>
+                                        Month(s) Total Pending Fee:
+                                        <t t-esc="total_pending_fee"/>
+                                    </strong>
+                                </div>
+                                <br/>
+
+                            </div>
+                        </div>
+
+                        <!--3rd
+                        box-->
+                        <div class="column"
+                             style="float: left; border: 1px solid black; width: 32%;  height: 95%; margin-right: 1%;">
+                            <t t-if="o.state=='draft'">
+                                <div class="watermark"
+                                     style="text-align:center; position:absolute;opacity:0.15;font-size:8em;">
+                                    <p t-field="o.state"
+                                       t-att-style="'transform:rotate(-45deg); -webkit-transform:rotate(-45deg); margin-left:50px; margin-top:300px; '"/>
+                                </div>
+                            </t>
+                            <table class="table table-dark" style="width:100%;">
+                                <tbody>
+                                    <tr style="height: 60.5px;">
+                                        <td style="align-items: center; padding-left:8%;">
+                                            <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)"
+                                                 height="50" width="80" alt="Logo"/>
+                                        </td>
+                                        <td style="align-items: center; float:left; ">
+                                            <img src="https://www.mcbislamicbank.com/wp-content/themes/mcbislamic/assets/images/Logo-White.png"
+                                                 height="40" width="200"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-dark" style="border-collapse:collapse; width:100%;">
+                                <thead>
+                                    <tr style=" width: 100px;">
+                                        <th style="text-align: center; width: 98px; font-size:15px;">
+                                            <spam>Parent Copy</spam>
+                                        </th>
+                                    </tr>
+                                    <tr style=" width: 100px;">
+                                        <th style="text-align: center; width: 98px; font-size:14px; border:1px solid">
+                                            <strong>Presbyterian Education Board In Pakistan
+                                            </strong>
+                                        </th>
+                                    </tr>
+
+                                    <tr style="width: 100px; text-align:center;">
+                                        <td style="font-size: 11px;">
+                                            <strong>
+                                                <span t-field="o.partner_id.branch_id.name"/>
+                                            </strong>
+                                        </td>
+                                        <td style="font-size: 11px;"/>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <table style="width:100%; border-bottom: 1px solid black;">
+                                <tr>
+                                    <td style="font-size: 11px;">
+                                        <input type="checkbox" id="mcb_bank" name="mcb_bank"
+                                               value="mcb_bank"/>
+                                        <label for="mcb_bank" style="font-size:11px;">MCB Islamic. Bank Coll. A/C
+                                        </label>
+                                    </td>
+                                    <td style="font-size: 11px; float: right; text-decoration: underline;">
+                                        <strong>2091004026530035</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 11px; float:left; ">
+                                        <p>Account Title:</p>
+                                    </td>
+                                    <td style="font-size: 11px; float:right; ">
+                                        <p>Presbyterian Education Board in Pakistan Collection AC</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 11px;">
+                                        <input type="checkbox" id="mcb_bank" name="mcb_bank"
+                                               value="mcb_bank"/>
+                                        <label for="mcb_bank" style="font-size:11px;">MCB Islamic. Bank Coll. A/C
+                                        </label>
+                                    </td>
+                                    <td style="font-size: 11px; float: right; text-decoration: underline;">
+                                        <strong>1508604931041560</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 11px; float:left;">
+                                        <p>Account Title:</p>
+                                    </td>
+                                    <td style="font-size: 11px; float:right;">
+                                        <p>Presbyterian Education Board in Pakistan Collection AC</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 11px; float:left;">
+                                        <strong>TBD Customer Code (PEBCP) -</strong>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table>
+                                <tr style="border:1px solid;">
+                                    <td style="font-size: 17px; align-items: center;">
+                                        <strong>Challan No:</strong>
+                                    </td>
+                                    <td style="font-size: 17px; align-items: center;">
+                                        <span t-field="o.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 13px;">
+                                        <strong>Name:</strong>
+                                    </td>
+                                    <td style="font-size: 13px;">
+                                        <strong>
+                                            <span t-field="o.partner_id.name"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 13px;">
+                                        <strong>Parent Name:</strong>
+                                    </td>
+                                    <td style="font-size: 13px;">
+                                        <t t-foreach="o.partner_id.student_relationship_ids" t-as="family_names">
+                                            <t t-if="family_names.relationship_type == 'father'">
+                                                <span t-field="family_names.parent_id.name"/>
+                                            </t>
+                                            <t t-elif="family_names.relationship_type == 'mother'">
+                                                <span t-field="family_names.parent_id.name"/>
+                                            </t>
+                                            <t t-elif="family_names.relationship_type == 'uncle'">
+                                                <span t-field="family_names.parent_id.name"/>
+                                            </t>
+                                            <t t-elif="family_names.relationship_type == 'aunt'">
+                                                <span t-field="family_names.parent_id.name"/>
+                                            </t>
+                                            <t t-elif="family_names.relationship_type == 'brother'">
+                                                <span t-field="family_names.parent_id.name"/>
+                                            </t>
+                                        </t>
+                                    </td>
+
+                                    <td style="font-size: 13px;">
+                                        <strong>Class:</strong>
+                                    </td>
+                                    <td>
+                                        <t t-foreach="o.partner_id" t-as="family_names">
+                                            <span style="font-size: 15px;" t-field="family_names.current_grade_selection"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 13px;">
+                                        <strong>Reg NO:</strong>
+                                    </td>
+                                    <td style="font-size: 15px;">
+                                        <span t-field="o.partner_id.reg_number"/>
+                                    </td>
+
+                                    <td style="font-size: 13px; font-weight:bold;">
+                                        <strong>Student ID:</strong>
+                                    </td>
+                                    <td style="font-size: 13px; font-weight:bold;">
+                                        <strong>
+                                            <span class="o_stat_value" t-field="o.partner_id.student_code"
+                                                  t-options="{'widget': 'text'}"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 13px;">
+                                        <strong>DueDate:</strong>
+                                    </td>
+                                    <td style="font-size: 13px;">
+                                        <t t-esc="o.invoice_date_due.strftime('%d-%m-%Y')"/>
+                                    </td>
+
+                                    <td style="font-size: 13px;">
+                                        <strong>Fee For:</strong>
+                                    </td>
+                                    <td style="font-size: 13px;">
+                                        <strong>
+                                            <t t-esc="o.invoice_date.strftime('%B-%y')"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div>
+                                <div>
+                                    <table class="table table-dark" style="border-collapse:collapse; width:100%;">
+                                        <thead>
+                                            <tr style="background-color:#DFD7D7; width: 100px;">
+                                                <th style="text-align: left; width: 98px; font-size:11px; border:1px solid black;">
+                                                    <strong>Particulars</strong>
+                                                </th>
+                                                <th style="text-align: right; width: 132.138px; font-size:11px; border:1px solid black;">
+                                                    <strong>AMOUNT (RS.)</strong>
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-set="tution_fee" t-value="0"/>
+                                            <!-- Loop through the invoice_line_ids to display each product's name and price -->
+                                            <t t-foreach="o.invoice_line_ids.sudo()" t-as="line">
+                                                <!-- Exclude late fee lines -->
+                                                <t t-if="line.product_id.name != 'Late Fee'">
+                                                    <tr>
+                                                        <td style="text-align: left; font-size:11px; border:1px solid black;">
+                                                            <t t-esc="line.name"/>
+                                                        </td>
+                                                        <td style="text-align: right; font-size:11px; border:1px solid black;">
+                                                            <t t-esc="line.price_total"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </t>
+                                            <!--unpaid
+                                            amount arrears -->
+                                            <t t-set="amount_due_sum" t-value="0"/>
+
+                                            <tr style="">
+
+                                                <td style="text-align: right; font-size:10px; font-weight:bold">Total
+                                                </td>
+                                                <td style="text-align: right; border: 1px solid black; font-size:11px; font-weight:bold;">
+                                                    <t t-esc="o.amount_total+amount_due_sum"/>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td style="text-align: right; font-size:10px; font-weight:bold">Actual
+                                                    Fee
+                                                </td>
+                                                <td style="text-align: right; border: 1px solid black; font-size:11px; font-weight:bold;">
+                                                    <t t-esc="o.amount_total+amount_due_sum"/>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td>
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td>
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td>
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td>
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td style="text-align: right; font-size:10px; font-weight:bold">
+                                                    Financial Aid by PEB:
+                                                </td>
+                                                <td style="text-align: right; border: 1px solid black; font-size:11px;">
+                                                    <p>0</p>
+                                                    <!--                                                    <t t-esc="o.amount_total+amount_due_sum"/>-->
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td style="text-align: right; font-size:10px; font-weight:bold">Parents
+                                                    Contribution:
+                                                </td>
+                                                <td style="text-align: right; border: 1px solid black; font-size:11px; font-weight:bold;">
+                                                    <t t-esc="o.amount_total+amount_due_sum"/>
+                                                    <!--                                                    <t t-esc="o.amount_total+amount_due_sum"/>-->
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                                <!--I
+                                am Starting from here  -->
+                                <table class="table table-dark" style="width:100%;">
+                                    <tr style="">
+                                        <td style="text-align: right; font-size:10px; font-weight:bold">Payment
+                                            Before Due Date:
+                                        </td>
+                                        <td style="text-align: right; border: 1px solid black; font-size:11px; font-weight:bold;">
+                                            <t t-esc="o.amount_total+amount_due_sum"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right; font-size:10px; font-weight:bold;">
+                                            <h3>After
+                                                Due Date
+                                            </h3>
+                                        </td>
+                                        <td style="text-align: right; width: 132.138px; font-size:11px; margin-right: 5%;border: 1px solid black;font-weight:bold;">
+                                            <t t-esc="o.amount_total+300"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left; float:left; font-size:10px; font-weight:bold;">
+                                            ______________________
+                                            <br/>
+                                            <br/>
+                                            Bank (Signature Stamp)
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div>
+                                    <p style="font-size:12px; margin-bottom:0%;">
+                                        <strong>
+                                            <u>Payment History</u>
+                                        </strong>
+                                    </p>
+                                    <!-- Payment History Table -->
+                                    <table class="table table-dark" style="border-collapse:collapse; width:100%;">
+                                        <thead>
+                                            <tr style="background-color: #DFD7D7;">
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Month</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Jan</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Feb</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Mar</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Apr</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>May</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Jun</strong>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <strong>Amnt:</strong>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'January'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'February'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'March'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'April'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'May'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom:none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'June'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <strong>Paid On:</strong>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'January'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'February'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'March'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'April'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'May'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'June'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table table-dark" style="border-collapse:collapse; width:100%;">
+                                        <thead>
+                                            <tr style="background-color: #DFD7D7;">
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Month</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>July</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Aug</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Sep</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Oct</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Nov</strong>
+                                                </th>
+                                                <th style="text-align: center; font-size:11px; border:1px solid black; width:14.28%;">
+                                                    <strong>Dec</strong>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <strong>Amnt:</strong>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'July'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'August'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'September'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'October'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'November'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-bottom: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'December'">
+                                                            <t t-esc="payment_history.amount"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <strong>Paid On:</strong>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'July'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'August'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'September'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'October'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'November'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; font-size:11px; border:1px solid black; border-top: none;">
+                                                    <t t-foreach="o.payment_history_ids" t-as="payment_history">
+                                                        <t t-if="payment_history.month.split(' ')[0] == 'December'">
+                                                            <t t-esc="payment_history.payment_date.strftime('%d %b %Y') if payment_history.payment_date else ''"/>
+                                                        </t>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <!-- Total Pending Fee Calculation -->
+                                    <t t-set="total_pending_fee" t-value="o.total_pending_fee"/>
+                                    <t t-set="unpaid_months" t-value="o.unpaid_months"/>
+
+                                    <strong style="float:right;">For
+                                        <t t-esc="unpaid_months"/>
+                                        Month(s) Total Pending Fee:
+                                        <t t-esc="total_pending_fee"/>
+                                    </strong>
+                                </div>
+                                <br/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

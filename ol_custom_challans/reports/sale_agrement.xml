@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+
+    <record id="report_post_view_paper" model="report.paperformat">
+        <field name="name">Challan</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">3</field>
+        <field name="margin_bottom">3</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">3</field>
+        <field name="dpi">80</field>
+    </record>
+
+     <report
+            id="report_fee_challan_copy_declare"
+            model="account.move"
+            report_type="qweb-pdf"
+            string="Fee Challan "
+            name="ol_custom_challans.fee_challan"
+            file="ol_custom_challans.fee_challan"
+            paperformat="ol_custom_challans.report_post_view_paper"
+        />
+
+    <!-- <report 
+    id = "generate_report"
+    model = "account.move"
+    string = "Fee Challan"
+    name = "cus_report.report_post_view"
+    file = "cus_report.report_post"
+    report_type="qweb-pdf"
+    paperformat="cus_report.report_post_view_paper"
+    
+    />
+
+   <report
+            id="report_admission_challan"
+            model="account.move"
+            report_type="qweb-pdf"
+            string="Admission Challan"
+            name="cus_report.admission_challan"
+            file="cus_report.admission_challan"
+            paperformat="cus_report.report_post_view_paper"
+        /> -->
+
+        <!-- <record id="report_post_dues_paper" model="report.paperformat">
+        <field name="name">Dues</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">3</field>
+        <field name="margin_bottom">3</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">3</field>
+        <field name="dpi">80</field>
+    </record> -->
+
+        <!-- <report
+            id="report_dues_assesment_sheet"
+            model="account.move"
+            report_type="qweb-pdf"
+            string="Dues Assessment Sheet" 
+            name="cus_report.dues_assesment_sheet"
+            file="cus_report.dues_assesment_sheet"
+            paperformat="cus_report.report_post_dues_paper"
+            
+        /> -->
+
+       
+
+</odoo>
