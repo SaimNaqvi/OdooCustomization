@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <record id="inherit_account_pay_register_view"  model="ir.ui.view">
+     <field name="name">inherit.late.fee.field</field>
+     <field name="model">account.payment.register</field>
+     <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+     <field name="arch" type="xml">
+     <xpath expr="//label[@for='amount']" position="before">
+
+                <label for="late_fee_amt" attrs="{'invisible': ['|', ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}"/>
+                <div name="latefee_div" class="o_row" attrs="{'invisible': ['|', ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}">
+                    <field name="late_fee_amt" />
+                </div>
+
+
+                <label for="with_late_fee_payment" attrs="{'invisible': ['|', ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}"/>
+                <div name="with_late_fee_amt_div" class="o_row" attrs="{'invisible': ['|', ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}">
+                    <field name="with_late_fee_payment"/>
+                    <field name="currency_id" required="1" options="{'no_create': True, 'no_open': True}" groups="base.group_multi_currency"/>
+                </div>
+
+                <label for="without_late_fee_amt" attrs="{'invisible': ['|', ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}"/>
+                <div name="without_late_fee_amt_div" class="o_row" attrs="{'invisible': ['|', ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}">
+                    <field name="without_late_fee_amt"/>
+                    <field name="currency_id" required="1" options="{'no_create': True, 'no_open': True}" groups="base.group_multi_currency"/>
+                </div>
+            </xpath>
+
+            <xpath expr="//field[@name='partner_bank_id']" position="after">
+                <field name="set_charge" invisble="1"/>
+                <field name="set_percentage" invisble="1"/>
+                <field name="fee_charge" attrs="{'invisible': [('set_charge', '=', False)]}"/>
+                <field name="fee_percent" attrs="{'invisible': [('set_percentage', '=', False)]}"/>
+            </xpath>
+    </field>
+    </record>
+
+
+
+
+
+</odoo>
