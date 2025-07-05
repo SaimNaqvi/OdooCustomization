@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+ol_custom_invoice_report.access_invoice_report,access_invoice_report,ol_custom_invoice_report.model_invoice_report,base.group_user,1,1,1,1
+ol_custom_invoice_report.access_invoice_report_excel,access_invoice_report_excel,ol_custom_invoice_report.model_invoice_report_excel,base.group_user,1,1,1,1
+ol_custom_invoice_report.access_product_tag,access_product_tag,ol_custom_invoice_report.model_product_tag,base.group_user,1,1,1,1
+
+
+

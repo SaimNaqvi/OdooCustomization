@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="view_move_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account_edi.view_move_form_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@id='edi_documents']" position="after">
+                <page name="Arrears" string="Arrears Unpaid Invoices">
+                    <field name="unpaid_std_ids"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

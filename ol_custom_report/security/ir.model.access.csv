@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access.custom.contact.report,access_custom_contact_report,ol_custom_report.model_custom_contact_report,base.group_user,1,1,1,1
+access.sale.day.book.report.excel,access_sale_day_book_report_excel,ol_custom_report.model_sale_day_book_report_excel,base.group_user,1,1,1,1

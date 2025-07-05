@@ -1,0 +1,80 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="custom_invoice_report_view">
+            <field name="name">custom.invoice.report.form</field>
+            <field name="model">invoice.report</field>
+            <field name="arch" type="xml">
+                <form string="My Wizard">
+                    <sheet>
+                        <group>
+                            <field name="date_from" />
+                            <field name="date_to" />
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Generate Report" type="object" name="generate_report"
+                            class="btn-primary" />
+                        <button string="Cancel" special="cancel" class="btn-secondary" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="my_wizard_action">
+            <field name="name">Daily Paid Fee Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">invoice.report</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="custom_invoice_report_view" />
+            <field name="target">new</field>
+        </record>
+        <menuitem id="menu_action_generate_invoice_report" name="Daily Paid Report"
+            action="my_wizard_action" parent="son_accounting_menu.billing_reports_menu" sequence='3'/>
+
+        <record id="view_invoice_report_excel" model="ir.ui.view">
+            <field name="name">view.invoice.report.excel </field>
+            <field name="model">invoice.report.excel</field>
+            <field name="arch" type="xml">
+                <form string="Genrated xls File">
+                    <group>
+                        <field name="file_name" invisible="1" />
+                        <field name="excel_file" readonly="1" filename="file_name" />
+                    </group>
+                    <footer>
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- M Arsalan -->
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" data-string="Product tag" id="Product_tag" string="Product tags" data-key="ol_custom_invoice_report">
+                        <h2>Product tags</h2>
+                        <div class="row mt16 o_settings_container" id="hospital_setting">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <span class="o_form_label">All Product tag</span>
+                                <div class="o_setting_left_pane"/>
+                                <div class="o_setting_right_pane">
+                                    <div class="text-muted content-group mt16">
+                                        <field name="tag_ids" widget="many2many_tags" placeholder="Tags"/>
+                                        <!-- <span> days</span> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+        <!-- M Arsalan -->
+
+    </data>
+</odoo>
