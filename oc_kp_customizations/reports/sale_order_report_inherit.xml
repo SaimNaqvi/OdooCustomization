@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="report_saleorder_document_inherit" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//span[@t-field='doc.date_order']" position="replace">
+            <span class="m-0" t-esc="doc.date_order.strftime('%d/%m/%Y %H:%M:%S')"/>
+        </xpath>
+        <xpath expr="//span[@t-field='doc.validity_date']" position="replace">
+            <span class="m-0" t-esc="doc.date_order.strftime('%d/%m/%Y %H:%M:%S')"/>
+        </xpath>
+
+        <xpath expr="//span[@t-field='doc.note']" position="before">
+            <div class="mb-2" style="margin-top: 250px;">
+                <p style="display: inline-block; margin-right: 40px;">
+                    <strong>Checked By:</strong>
+                    _____________________
+                </p>
+                <p style="display: inline-block; margin-right: 20px;">
+                    <strong>Date:</strong>
+                    _____________________
+                </p>
+                <p style="display: inline-block; margin-right: 40px;">
+                    <strong>Received By:</strong>
+                    _____________________
+                </p>
+                <p style="display: inline-block;">
+                    <strong>Date:</strong>
+                    _____________________
+                </p>
+            </div>
+        </xpath>
+        <xpath expr="//p[span[@t-field='doc.payment_term_id.note']]" position="replace">
+            <!-- leave empty to remove -->
+        </xpath>
+
+
+        <xpath expr="//div[@t-field='doc.partner_id']" position="before">
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <h6>Customer Information</h6>
+        </xpath>
+        <xpath expr="//h2[span[@t-field='doc.name']]" position="before">
+            <div t-if="doc.warehouse_id" class="mt-2">
+                <h4 style="font-weight: bold;">Sale Location:</h4>
+                <p t-field="doc.warehouse_id.name"/>
+            </div>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'col-auto') and span[@t-field='doc.user_id']]" position="after">
+            <div t-if="doc.po_number" class="col-auto col-3 mw-100 mb-2">
+                <strong>PO Number:</strong>
+                <br/>
+                <span class="m-0" t-field="doc.po_number"/>
+            </div>
+        </xpath>
+
+
+        <xpath expr="//p[@t-if='doc.partner_id.vat']" position="replace">
+            <p>
+                <t t-if="doc.company_id.account_fiscal_country_id.vat_label">
+                    <t t-out="doc.company_id.account_fiscal_country_id.vat_label"/>
+                </t>
+                <span t-field="doc.partner_id.vat"/>
+            </p>
+        </xpath>
+        <xpath expr="//table[contains(@class, 'o_main_table')]" position="replace">
+            <table class="table table-sm o_main_table table-borderless mt-4">
+                <thead>
+                    <tr>
+                        <th style="text-transform: none; text-align: center !important;">Item No.</th>
+                        <th style="text-transform: none; text-align: center !important;">Code</th>
+                        <th name="th_description" style="text-transform: none; text-align: center !important;">
+                            Description
+                        </th>
+                        <th name="th_quantity" style="text-transform: none; text-align: center !important;">Quantity
+                        </th>
+                        <th name="th_priceunit" style="text-transform: none; text-align: center !important;">Unit
+                            Price
+                        </th>
+                        <th name="th_discount" t-if="display_discount"
+                            style="text-transform: none; text-align: center !important;">Disc.%
+                        </th>
+                        <th name="th_subtotal" style="text-transform: none; text-align: center !important;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody class="sale_tbody">
+                    <t t-set="serial_number" t-value="0"/>
+                    <t t-foreach="lines_to_report" t-as="line">
+                        <t t-set="serial_number" t-value="serial_number + 1"/>
+                        <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                            <t t-if="not line.display_type">
+                                <td>
+                                    <span t-esc="serial_number"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line.product_sku"/>
+                                </td>
+
+                                <td name="td_name">
+                                    <span t-field="line.name"/>
+                                </td>
+                                <td name="td_quantity" class="text-end">
+                                    <span t-field="line.product_uom_qty"
+                                          t-options='{"widget": "float", "precision": 2}'/>
+                                    <span t-if="line.product_packaging_id">
+                                        (
+                                        <span t-field="line.product_packaging_qty" t-options='{"widget": "integer"}'/>
+                                        )
+                                    </span>
+                                </td>
+                                <td name="td_priceunit" class="text-end">
+                                    <span t-field="line.price_unit"/>
+                                </td>
+                                <td t-if="display_discount" class="text-end">
+                                    <span t-field="line.discount"/>
+                                </td>
+
+                                <td t-if="not line.is_downpayment" name="td_subtotal" class="text-end o_price_total">
+                                    <span t-field="line.price_subtotal"/>
+                                </td>
+                            </t>
+                            <t t-elif="line.display_type == 'line_section'">
+                                <td colspan="99">
+                                    <span t-field="line.name"/>
+                                </td>
+                            </t>
+                            <t t-elif="line.display_type == 'line_note'">
+                                <td colspan="99">
+                                    <span t-field="line.name"/>
+                                </td>
+                            </t>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </xpath>
+
+    </template>
+</odoo>

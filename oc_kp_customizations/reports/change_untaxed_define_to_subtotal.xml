@@ -1,0 +1,13 @@
+<odoo>
+    <template id="custom_document_tax_totals_template" inherit_id="account.document_tax_totals_template" priority="20">
+        <xpath expr="//tr/td/strong[text()='Untaxed Amount']" position="replace">
+            <strong style="color: black;">Subtotal</strong>
+        </xpath>
+
+    </template>
+    <template id="custom_tax_groups_totals" inherit_id="account.tax_groups_totals">
+        <xpath expr="//span[@t-out]" position="replace">
+            <span t-esc="amount_by_group['tax_group_name'].replace('Tax', 'VAT')"/>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,38 @@
+<odoo>
+
+    <!-- Inherit Contact action windows -->
+    <record id="contacts.action_contacts" model="ir.actions.act_window">
+        <field name="name">Contacts</field>
+        <field name="context">{'default_is_company': True, 'search_default_no_carrier': 1}</field>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
+    </record>
+
+
+
+    <!-- Inherit the account move (vendor bill) form view -->
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Extend the invoice lines -->
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="customer_tier"/>
+            </xpath>
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="is_carrier"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="inherit_view_res_partner_filter" model="ir.ui.view">
+        <field name="name">inherit.res.partner.filter</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='inactive']" position="before">
+                <filter string="No Carrier" name="no_carrier" domain="[('is_carrier', '=', False)]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_purchase_order_document_inherit" inherit_id="purchase.report_purchaseorder_document">
+        <!-- Locate the section where the shipping address is defined -->
+        <xpath expr="//t[@t-if='o.dest_address_id']" position="replace">
+            <!-- Replace the existing block with your customization -->
+            <div t-if="o.picking_type_id" class="mt-2">
+                <h4 style="font-weight: bold;">Location:</h4>
+                <p t-field="o.picking_type_id.warehouse_id"/>
+            </div>
+        </xpath>
+        <!-- Update the Order Date to show only the date -->
+        <xpath expr="//div[contains(@t-if, 'o.state') and contains(@t-if, 'o.date_approve')]//p[@t-field='o.date_approve']"
+               position="replace">
+            <p t-esc="o.date_approve and o.date_approve.strftime('%d/%m/%Y') or ''" class="m-0"/>
+        </xpath>
+
+        <xpath expr="//div[@t-if='o.incoterm_id']" position="replace">
+            <!-- Replacing with nothing to hide the section -->
+        </xpath>
+        <!-- New Footer Section -->
+        <xpath expr="//p[@t-field='o.notes']" position="before">
+            <div class="mb-2" style="margin-top: 150px;">
+                <p style="display: inline-block; margin-right: 40px;">
+                    <strong>Checked By:</strong>
+                    _____________________
+                </p>
+                <p style="display: inline-block; margin-right: 20px;">
+                    <strong>Date:</strong>
+                    _____________________
+                </p>
+                <p style="display: inline-block; margin-right: 40px;">
+                    <strong>Received By:</strong>
+                    _____________________
+                </p>
+                <p style="display: inline-block;">
+                    <strong>Date:</strong>
+                    _____________________
+                </p>
+            </div>
+        </xpath>
+        <xpath expr="//div[@t-field='o.partner_id']" position="before">
+            <div style="margin-top: 0; padding-top: 0;">
+                <br/>
+                <br/>
+                <h4>
+                    <strong>Vendor Information:</strong>
+                </h4>
+            </div>
+        </xpath>
+
+
+        <!-- Custom table -->
+        <xpath expr="//table" position="before">
+            <!-- New table -->
+            <table class="table table-sm o_sub_table table-borderless mt-4">
+                <thead style="display: table-row-group">
+                    <tr>
+                        <th style="text-transform: none;">
+                            <strong>Buyer</strong>
+                        </th>
+                        <th style="text-transform: none;">
+                            <strong>Payment Terms</strong>
+                        </th>
+                        <th style="text-transform: none;">
+                            <strong>FOB Point</strong>
+                        </th>
+                        <th style="text-transform: none;">
+                            <strong>Shipping Terms</strong>
+                        </th>
+                        <th style="text-transform: none;">
+                            <strong>Ship Via</strong>
+                        </th>
+                        <th style="text-transform: none;">
+                            <strong>Date Scheduled</strong>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <!-- Buyer -->
+                        <td>
+                            <span t-field="o.user_id.name"/>
+                        </td>
+                        <!-- Payment Terms -->
+                        <td>
+                            <span t-field="o.payment_term_id.name"/>
+                        </td>
+                        <!-- FOB Point -->
+                        <td>
+                            <span t-field="o.fob_point"/>
+                        </td>
+                        <!-- Shipping Terms -->
+                        <td>
+                            <span t-field="o.incoterm_id.name"/>
+                        </td>
+                        <!-- Ship Via -->
+                        <td>
+                            <span t-field="o.ship_via"/>
+                        </td>
+                        <!-- Date Scheduled -->
+                        <td>
+                            <span t-esc="o.date_planned and o.date_planned.strftime('%d/%m/%Y') or ''"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </xpath>
+
+        <xpath expr="//table[@class='table table-sm o_main_table table-borderless mt-4']" position="replace">
+            <table class="table table-sm o_main_table table-borderless mt-4">
+                <thead style="display: table-row-group">
+                    <tr>
+                        <th name="th_serial_number" style="text-transform: none; text-align: center;">
+                            <strong>Item.No</strong>
+                        </th>
+                        <th name="th_product_sku" style="text-transform: none; text-align: center !important;">
+                            <strong>Product Sku</strong>
+                        </th>
+                        <th name="th_part_number" style="text-transform: none; text-align: center !important;">
+                            <strong>Vendor Code</strong>
+                        </th>
+                        <th name="th_description" style="text-transform: none; text-align: center !important;">
+                            <strong>Description</strong>
+                        </th>
+                        <th name="th_quantity" class="text-end"
+                            style="text-transform: none; text-align: center !important;">
+                            <strong>Qty</strong>
+                        </th>
+                        <th name="th_price_unit" class="text-end"
+                            style="text-transform: none; text-align: center !important;">
+                            <strong>Price</strong>
+                        </th>
+                        <th name="th_subtotal" class="text-end"
+                            style="text-transform: none; text-align: center !important;">
+                            <strong>Amount</strong>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <t t-set="serial_number" t-value="0"/> <!-- Initialize the serial number counter -->
+                    <t t-set="current_subtotal" t-value="0"/>
+                    <t t-foreach="o.order_line" t-as="line">
+                        <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal"/>
+                        <t t-set="serial_number" t-value="serial_number + 1"/>
+
+                        <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                            <!-- Custom columns -->
+                            <td>
+                                <span t-esc="serial_number"/> <!-- Serial Number -->
+                            </td>
+                            <td>
+                                <span t-field="line.product_sku"/>
+                            </td>
+                            <td>
+                                <span t-field="line.part_number"/>
+                            </td>
+
+                            <!-- Existing columns -->
+                            <td id="product">
+                                <span t-field="line.name"/>
+                            </td>
+
+                            <td class="text-end">
+                                <span t-field="line.product_qty"/>
+                                <span t-field="line.product_uom.name" groups="uom.group_uom"/>
+                                <span t-if="line.product_packaging_id">
+                                    (
+                                    <span t-field="line.product_packaging_qty" t-options='{"widget": "integer"}'/>
+                                    <span t-field="line.product_packaging_id"/>)
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <span t-field="line.price_unit"/>
+                            </td>
+                            <td class="text-end">
+                                <span t-field="line.price_subtotal"
+                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                        <t t-if="current_section and (line_last or o.order_line[line_index+1].display_type == 'line_section')">
+                            <tr class="is-subtotal text-end">
+                                <td colspan="99" id="subtotal">
+                                    <strong class="mr16">Subtotal</strong>
+                                    <span
+                                            t-esc="current_subtotal"
+                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                    />
+                                </td>
+                            </tr>
+                        </t>
+                    </t>
+                </tbody>
+            </table>
+
+        </xpath>
+    </template>
+
+
+    <!--    <template id="custom_tax_groups_totals" inherit_id="account.tax_groups_totals">-->
+    <!--        <xpath expr="//td[contains(span/@t-out, 'tax_group_name')]" position="replace">-->
+    <!--            <td>VAT</td>-->
+    <!--        </xpath>-->
+    <!--    </template>-->
+
+
+    <template id="external_layout_boxed_custom" inherit_id="web.external_layout_boxed">
+        <!-- Try a more specific xpath -->
+        <xpath expr="//div[@class='text-center']" position="replace">
+            <t t-if="report_type == 'pdf'" style="float:left;">
+                <t t-if="o.create_date">
+                    <span t-esc="o.create_date.strftime('%B %d, %Y')"/>
+                </t>
+            </t>
+            <div t-if="report_type == 'pdf'" style="float:right;">
+                Page:
+                <span class="page"/>
+                /
+                <span class="topage"/>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="report_purchaseorder_document_custom" inherit_id="web.external_layout_boxed">
+        <!-- Customize the header -->
+        <xpath expr="//div[@class='o_boxed_header']" position="replace">
+            <!-- Add "VAT Invoice" just after company info block -->
+            <xpath expr="//div[@class='col-12 text-center'][span[@t-field='company.vat']]" position="after">
+                <t t-if="o._name == 'account.move' and o.move_type == 'out_invoice'">
+                    <div class="row mb-2">
+                        <div class="col-12 text-center">
+                            <h4 style="text-transform: uppercase;  margin-top: 10px;">
+                                VAT Invoice
+                            </h4>
+                        </div>
+                    </div>
+                </t>
+            </xpath>
+            <!-- Company Name and Details -->
+            <div class="row mb-2">
+                <div class="col-12 text-center">
+                    <strong t-field="company.name"/> <!-- Company Name -->
+                    <br/>
+                    <strong>Email:
+                        <span t-field="company.email"/>
+                    </strong>
+                    <strong style="margin-left:10px;">Website:
+                        <span t-field="company.website"/>
+                    </strong>
+                </div>
+            </div>
+
+
+            <!-- Logo Section -->
+            <div class="row mb-2">
+                <div class="col-12 text-center mt-0">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo"
+                         style="max-height: 120px;"/>
+                </div>
+            </div>
+
+            <!-- Address Information -->
+            <div class="row mb-2">
+                <div class="col-6 text-start" style="margin-top:-80px">
+                    <strong>#47 Golden Gates Shopping Centre</strong>
+                    <br/>
+                    Phone:
+                    <span>242 341-4813</span>
+                    <br/>
+                </div>
+                <div class="col-6 text-end" style="margin-top:-80px">
+                    <strong>Claridge Rd at Peardale Manor</strong>
+                    <br/>
+                    Phone:
+                    <span>242 393-3626</span>
+                    <br/>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+
+</odoo>

@@ -1,0 +1,221 @@
+<odoo>
+    <template id="report_delivery_document_custom" inherit_id="stock.report_delivery_document">
+        <xpath expr="//div[@name='div_outgoing_address']" position="replace">
+            <!-- This will remove the outgoing address section from the report -->
+        </xpath>
+        <xpath expr="//div[@name='customer_address']" position="replace">
+            <!-- This will remove the outgoing address section from the report -->
+        </xpath>
+        <xpath expr="//div[@class='page']" position="replace">
+            <div class="page" style="padding: 20px;">
+                <!-- First Copy -->
+                <div class="delivery-slip" style="margin-bottom: 50px; border-bottom: 2px dashed black;">
+                    <!-- Header Section -->
+                    <div class="row" style="text-align: center;">
+                        <div class="col-4" style="text-align: left; width: 33%;">
+                            <t t-if="o.date_done">
+                                <span>Date:
+                                    <t t-esc="o.date_done.strftime('%m/%d/%Y')"/>
+                                </span>
+                            </t>
+                        </div>
+                        <div class="col-4" style="text-align: center; width: 33%;">
+                            <strong>DOCK RECEIPT</strong>
+                        </div>
+                        <div class="col-4" style="text-align: right; width: 33%;">
+                            <span>Order #:
+                                <t t-esc="o.name"/>
+                            </span>
+                        </div>
+                    </div>
+                    <!-- Table Section -->
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; border: none;">
+                        <!-- Carrier and Consignee -->
+                        <tr style="height: 40px; min-height: 40px;">
+                            <td style="width: 25%; font-weight: bold; border: 1px solid black; padding: 10px;">
+                                CONSIGNEE:
+                            </td>
+                            <td style="width: 25%; border: 1px solid black; text-align: center; padding: 10px;">
+                                <t t-esc="o.partner_id.name.split(' [')[0]"/>
+                            </td>
+                            <td style="width: 25%; font-weight: bold; border: 1px solid black; padding: 10px;">
+                                CARRIER:
+                            </td>
+                            <td style="width: 25%; border: 1px solid black; text-align: center; padding: 10px;">
+                                <t t-if="o.oc_carrier_id and o.oc_carrier_id.name">
+                                    <t t-esc="o.oc_carrier_id.name.split(' [')[0]"/>
+                                </t>
+                            </td>
+                        </tr>
+                        <!-- Address -->
+                        <tr style="height: 40px; min-height: 40px;">
+                            <td style="font-weight: bold; border: 1px solid black; padding: 10px;">ADDRESS:</td>
+                            <td colspan="3" style="border: 1px solid black; padding: 10px;">
+                                <t t-if="o.partner_id.street"><t t-esc="o.partner_id.street"/>,
+                                </t>
+                                <t t-if="o.partner_id.city"><t t-esc="o.partner_id.city"/>,
+                                </t>
+                                <t t-if="o.partner_id.country_id.name">
+                                    <t t-esc="o.partner_id.country_id.name"/>
+                                </t>
+                            </td>
+                        </tr>
+                        <!-- Number of Boxes and Pallets -->
+                        <tr style="height: 40px; min-height: 40px;">
+                            <td style="width: 25%; font-weight: bold; border: 1px solid black; padding: 10px;">NUMBER OF
+                                BOXES:
+                            </td>
+                            <td style="width: 25%; border: 1px solid black; text-align: center; padding: 10px;">
+                                <t t-esc="o.number_of_boxes or 0"/>
+                            </td>
+                            <td style="width: 25%; font-weight: bold; border: 1px solid black; padding: 10px;">NUMBER OF
+                                PALLETS:
+                            </td>
+                            <td style="width: 25%; border: 1px solid black; text-align: center; padding: 10px;">
+                                <t t-esc="o.number_of_pallets or 0"/>
+                            </td>
+                        </tr>
+                        <!-- Shipper and Carrier -->
+                        <tr style="height: 60px; min-height: 60px;"> <!-- Increased height -->
+                            <td style="width: 25%; font-weight: bold; border: 1px solid black; padding: 10px;">
+                                Shipper:
+                            </td>
+                            <td style="width: 25%; border: 1px solid black; text-align: center; padding: 20px;">
+                                ....................................................
+                            </td>
+                            <td style="width: 25%; font-weight: bold; border: 1px solid black; padding: 10px;">
+                                Carrier:
+                            </td>
+                            <td style="width: 25%; border: 1px solid black; text-align: center; padding: 20px;">
+                                ....................................................
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- Second Copy -->
+                <div class="delivery-slip">
+                    <div class="row mb-2">
+                        <div class="col-12 text-center">
+                            <strong style="font-weight: bold !important;"
+                                    t-field="o.company_id.name"/> <!-- Company Name -->
+                            <br/>
+                            <span style="font-weight: bold !important;"
+                                  t-field="o.company_id.partner_id.contact_address"/> <!-- Company Address -->
+                            <br/>
+                            <span style="font-weight: bold !important;" t-field="o.company_id.vat"/>
+                        </div>
+                    </div>
+
+                    <!-- Logo Section -->
+                    <div class="row mb-2">
+                        <div class="col-12 text-center mt-0">
+                            <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" alt="Logo"
+                                 style="max-height: 100px;"/>
+                        </div>
+                    </div>
+                    <!-- Address Information -->
+                    <div class="row mb-2">
+                        <div class="col-6 text-start" style="margin-top:-80px">
+                            <strong style="font-weight: bold !important;">#47 Golden Gates Shopping Centre</strong>
+                            <br/>
+                            Phone:
+                            <span>242 341-4813</span>
+                            <br/>
+                        </div>
+                        <div class="col-6 text-end" style="margin-top:-80px">
+                            <strong style="font-weight: bold !important;">Claridge Rd at Peardale Manor</strong>
+                            <br/>
+                            Phone:
+                            <span>242 393-3626</span>
+                            <br/>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <!-- Header Section -->
+                    <div class="row" style="text-align: center;">
+                        <div class="col-4" style="text-align: left; width: 33%;">
+                            <t t-if="o.date_done">
+                                <span>Date:
+                                    <t t-esc="o.date_done.strftime('%m/%d/%Y')"/>
+                                </span>
+                            </t>
+                        </div>
+                        <div class="col-4" style="text-align: center; width: 33%;">
+                            <strong>DOCK RECEIPT</strong>
+                        </div>
+                        <div class="col-4" style="text-align: right; width: 33%;">
+                            <span>Order #:
+                                <t t-esc="o.name"/>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Repeated Table Section -->
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; border: none;">
+                        <!-- Carrier and Consignee -->
+                        <tr style="height: 40px; min-height: 40px;">
+                            <td style="width: 25%; font-weight: bold; border: 1px solid black; padding: 10px;">
+                                CONSIGNEE:
+                            </td>
+                            <td style="width: 25%; border: 1px solid black; text-align: center; padding: 10px;">
+                                <t t-esc="o.partner_id.name.split(' [')[0]"/>
+                            </td>
+                            <td style="width: 25%; font-weight: bold; border: 1px solid black; padding: 10px;">
+                                CARRIER:
+                            </td>
+                            <td style="width: 25%; border: 1px solid black; text-align: center; padding: 10px;">
+                                <t t-if="o.oc_carrier_id and o.oc_carrier_id.name">
+                                    <t t-esc="o.oc_carrier_id.name.split(' [')[0]"/>
+                                </t>
+                            </td>
+                        </tr>
+                        <!-- Address -->
+                        <tr style="height: 40px; min-height: 40px;">
+                            <td style="font-weight: bold; border: 1px solid black; padding: 10px;">ADDRESS:</td>
+                            <td colspan="3" style="border: 1px solid black; padding: 10px;">
+                                <t t-if="o.partner_id.street"><t t-esc="o.partner_id.street"/>,
+                                </t>
+                                <t t-if="o.partner_id.city"><t t-esc="o.partner_id.city"/>,
+                                </t>
+                                <t t-if="o.partner_id.country_id.name">
+                                    <t t-esc="o.partner_id.country_id.name"/>
+                                </t>
+                            </td>
+                        </tr>
+                        <!-- Number of Boxes and Pallets -->
+                        <tr style="height: 40px; min-height: 40px;">
+                            <td style="width: 25%; font-weight: bold; border: 1px solid black; padding: 10px;">NUMBER OF
+                                BOXES:
+                            </td>
+                            <td style="width: 25%; border: 1px solid black; text-align: center; padding: 10px;">
+                                <t t-esc="o.number_of_boxes or 0"/>
+                            </td>
+                            <td style="width: 25%; font-weight: bold; border: 1px solid black; padding: 10px;">NUMBER OF
+                                PALLETS:
+                            </td>
+                            <td style="width: 25%; border: 1px solid black; text-align: center; padding: 10px;">
+                                <t t-esc="o.number_of_pallets or 0"/>
+                            </td>
+                        </tr>
+                        <!-- Shipper and Carrier -->
+                        <tr style="height: 60px; min-height: 60px;">
+                            <td style="width: 25%; font-weight: bold; border: 1px solid black; padding: 10px;">
+                                Shipper:
+                            </td>
+                            <td style="width: 25%; border: 1px solid black; text-align: center; padding: 20px;">
+                                ....................................................
+                            </td>
+                            <td style="width: 25%; font-weight: bold; border: 1px solid black; padding: 10px;">
+                                Carrier:
+                            </td>
+                            <td style="width: 25%; border: 1px solid black; text-align: center; padding: 20px;">
+                                ....................................................
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

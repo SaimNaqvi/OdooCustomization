@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_vendor_bill_inherited" inherit_id="account.report_invoice_document">
+        <xpath expr="//h2" position="replace">
+            <h2>
+                <t t-esc="o.name"/>
+            </h2>
+        </xpath>
+        <xpath expr="//div[@name='invoice_date']" position="before">
+            <div t-attf-class="#{'col-auto col-3 mw-100' if report_type != 'html' else 'col'} mb-2"
+                 t-if="o.invoice_user_id and o.move_type == 'out_invoice'" name="invoice_seller">
+                <strong>Sales Person:</strong>
+                <br/>
+                <span t-field="o.invoice_user_id"/>
+            </div>
+            <div t-if="o.line_ids and o.line_ids[0].sale_line_ids and o.line_ids[0].sale_line_ids.order_id"
+                 t-attf-class="#{'col-auto col-3 mw-100' if report_type != 'html' else 'col'} mb-2">
+                <t t-set="sale_order" t-value="o.line_ids[0].sale_line_ids.order_id"/>
+                <!-- PO Number -->
+                <strong>Customer PO #:</strong>
+                <br/>
+                <span t-field="sale_order.po_number"/>
+            </div>
+            <div t-if="o.line_ids and o.line_ids[0].sale_line_ids and o.line_ids[0].sale_line_ids.order_id"
+                 t-attf-class="#{'col-auto col-3 mw-100' if report_type != 'html' else 'col'} mb-2">
+                <t t-set="sale_order" t-value="o.line_ids[0].sale_line_ids.order_id"/>
+                <!-- PO Number -->
+                <strong>Location Group:</strong>
+                <br/>
+                <span t-field="sale_order.warehouse_id.name"/>
+            </div>
+            <!--            <div t-if="o.line_ids and o.line_ids[0].sale_line_ids and o.line_ids[0].sale_line_ids.order_id">-->
+            <!--                <t t-set="sale_order" t-value="o.line_ids[0].sale_line_ids.order_id"/>-->
+            <!--                <h4 style="font-weight: bold;">Location Group:</h4>-->
+            <!--                <p t-field="sale_order.warehouse_id.name"/>-->
+
+            <!--            </div>-->
+        </xpath>
+        <xpath expr="//div[@name='origin']" position="replace">
+            <!-- Replacing with nothing to hide the section -->
+        </xpath>
+        <xpath expr="//div[@name='delivery_date']" position="replace">
+            <!-- Replacing with nothing to hide the section -->
+        </xpath>
+        <xpath expr="//div[@name='reference']" position="replace">
+            <!-- Replacing with nothing to hide the section -->
+        </xpath>
+        <xpath expr="//div[@name='incoterm_id']" position="replace">
+            <!-- Replacing with nothing to hide the section -->
+        </xpath>
+        <xpath expr="//div[@name='comment']" position="before">
+            <t>
+                <!-- Set margin-top value based on move_type -->
+                <t t-set="margin_top"
+                   t-value="'310px' if o.move_type == 'in_invoice' else '250px'"/>
+
+                <div class="mb-2" t-attf-style="margin-top: #{margin_top};">
+                    <p style="display: inline-block; margin-right: 40px;">
+                        <strong>Checked By:</strong>
+                        _____________________
+                    </p>
+                    <p style="display: inline-block; margin-right: 20px;">
+                        <strong>Date:</strong>
+                        _____________________
+                    </p>
+                    <p style="display: inline-block; margin-right: 40px;">
+                        <strong>Received By:</strong>
+                        _____________________
+                    </p>
+                    <p style="display: inline-block;">
+                        <strong>Date:</strong>
+                        _____________________
+                    </p>
+                </div>
+            </t>
+        </xpath>
+        <xpath expr="//div[@class='mb-3']" position="before">
+            <div style="height: 100px;"></div>
+        </xpath>
+        <xpath expr="//div[@name='address_same_as_shipping']" position="replace">
+            <div class="offset-col-6 col-6" name="address_same_as_shipping">
+                <t t-set="address">
+                    <br/>
+                    <br/>
+                    <h6>
+                        <t t-if="o.move_type in ('out_invoice', 'out_refund')">Customer Information:</t>
+                        <t t-else="">Vendor Information:</t>
+                    </h6>
+                    <address class="mb-0" t-field="o.partner_id"
+                             t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                    <div t-if="o.partner_id.vat" id="partner_vat_address_same_as_shipping">
+                        <t t-if="o.company_id.account_fiscal_country_id.vat_label"
+                           t-out="o.company_id.account_fiscal_country_id.vat_label" id="inv_tax_id_label"/>
+                        <span t-field="o.partner_id.vat"/>
+                    </div>
+                </t>
+            </div>
+
+        </xpath>
+        <xpath expr="//table[@class='table table-sm o_main_table table-borderless']" position="replace">
+            <table class="table table-sm o_main_table table-borderless" name="invoice_line_table">
+                <t t-if="o.move_type in ('out_invoice', 'out_refund')">
+                    <thead style="display: table-row-group">
+                        <tr>
+                            <th name="th_serial_number" style="text-transform: none;">
+                                <strong>Item.No</strong>
+                            </th>
+
+                            <th name="th_part_number" style="text-transform: none;">
+                                <strong>Code</strong>
+                            </th>
+                            <th name="th_description" style="text-transform: none;">
+                                <strong>Description</strong>
+                            </th>
+
+                            <th name="th_quantity" class="text-end" style="text-transform: none;">
+                                <strong>Qty</strong>
+                            </th>
+                            <th name="th_price_unit" class="text-end" style="text-transform: none;">
+                                <strong>Price</strong>
+                            </th>
+                            <th name="th_subtotal" class="text-end" style="text-transform: none;">
+                                <strong>Amount</strong>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="serial_number" t-value="0"/> <!-- Initialize the serial number counter -->
+                        <t t-set="current_subtotal" t-value="0"/>
+                        <t t-foreach="o.invoice_line_ids" t-as="line">
+                            <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal"/>
+                            <t t-set="serial_number" t-value="serial_number + 1"/>
+
+                            <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                <!-- Custom columns -->
+                                <td>
+                                    <span t-esc="serial_number"/> <!-- Serial Number -->
+                                </td>
+                                <td>
+                                    <span t-field="line.product_sku"/>
+                                </td>
+
+                                <!-- Existing columns -->
+                                <td id="product">
+                                    <span t-field="line.name"/>
+                                </td>
+
+                                <td class="text-end">
+                                    <span t-field="line.quantity"/>
+                                    <span t-field="line.product_uom_id.name" groups="uom.group_uom"/>
+                                </td>
+                                <td class="text-end">
+                                    <span t-field="line.price_unit"/>
+                                </td>
+                                <td class="text-end">
+                                    <span t-field="line.price_subtotal"
+                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                            <t t-if="current_section and (line_last or o.invoice_line_ids[line_index+1].display_type == 'line_section')">
+                                <tr class="is-subtotal text-end">
+                                    <td colspan="99" id="subtotal">
+                                        <strong class="mr16">Subtotal</strong>
+                                        <span
+                                                t-esc="current_subtotal"
+                                                t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                        />
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </tbody>
+                </t>
+                <t t-else="">
+                    <thead style="display: table-row-group">
+                        <tr>
+                            <th name="th_serial_number" style="text-transform: none; text-align: center;">
+                                <strong>Item.No</strong>
+                            </th>
+                            <th name="th_product_sku" style="text-transform: none; text-align: center;">
+                                <strong>Part No.</strong>
+                            </th>
+                            <th name="th_part_number" style="text-transform: none; text-align: center;">
+                                <strong>Code</strong>
+                            </th>
+                            <th name="th_description" style="text-transform: none; text-align: center;">
+                                <strong>Description</strong>
+                            </th>
+                            <th name="th_taxes" style="text-align: center;">
+                                <strong>VAT</strong>
+                            </th>
+                            <th name="th_quantity" class="text-end" style="text-transform: none; text-align: center;">
+                                <strong>Qty</strong>
+                            </th>
+                            <th name="th_price_unit" class="text-end" style="text-transform: none; text-align: center;">
+                                <strong>Price</strong>
+                            </th>
+                            <th name="th_subtotal" class="text-end" style="text-transform: none; text-align: center;">
+                                <strong>Amount</strong>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="serial_number" t-value="0"/> <!-- Initialize the serial number counter -->
+                        <t t-set="current_subtotal" t-value="0"/>
+                        <t t-foreach="o.invoice_line_ids" t-as="line">
+                            <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal"/>
+                            <t t-set="serial_number" t-value="serial_number + 1"/>
+
+                            <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                <!-- Custom columns -->
+                                <td style="text-align: center;">
+                                    <span t-esc="serial_number"/> <!-- Serial Number -->
+                                </td>
+                                <td style="text-align: center;">
+                                    <span t-field="line.part_number"/>
+                                </td>
+                                <td style="text-align: center;">
+                                    <span t-field="line.product_sku"/>
+                                </td>
+
+                                <!-- Existing columns -->
+                                <td id="product" style="text-align: center;">
+                                    <span t-field="line.name"/>
+                                </td>
+                                <td name="td_taxes" style="text-align: center;">
+                                    <span t-esc="', '.join(map(lambda x: x.description or x.name, line.tax_ids))"/>
+                                </td>
+
+                                <td class="text-end" style="text-align: center;">
+                                    <span t-field="line.quantity"/>
+                                    <span t-field="line.product_uom_id.name" groups="uom.group_uom"/>
+                                </td>
+                                <td class="text-end" style="text-align: center;">
+                                    <span t-field="line.price_unit"/>
+                                </td>
+                                <td class="text-end" style="text-align: center;">
+                                    <span t-field="line.price_subtotal"
+                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                            <t t-if="current_section and (line_last or o.invoice_line_ids[line_index+1].display_type == 'line_section')">
+                                <tr class="is-subtotal text-end">
+                                    <td colspan="99" id="subtotal" style="text-align: center;">
+                                        <strong class="mr16">Subtotal</strong>
+                                        <span
+                                                t-esc="current_subtotal"
+                                                t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                        />
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </tbody>
+
+                </t>
+
+            </table>
+        </xpath>
+    </template>
+    <!--    <template id="custom_tax_groups_totals" inherit_id="account.tax_groups_totals">-->
+    <!--                <xpath expr="//td[contains(span/@t-out, 'tax_group_name')]" position="replace">-->
+    <!--                    <td>VAT</td>-->
+    <!--                </xpath>-->
+    <!--    </template>-->
+    <template id="external_layout_boxed_custom" inherit_id="web.external_layout_boxed">
+        <!-- Try a more specific xpath -->
+        <xpath expr="//div[@class='text-center']" position="replace">
+            <t t-if="report_type == 'pdf'" style="float:left;">
+                <t t-if="o.create_date">
+                    <span t-esc="o.create_date.strftime('%B %d, %Y')"/>
+                </t>
+            </t>
+
+            <div t-if="report_type == 'pdf'" style="float:right;">
+                Page:
+                <span class="page"/>
+                /
+                <span class="topage"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>

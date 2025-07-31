@@ -1,0 +1,21 @@
+<odoo>
+    <!-- Inherit the stock picking form view -->
+    <record id="view_stock_picking_form_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <!-- Extend the stock picking line tree view -->
+            <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='product_id']" position="after">
+                <field name="product_sku"/>
+                <field name="part_number"/>
+            </xpath>
+
+            <xpath expr="//field[@name='picking_type_id']" position="after">
+                <field name="oc_carrier_id" domain="[('is_carrier', '=', True)]"/>
+                <field name="number_of_boxes" string="Number of Boxes"/>
+                <field name="number_of_pallets" string="Number of Pallets"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

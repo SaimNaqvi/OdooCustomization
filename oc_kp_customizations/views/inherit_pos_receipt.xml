@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- inherit the POS receipt template -->
+    <template id="custom_pos_receipt" inherit_id="point_of_sale.pos_ticket">
+
+        <!-- Add custom company information at the top of the receipt -->
+        <xpath expr="//div[@class='pos-receipt']" position="before">
+            <div class="company-info" style="text-align: center; font-size: 12px;">
+                <strong>VAT Sales Receipt</strong>
+                <br/>
+                <strong>KRUGER PLASTICS LTD</strong>
+                <br/>
+                P.O. Box SS-5761, Nassau, The Bahamas
+                <br/>
+                TIN: 100040726
+            </div>
+        </xpath>
+    </template>
+</odoo>

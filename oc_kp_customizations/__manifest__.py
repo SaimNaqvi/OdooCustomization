@@ -1,0 +1,25 @@
+{
+    'name': 'OC KP Customizations',
+    'version': '1.0',
+    'summary': 'Customizations for Purchase Order, GRN, and Vendor Bill, Report Format',
+    'author': 'Odoo Concepts',
+    'depends': ['base', 'point_of_sale', 'purchase', 'stock', 'account', 'sale'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/res_partner_view.xml',
+        'views/purchase_order_views.xml',
+        'views/sale_order_views.xml',
+        'views/account_move_views.xml',
+        'views/stock_picking_views.xml',
+        'views/res_partner_view.xml',
+        'reports/purchase_order_report_inherit.xml',
+        'reports/vendor_bill_report_inherit.xml',
+        'reports/inherit_grn_report.xml',
+        'reports/sale_order_report_inherit.xml',
+        'reports/inherit_delivery_report.xml',
+        'reports/change_untaxed_define_to_subtotal.xml',
+    ],
+
+    'installable': True,
+    'application': True,
+}

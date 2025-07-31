@@ -1,0 +1,19 @@
+<odoo>
+    <!-- Inherit the purchase order form view -->
+    <record id="view_purchase_order_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_ref']" position="after">
+                <field name="fob_point"/>
+                <field name="ship_via"/>
+            </xpath>
+            <!-- Extend the purchase order line within the form view -->
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="after">
+                <field name="product_sku" readonly="1"/>
+                <field name="part_number" string="Vendor Code"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
