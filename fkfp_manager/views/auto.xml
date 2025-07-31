@@ -1,0 +1,11 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Define the sequence for Beneficiary ID -->
+        <record id="seq_auto_beneficiary" model="ir.sequence">
+            <field name="name">Beneficiary ID</field>
+            <field name="code">auto.beneficiary</field>
+            <field name="padding">5</field>  <!-- Ensure IDs have 5 digits -->
+            <field name="number_increment">1</field>  <!-- Increment by 1 -->
+        </record>
+    </data>
+</odoo>

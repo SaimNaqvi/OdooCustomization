@@ -1,0 +1,23 @@
+<odoo>
+    <!-- View Inheritance: Housing Details -->
+    <record id="view_partner_form_inherit_fkfp_manager_vinvest" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.fkfp_manager</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group" position="after">
+                <group string="Micro Finance From FKFP" invisible="branch_id != 3">
+                    <group>
+                        <field name="small_business" invisible="branch_id != 3"/>
+                        <field name="business_plan" invisible="branch_id != 3"/>
+                    </group>
+
+                    <group>
+                        <field name="return_money" invisible="branch_id != 3"/>
+                        <field name="amount" invisible="branch_id != 3"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

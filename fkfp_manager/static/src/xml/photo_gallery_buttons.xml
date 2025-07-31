@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="fkfp_manager.ListView.Buttons" t-inherit="web.ListView.Buttons">
+        <xpath expr="//div[hasclass('o_list_buttons')]" position="inside">
+            <button type="button" class="btn btn-secondary me-2"
+                    t-on-click="openBeforeCategory">
+                Before
+            </button>
+            <button type="button" class="btn btn-secondary me-2"
+                    t-on-click="openFollowUpCategory">
+                Follow Up
+            </button>
+            <button type="button" class="btn btn-secondary me-2"
+                    t-on-click="openAfterCategory">
+                After
+            </button>
+        </xpath>
+    </t>
+</templates>

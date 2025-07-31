@@ -1,0 +1,77 @@
+<odoo>
+    <data>
+
+        <!-- Action Window -->
+        <record id="action_staff_window" model="ir.actions.act_window">
+            <field name="name">Staff</field>
+            <field name="res_model">fkfp.staff</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="view_fkfp_staff_tree" model="ir.ui.view">
+            <field name="name">fkfp.staff.tree</field>
+            <field name="model">fkfp.staff</field>
+            <field name="arch" type="xml">
+                <tree string="Staff Records" default_order="staff_id asc">
+                    <field name="staff_id"/>
+                    <field name="name"/>
+                    <field name="phone"/>
+                    <field name="mobile"/>
+                    <field name="province"/>
+                    <field name="district"/>
+                    <field name="nationality"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_fkfp_staff_form" model="ir.ui.view">
+            <field name="name">fkfp.staff.form</field>
+            <field name="model">fkfp.staff</field>
+            <field name="arch" type="xml">
+                <form string="Staff Information">
+                    <header>
+                        <button name="action_whatsapp"
+                                type="object"
+                                string="Send WhatsApp"
+                                class="oe_highlight"
+                                context="{'default_staff_id': active_id}"
+                                invisible="not mobile"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="staff_id" readonly="1"/>
+                                <field name="name"/>
+                                <field name="father_name"/>
+                                <field name="cnic"/>
+                                <field name="marital_status"/>
+                                <field name="nationality"/>
+                            </group>
+                            <group>
+                                <field name="phone"/>
+                                <field name="mobile"/>
+
+                                <field name="province"/>
+                                <field name="district"/>
+                                <field name="village"/>
+                                <field name="country_id"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Address Info">
+                                <group>
+                                    <field name="address"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <menuitem id="menu_staff_root" name="Staff" parent="contacts.menu_contacts" action="action_staff_window"
+                  sequence="20"/>
+    </data>
+</odoo>

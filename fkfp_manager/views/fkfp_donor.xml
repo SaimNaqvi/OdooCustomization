@@ -1,0 +1,62 @@
+<odoo>
+    <data>
+        <!-- Menu Item -->
+        <menuitem id="menu_donor_root" name="Donors" parent="contacts.menu_contacts" sequence="10"/>
+
+        <!-- Action Window -->
+        <record id="action_donor_window" model="ir.actions.act_window">
+            <field name="name">Donors</field>
+            <field name="res_model">fkfp.donor</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu linking Action -->
+        <menuitem id="menu_donor_list" name="Donor List" parent="menu_donor_root"
+                  action="action_donor_window" sequence="1"/>
+
+
+        <record id="view_donor_tree" model="ir.ui.view">
+            <field name="name">fkfp.donor.tree</field>
+            <field name="model">fkfp.donor</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="donor_partner_id"/>
+                    <field name="cnic"/>
+                    <field name="donor_nationality"/>
+                    <field name="donated_amount"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_fkfp_donor_form" model="ir.ui.view">
+            <field name="name">fkfp.donor.form</field>
+            <field name="model">fkfp.donor</field>
+            <field name="arch" type="xml">
+                <form string="Donor">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="donor_partner_id"/>
+                            </group>
+                            <group>
+                                <field name="donated_amount"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Beneficiaries">
+                                <field name="donor_line_ids">
+                                    <tree editable="bottom">
+                                        <field name="beneficiary_id" domain="[('title','=','Beneficiary')]"/>
+                                        <field name="amount_used"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,67 @@
+<odoo>
+    <data>
+        <record id="view_photo_gallery_tree" model="ir.ui.view">
+            <field name="name">photo.gallery.tree</field>
+            <field name="model">fkfp.photo.gallery</field>
+            <field name="arch" type="xml">
+                <tree create="false" editable="bottom" js_class="photo_gallery_tree">
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    <field name="category"/>
+                    <field name="description"/>
+                    <field name="date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="fkfp_manager.action_partner_photo_gallery" model="ir.actions.act_window">
+            <field name="name">Photo Gallery</field>
+            <field name="res_model">fkfp.photo.gallery</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('partner_id', '=', active_id)]</field>
+            <field name="context">{'default_partner_id': active_id}</field>
+            <field name="target">current</field>
+        </record>
+
+        <record id="view_fkfp_partner_document_tree" model="ir.ui.view">
+            <field name="name">fkfp.partner.document.tree</field>
+            <field name="model">fkfp.partner.document</field>
+            <field name="arch" type="xml">
+                <tree create="false" editable="bottom" js_class="document_gallery_tree">
+                    <field name="file" widget="image" class="oe_avatar"/>
+                    <field name="document_type"/>
+                    <field name="description"/>
+                    <field name="date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_fkfp_partner_document_form" model="ir.ui.view">
+            <field name="name">fkfp.partner.document.form</field>
+            <field name="model">fkfp.partner.document</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="partner_id" readonly="1"/>
+                            <field name="document_type"/>
+                            <field name="file"/>
+                            <field name="description"/>
+                            <field name="date"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_fkfp_partner_document_search" model="ir.ui.view">
+            <field name="name">fkfp.partner.document.search</field>
+            <field name="model">fkfp.partner.document</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="document_type"/>
+                    <field name="partner_id"/>
+                    <field name="date"/>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

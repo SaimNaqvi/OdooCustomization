@@ -1,0 +1,24 @@
+<odoo>
+    <record id="view_partner_form_inherit_fkfp_manager_smile" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.fkfp_manager.smile</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group" position="after">
+                <group string="Donation Acknowledgment form" col="2" invisible="branch_id != 5">
+                    <group>
+                        <!-- Row 1 -->
+                        <field name="nature_donation" string="Nature of Donation" invisible="branch_id != 5"/>
+                        <field name="amount_words" string="Amount in Words" invisible="branch_id != 5"/>
+                    </group>
+                    <group>
+                        <!-- Row 2 -->
+                        <field name="brief_description" string="Brief Description" invisible="branch_id != 5"/>
+                        <field name="received_with" string="Received with Thanks From" invisible="branch_id != 5"/>
+                    </group>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

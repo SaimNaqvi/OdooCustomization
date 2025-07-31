@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_project_status,project.status,model_project_status,,1,1,1,1
+access_fkfp_photo_gallery,fkfp.photo.gallery,model_fkfp_photo_gallery,,1,1,1,1
+access_fkfp_partner_document,fkfp.partner.document,model_fkfp_partner_document,,1,1,1,1
+access_fkfp_donor,fkfp.donor,model_fkfp_donor,,1,1,1,1
+access_fkfp_staff,fkfp.staff,model_fkfp_staff,,1,1,1,1
+access_fkfp_donor_line,fkfp.donor.line,model_fkfp_donor_line,,1,1,1,1
+access_fkfp_photo_upload_wizard,fkfp.photo.upload.wizard,model_fkfp_photo_upload_wizard,,1,1,1,1
+access_fkfp_whatsapp_message_wizard,fkfp.whatsapp.message.wizard,model_fkfp_whatsapp_message_wizard,,1,1,1,1
+access_fkfp_document_upload_wizard,fkfp.document.upload.wizard,model_fkfp_document_upload_wizard,,1,1,1,1
+access_report_fkfp_manager_report_print_pdf,report.fkfp_manager.report.print.pdf,model_report_fkfp_manager_report_print_pdf,,1,1,1,1

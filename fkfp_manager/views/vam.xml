@@ -1,0 +1,61 @@
+<odoo>
+    <!-- View Inheritance: Housing Details -->
+    <record id="view_partner_form_inherit_fkfp_manager" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.fkfp_manager</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group" position="after">
+                <group string="Assets" invisible="branch_id != 4">
+                    <group>
+                        <field name="own_house" invisible="branch_id != 4"/>
+                    </group>
+                    <group>
+                        <field name="house_rooms" invisible="branch_id != 4"/>
+                    </group>
+                    <group>
+                        <field name="kaccha_pakka" invisible="branch_id != 4"/>
+                        <field name="has_toilet" invisible="branch_id != 4"/>
+                    </group>
+                    <group>
+                        <field name="livestock_count" invisible="branch_id != 4"/>
+                        <field name="own_property" invisible="branch_id != 4"/>
+                    </group>
+                </group>
+
+                <group string="Income" invisible="branch_id != 4">
+                    <group>
+                        <field name="monthly_self" string="Monthly Self Income" invisible="branch_id != 4"/>
+                        <field name="family_income" invisible="branch_id != 4"/>
+                    </group>
+                    <group>
+                        <field name="monthly_income" invisible="branch_id != 4"/>
+                        <field name="monthly_expense" invisible="branch_id != 4"/>
+                    </group>
+                    <group>
+                        <field name="average_annual" invisible="branch_id != 4"/>
+                        <field name="debit" invisible="branch_id != 4"/>
+                    </group>
+                    <group>
+                        <field name="interest" invisible="branch_id != 4"/>
+                        <field name="source" invisible="branch_id != 4"/>
+                    </group>
+                </group>
+
+                <group string="Crop" invisible="branch_id != 4">
+                    <group>
+                        <field name="total_area" invisible="branch_id != 4"/>
+                        <field name="crop_name" invisible="branch_id != 4"/>
+                    </group>
+                    <group>
+                        <field name="land_owner" invisible="branch_id != 4"/>
+                        <field name="owner_contact" invisible="branch_id != 4"/>
+                    </group>
+                </group>
+
+
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

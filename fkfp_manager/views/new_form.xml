@@ -1,0 +1,68 @@
+<odoo>
+    <data>
+
+        <!-- Actions for each button -->
+        <record id="action_cost" model="ir.actions.act_window">
+            <field name="name">Cost</field>
+            <field name="res_model">fkfp_manager.cost</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+        </record>
+
+        <record id="action_donor" model="ir.actions.act_window">
+            <field name="name">Donor</field>
+            <field name="res_model">fkfp_manager.donor</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+        </record>
+
+        <record id="action_photo_gallery" model="ir.actions.act_window">
+            <field name="name">Photo Gallery</field>
+            <field name="res_model">photo.gallery.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+        </record>
+        <!-- views/photo_gallery_wizard_view.xml -->
+        <record id="view_photo_gallery_wizard" model="ir.ui.view">
+            <field name="name">photo.gallery.wizard.form</field>
+            <field name="model">photo.gallery.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Photo Gallery Wizard">
+                    <group>
+                        <field name="partner_id"/>
+                        <field name="before_home_ids">
+                            <tree editable="bottom">
+                                <field name="image"/>
+                            </tree>
+                        </field>
+                        <field name="followup_home_ids">
+                            <tree editable="bottom">
+                                <field name="image"/>
+                            </tree>
+                        </field>
+                        <field name="after_complete_ids">
+                            <tree editable="bottom">
+                                <field name="image"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button string="view" type="object" name="action_save"/>
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="view_photo_gallery_line_tree" model="ir.ui.view">
+            <field name="name">photo.gallery.line.tree</field>
+            <field name="model">photo.gallery.line</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="image" widget="image" options="{'size': [500, 500]}"/>
+                    <field name="image_name" string="Image Name"/>  <!-- Display the image name -->
+                    <field name="image_type" string="Image Type"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

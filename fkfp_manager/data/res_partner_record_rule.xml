@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Record rule to show partners based on selected branch -->
+    <record id="res_partner_branch_filter_rule" model="ir.rule">
+        <field name="name">Partner: Show Records Only for Selected Project Branch</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="domain_force">[('can_see_branch', '=', True)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <!-- Admin full access rule (optional, for debugging) -->
+    <record id="res_partner_admin_all_access" model="ir.rule">
+        <field name="name">Partner: Admin Access to All Records</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+    </record>
+
+</odoo>

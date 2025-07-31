@@ -1,0 +1,429 @@
+<odoo>
+    <template id="report_print_pdf">
+        <t t-call="web.external_layout">
+            <t t-foreach="docs" t-as="doc">
+                <div class="page" style="font-family: Arial, sans-serif; color: #333; padding: 0; margin: 0;">
+                    <main style="margin: 0; padding: 0; line-height: 1;">
+                        <!-- Branch Name Section with Image in Same Row -->
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 0 10px; margin-bottom: 0;">
+                            <!-- Branch Name -->
+                            <div style="flex: 1;">
+                                <h2 style="font-size: 24px; font-weight: bold; margin: 0;">
+                                    <t t-esc="doc.branch_id.name"/>
+                                </h2>
+                            </div>
+                            <!-- Image aligned to the right -->
+                            <t t-if="doc.image_1920">
+                                <div style="flex-shrink: 0;">
+                                    <img t-att-src="'data:image/png;base64,' + (doc.image_1920.decode('utf-8'))"
+                                         style="position: absolute; width: 120px; height: 100px; margin-top: -30px; right: 20px;"/>
+                                </div>
+                            </t>
+                        </div>
+
+                        <!-- Spacer to prevent overlap with below content -->
+                        <div style="height: 0.5cm;"></div>
+
+                        <!-- Personal Info Section -->
+                        <div>
+                            <h3 style="font-size: 18px; font-weight: bold; color: black; padding: 10px; border: 1px solid #ddd; border-radius: 15px; background-color: #e0e0e0;  margin-bottom: 15px; width: 80%; text-align: left;">
+                                Personal Information
+                            </h3>
+                            <table class="table table-sm" style="width: 100%; border-collapse: collapse;">
+                                <tbody>
+                                    <!-- System ID | Beneficiary ID -->
+                                    <tr>
+                                        <td style="padding: 8px; font-weight: bold; width: 20%;">System ID</td>
+                                        <td style="padding: 8px; width: 30%;">
+                                            <t t-esc="doc.id"/>
+                                        </td>
+                                        <td style="padding: 8px; font-weight: bold; width: 20%;">Beneficiary ID</td>
+                                        <td style="padding: 8px; width: 30%;">
+                                            <t t-esc="doc.beneficiary_id"/>
+                                        </td>
+                                    </tr>
+                                    <!-- Name | Father's Name -->
+                                    <tr>
+                                        <td style="padding: 8px; font-weight: bold;">Name</td>
+                                        <td style="padding: 8px;">
+                                            <t t-esc="doc.name"/>
+                                        </td>
+                                        <td style="padding: 8px; font-weight: bold;">Father's/Husband Name</td>
+                                        <td style="padding: 8px;">
+                                            <t t-esc="doc.father_name"/>
+                                        </td>
+                                    </tr>
+                                    <!-- Mobile | Phone -->
+                                    <tr>
+                                        <td style="padding: 8px; font-weight: bold;">Mobile</td>
+                                        <td style="padding: 8px;">
+                                            <t t-esc="doc.mobile"/>
+                                        </td>
+                                        <td style="padding: 8px; font-weight: bold;">Phone</td>
+                                        <td style="padding: 8px;">
+                                            <t t-esc="doc.phone"/>
+                                        </td>
+                                    </tr>
+                                    <!-- CNIC | Marital Status -->
+                                    <tr>
+                                        <td style="padding: 8px; font-weight: bold;">CNIC</td>
+                                        <td style="padding: 8px;">
+                                            <t t-esc="doc.cnic"/>
+                                        </td>
+                                        <td style="padding: 8px; font-weight: bold;">Marital Status</td>
+                                        <td style="padding: 8px;">
+                                            <t t-esc="doc.marital_status"/>
+                                        </td>
+                                    </tr>
+                                    <!-- Number of School Going Children -->
+                                    <tr>
+                                        <td style="padding: 8px; font-weight: bold;">Number of School Going Children
+                                        </td>
+                                        <td style="padding: 8px;">
+                                            <t t-esc="doc.num_school_children"/>
+                                        </td>
+                                        <td style="padding: 8px; font-weight: bold;">Number of Dependent</td>
+                                        <td style="padding: 8px;">
+                                            <t t-esc="doc.num_of_dependent"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Address Info Section -->
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="font-size: 18px; font-weight: bold; color: black; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background-color: #e0e0e0;  margin-bottom: 10px;">
+                                Address Information
+                            </h3>
+                            <table class="table table-sm" style="width: 100%; border-collapse: collapse;">
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 8px; font-weight: bold; width: 20%;">Present Address</td>
+                                        <td style="padding: 8px; width: 30%;">
+                                            <t t-esc="doc.full_address"/>
+                                        </td>
+                                        <td style="padding: 8px; font-weight: bold; width: 20%;">Permanent Address</td>
+                                        <td style="padding: 8px; width: 30%;">
+                                            <t t-esc="doc.street2"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; font-weight: bold;">Street</td>
+                                        <td style="padding: 8px;">
+                                            <t t-esc="doc.street"/>
+                                        </td>
+                                        <td style="padding: 8px; font-weight: bold;">UC</td>
+                                        <td style="padding: 8px;">
+                                            <t t-esc="doc.uc"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; font-weight: bold;">District</td>
+                                        <td style="padding: 8px;">
+                                            <t t-esc="doc.district"/>
+                                        </td>
+                                        <td style="padding: 8px; font-weight: bold;">Village</td>
+                                        <td style="padding: 8px;">
+                                            <t t-esc="doc.village"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; font-weight: bold;">City</td>
+                                        <td style="padding: 8px;">
+                                            <t t-esc="doc.city"/>
+                                        </td>
+                                        <td style="padding: 8px; font-weight: bold;">Province</td>
+                                        <td style="padding: 8px;">
+                                            <t t-esc="doc.province"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; font-weight: bold;">Country</td>
+                                        <td style="padding: 8px;">
+                                            <t t-esc="doc.country_id.name"/>
+                                        </td>
+                                        <td style="padding: 8px; font-weight: bold;">Nationality</td>
+                                        <td style="padding: 8px;">
+                                            <t t-esc="doc.nationality"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- V.Invest Branch -->
+                        <t t-if="doc.branch_id.id == 3">
+                            <h3>
+                                Micro_Finance From FKFP
+                            </h3>
+                            <table class="table table-sm" style="width: 100%; border-collapse: collapse;">
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 8px; font-weight: bold; width: 20%;">Loan Amount</td>
+                                        <td style="padding: 8px; width: 30%;">
+                                            <t t-esc="doc.small_business"/>
+                                        </td>
+                                        <td style="padding: 8px; font-weight: bold; width: 20%;">Repayment Mode</td>
+                                        <td style="padding: 8px; width: 30%;">
+                                            <t t-esc="doc.return_money"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; font-weight: bold;">Loan Status</td>
+                                        <td style="padding: 8px;">
+                                            <t t-esc="doc.business_plan"/>
+                                        </td>
+                                        <td style="padding: 8px; font-weight: bold;">Loan Repayment Date</td>
+                                        <td style="padding: 8px;">
+                                            <t t-esc="doc.amount"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <!-- SMILE Branch -->
+                        <t t-if="doc.branch_id.id == 5">
+                            <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #e0e0e0;  margin-bottom: 20px;">
+                                <h3 style="font-size: 18px; font-weight: bold; color: black; text-align: center; padding: 10px; border-bottom: 2px solid #ddd; margin-bottom: 20px;">
+                                    Donation Acknowledgment Form
+                                </h3>
+                                <table class="table table-sm" style="width: 100%; border-collapse: collapse;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="font-weight: bold; width: 20%;">Nature of Donation</td>
+                                            <td style="width: 30%;">
+                                                <t t-esc="doc.nature_donation"/>
+                                            </td>
+                                            <td style="font-weight: bold; width: 20%;">Amount Words</td>
+                                            <td style="width: 30%;">
+                                                <t t-esc="doc.amount_words"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: bold;">Brief Description</td>
+                                            <td>
+                                                <t t-esc="doc.brief_description"/>
+                                            </td>
+                                            <td style="font-weight: bold;">Received With</td>
+                                            <td>
+                                                <t t-esc="doc.received_with"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                        <!-- Property, Income, and Crop Details Section -->
+                        <t t-if="doc.branch_id.id == 4">
+
+                            <div style="margin-bottom: 10px;">
+                                <h3 style="font-size: 18px; font-weight: bold; color: black; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background-color: #e0e0e0;  margin-bottom: 10px;">
+                                    Property, Income, and Crop Details
+                                </h3>
+
+                                <!-- Property Details Section -->
+                                <h4 style="font-weight: bold; background-color: #f1f1f1; padding: 10px; border-radius: 5px; color: #333;">
+                                    Property Details
+                                </h4>
+                                <table class="table table-sm" style="width: 100%; border-collapse: collapse;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="font-weight: bold; width: 25%;">Do you have your own house?</td>
+                                            <td style="width: 25%;">
+                                                <t t-esc="doc.own_house"/>
+                                            </td>
+                                            <td style="font-weight: bold; width: 25%;">House Kaccha Or Pakka</td>
+                                            <td style="width: 25%;">
+                                                <t t-esc="doc.kaccha_pakka"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: bold;">How many rooms in your house?</td>
+                                            <td>
+                                                <t t-esc="doc.house_rooms"/>
+                                            </td>
+                                            <td style="font-weight: bold;">Do you have a toilet in your house?</td>
+                                            <td>
+                                                <t t-esc="doc.has_toilet"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: bold;">How many livestock do you own?</td>
+                                            <td colspan="3">
+                                                <t t-esc="doc.livestock_count"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+                                <!-- Income Details Section -->
+                                <h4 style="font-weight: bold; background-color: #f1f1f1; padding: 10px;border-radius: 5px; color: #333;">
+                                    Income Details
+                                </h4>
+                                <table class="table table-sm" style="width: 100%; border-collapse: collapse;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="font-weight: bold; width: 25%;">Do you own any other property?
+                                            </td>
+                                            <td style="width: 25%;">
+                                                <t t-esc="doc.own_property"/>
+                                            </td>
+                                            <td style="font-weight: bold; width: 25%;">Monthly Self Income</td>
+                                            <td style="width: 25%;">
+                                                <t t-esc="doc.monthly_self"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: bold;">Monthly Total Income</td>
+                                            <td>
+                                                <t t-esc="doc.monthly_income"/>
+                                            </td>
+                                            <td style="font-weight: bold;">Monthly Family Income</td>
+                                            <td>
+                                                <t t-esc="doc.family_income"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: bold;">Average Annual Income</td>
+                                            <td>
+                                                <t t-esc="doc.average_annual"/>
+                                            </td>
+                                            <td style="font-weight: bold;">Monthly Total Expense</td>
+                                            <td>
+                                                <t t-esc="doc.monthly_expense"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!-- Crop Details Section -->
+                                <h4 style="font-weight: bold; background-color: #f1f1f1; padding: 10px; border-radius: 5px; color: #333;">
+                                    Crop Details
+                                </h4>
+                                <table class="table table-sm" style="width: 100%; border-collapse: collapse;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="font-weight: bold; width: 25%;">By What Source Do You Pay
+                                                Interest?
+                                            </td>
+                                            <td style="width: 25%;">
+                                                <t t-esc="doc.source"/>
+                                            </td>
+                                            <td style="font-weight: bold; width: 25%;">Total Area Of Land For Crop</td>
+                                            <td style="width: 25%;">
+                                                <t t-esc="doc.total_area"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: bold;">Land Owner Name</td>
+                                            <td>
+                                                <t t-esc="doc.land_owner"/>
+                                            </td>
+                                            <td style="font-weight: bold;">Name Of Crop</td>
+                                            <td>
+                                                <t t-esc="doc.crop_name"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: bold;">Land Owner Contact Detail</td>
+                                            <td colspan="3">
+                                                <t t-esc="doc.owner_contact"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+
+                        <!-- Cost and Progress Section -->
+                        <h3 style="font-size: 18px; font-weight: bold; color: black; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background-color: #e0e0e0;  margin-bottom: 10px;">
+                            Progress and Cost
+                        </h3>
+                        <table class="table table-sm" style="width: 100%; border-collapse: collapse;">
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight: bold; width: 25%;">Status</td>
+                                    <td style="width: 25%;">
+                                        <t t-esc="doc.status_id.status_name"/>
+                                    </td>
+                                    <td style="font-weight: bold; width: 25%;">Cost Amount</td>
+                                    <td style="width: 25%;">
+                                        <t t-esc="doc.cost_amount"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">Start Date</td>
+                                    <td>
+                                        <t t-esc="doc.start_date"/>
+                                    </td>
+                                    <td style="font-weight: bold;">End Date</td>
+                                    <td>
+                                        <t t-esc="doc.end_date"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">Country</td>
+                                    <td>
+                                        <t t-esc="doc.country_id.name"/>
+                                    </td>
+                                    <td style="font-weight: bold;">Branch</td>
+                                    <td>
+                                        <t t-esc="doc.branch_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">Title</td>
+                                    <td colspan="3">
+                                        <t t-esc="doc.title.name"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Witness Section -->
+                        <h3 style="font-size: 18px; font-weight: bold; color: black; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background-color: #e0e0e0;  margin-bottom: 10px;">
+                            Witness Form
+                        </h3>
+
+                        <!-- Witness Table -->
+                        <table class="table table-sm"
+                               style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight: bold; width: 50%; border: 1px solid #ddd; padding: 8px;">
+                                        Witness Name
+                                    </td>
+                                    <td style="width: 50%; border: 1px solid #ddd; padding: 8px;">
+                                        <t t-esc="witness_name"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- Donors Section -->
+                        <h3 style="font-size: 18px; font-weight: bold; color: black; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background-color: #e0e0e0;  margin-bottom: 10px;">
+                            Donors
+                        </h3>
+                        <!-- Donors Table -->
+                        <table class="table table-sm" style="width: 100%; border-collapse: collapse;">
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight: bold; width: 25%;">Donor Name</td>
+                                    <td style="width: 25%;">
+                                        <t t-esc="doc.donor_ids.donor_partner_id.name"/>
+                                    </td>
+                                    <td style="font-weight: bold; width: 25%;">Amount Used</td>
+                                    <td style="width: 25%;">
+                                        <t t-esc="amount_used"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </main>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
+
