@@ -1,0 +1,24 @@
+<odoo>
+    <record id="action_send_whatsapp" model="ir.actions.act_window">
+        <field name="name">Send WhatsApp</field>
+        <field name="res_model">whatsapp.send.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="res_partner_view_form_inherit_whatsapp" model="ir.ui.view">
+        <field name="name">res.partner.whatsapp.button</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='mobile']" position="after">
+                <button name="%(action_send_whatsapp)d"
+                        type="action"
+                        string="Send WhatsApp"
+                        class="oe_highlight"
+                        context="{'default_partner_id': active_id}"
+                        invisible="not mobile and title == 'beneficiary'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
